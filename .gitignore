@@ -1,14 +1,14 @@
-# Ignore everything by default
-/*
-
-# Except My Apps folder (personal projects)
-!/My Apps/
-
-# Allow README at root
-!README.md
-
-# Keep this gitignore file
-!.gitignore
+# Work files (keep local only)
+Developer feedback workflow/
+Engineering prompts/
+MoreHarvest test suite/
+Prototypes prompts/
+Prototypes/
+Skills/
+Video Interview/
+shared/
 
 # Ignore common files
 .DS_Store
+.gitattributes
+CLAUDE.md
