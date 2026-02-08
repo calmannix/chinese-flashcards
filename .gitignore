@@ -1,0 +1,11 @@
+# Ignore everything by default
+/*
+
+# Except My Apps folder (personal projects)
+!/My Apps/
+
+# Keep this gitignore file
+!.gitignore
+
+# Ignore common files
+.DS_Store

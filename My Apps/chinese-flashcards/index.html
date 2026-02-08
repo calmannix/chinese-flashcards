@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andrew's broken leg 🦴</title>
+    <style>
+        /* Base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        nav button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        nav button:hover {
+            background: #e8e8e8;
+        }
+
+        nav button.active {
+            background: #333;
+            color: #fff;
+        }
+
+        /* Sections */
+        section {
+            display: none;
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        section.active {
+            display: block;
+        }
+
+        /* Form styles */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #333;
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 4px;
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background: #333;
+            color: #fff;
+            width: 100%;
+        }
+
+        .btn-secondary {
+            background: #e8e8e8;
+            color: #333;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: #fff;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+
+        /* Word list */
+        .word-list {
+            margin-top: 24px;
+        }
+
+        .word-list h3 {
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .word-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .word-item:last-child {
+            border-bottom: none;
+        }
+
+        .word-info {
+            flex: 1;
+        }
+
+        .word-chinese {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .word-pinyin {
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .word-english {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        /* Tone colours */
+        .tone-1 { color: #e74c3c; } /* Red - flat */
+        .tone-2 { color: #e67e22; } /* Orange - rising */
+        .tone-3 { color: #27ae60; } /* Green - dip */
+        .tone-4 { color: #3498db; } /* Blue - falling */
+        .tone-5 { color: #888; }    /* Grey - neutral */
+
+        /* Flashcard */
+        .flashcard-container {
+            text-align: center;
+        }
+
+        .card-progress {
+            margin-bottom: 16px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .flashcard {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 48px 24px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            color: #fff;
+        }
+
+        .flashcard:hover {
+            transform: scale(1.02);
+        }
+
+        .card-direction {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-bottom: 16px;
+        }
+
+        .card-question {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .card-question.chinese {
+            font-size: 2.5rem;
+        }
+
+        .card-hint {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .card-answer {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            width: 100%;
+        }
+
+        .card-answer-chinese {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .card-answer-pinyin {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .card-answer-english {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .grade-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .grade-btn {
+            padding: 16px 8px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: transform 0.1s;
+        }
+
+        .grade-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .grade-btn:active {
+            transform: scale(0.98);
+        }
+
+        .grade-again { background: #e74c3c; color: #fff; }
+        .grade-hard { background: #e67e22; color: #fff; }
+        .grade-good { background: #27ae60; color: #fff; }
+        .grade-easy { background: #3498db; color: #fff; }
+
+        .grade-interval {
+            display: block;
+            font-size: 0.7rem;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        /* Empty states */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #666;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        /* Session complete */
+        .session-complete {
+            text-align: center;
+            padding: 48px 24px;
+        }
+
+        .session-complete h2 {
+            color: #27ae60;
+            margin-bottom: 16px;
+        }
+
+        .session-stats {
+            margin: 24px 0;
+        }
+
+        .session-stats p {
+            margin-bottom: 8px;
+            color: #666;
+        }
+
+        /* Export/Import */
+        .data-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+        }
+
+        .data-actions button {
+            flex: 1;
+        }
+
+        #importFile {
+            display: none;
+        }
+
+        /* Home stats */
+        .home-stats {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #f8f8f8;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .start-review-btn {
+            margin-top: 16px;
+        }
+
+        /* Pinyin lookup dropdown */
+        .input-with-dropdown {
+            position: relative;
+        }
+
+        .pinyin-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 240px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .pinyin-dropdown.visible {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item.selected {
+            background: #f5f5f5;
+        }
+
+        .dropdown-item-char {
+            font-size: 1.4rem;
+            min-width: 40px;
+        }
+
+        .dropdown-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dropdown-item-pinyin {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .dropdown-item-english {
+            font-size: 0.8rem;
+            color: #888;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dropdown-hint {
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            color: #888;
+            text-align: center;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        /* Activity mode selector */
+        .activity-mode-selector {
+            margin: 16px 0;
+            padding: 16px;
+            background: #f8f8f8;
+            border-radius: 8px;
+        }
+
+        .activity-mode-selector label {
+            display: block;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .mode-buttons {
+            display: flex;
+            gap: 0;
+            background: #e8e8e8;
+            border-radius: 8px;
+            padding: 3px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 10px 8px;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: #666;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .mode-btn:hover {
+            color: #333;
+        }
+
+        .mode-btn.active {
+            background: #333;
+            color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        /* Memorise card: no pointer cursor */
+        .flashcard.memorise-card {
+            cursor: default;
+        }
+
+        .flashcard.memorise-card:hover {
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <script src="dictionary.js"></script>
+    <div class="container">
+        <header>
+            <h1>Andrew's broken leg 🦴</h1>
+        </header>
+
+        <nav>
+            <button type="button" class="active" data-section="home">Home</button>
+            <button type="button" data-section="add">Add Words</button>
+            <button type="button" data-section="list">Word List</button>
+        </nav>
+
+        <!-- Home Section -->
+        <section id="home" class="active">
+            <div class="home-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalWords">0</div>
+                    <div class="stat-label">Words</div>
+                </div>
+            </div>
+            <div class="review-filter" style="margin: 20px 0; padding: 16px; background: #f8f8f8; border-radius: 8px;">
+                <div style="display: flex; gap: 12px; align-items: start; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 150px;">
+                        <label style="display: block; font-size: 0.85rem; color: #666; margin-bottom: 4px;">Study from</label>
+                        <select id="lessonFilter" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">
+                            <option value="SMART_SHUFFLE" selected>Smart Shuffle</option>
+                            <option value="">All Words</option>
+                        </select>
+                        <small id="selectionHint" style="display: block; margin-top: 4px; font-size: 0.75rem; color: #888; min-height: 1.2em;"></small>
+                    </div>
+                    <div style="width: 140px;">
+                        <label style="display: block; font-size: 0.85rem; color: #666; margin-bottom: 4px;">Session size</label>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <input type="number" id="cardLimit" min="1" placeholder="All" style="width: 70px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">
+                            <span style="font-size: 0.85rem; color: #666;">cards</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="activity-mode-selector">
+                <label>Activity</label>
+                <div class="mode-buttons">
+                    <button type="button" class="mode-btn active" data-mode="memorise">Memorise</button>
+                    <button type="button" class="mode-btn" data-mode="zh-en">ZH / EN</button>
+                    <button type="button" class="mode-btn" data-mode="en-zh">EN / ZH</button>
+                    <button type="button" class="mode-btn" data-mode="complete-learning">Complete</button>
+                </div>
+                <small id="activityHint" style="display: block; margin-top: 8px; font-size: 0.75rem; color: #888; text-align: center;"></small>
+            </div>
+            <button type="button" class="btn btn-primary start-review-btn" id="startReviewBtn">Start Review</button>
+        </section>
+
+        <!-- Review Section -->
+        <section id="review">
+            <div class="flashcard-container" id="flashcardContainer">
+                <!-- Flashcard content inserted by JS -->
+            </div>
+        </section>
+
+        <!-- Add Words Section -->
+        <section id="add">
+            <form id="addWordForm">
+                <div class="form-group">
+                    <label for="pinyin">Pinyin</label>
+                    <input type="text" id="pinyin" placeholder="e.g. shu1 or shū" required>
+                    <small>Type tone numbers (shu1) or marks (shū)</small>
+                </div>
+                <div class="form-group">
+                    <label for="characters">Traditional Characters</label>
+                    <div class="input-with-dropdown">
+                        <input type="text" id="characters" placeholder="Type pinyin (e.g. xue) or characters (e.g. 書)" required autocomplete="off">
+                        <div class="pinyin-dropdown" id="pinyinDropdown"></div>
+                    </div>
+                    <small>Type pinyin to search, or enter characters directly</small>
+                </div>
+                <div class="form-group">
+                    <label for="english">English</label>
+                    <input type="text" id="english" placeholder="e.g. book" required>
+                </div>
+                <div class="form-group">
+                    <label for="lesson">Lesson (optional)</label>
+                    <input type="text" id="lesson" placeholder="e.g. Lesson 1, Chapter 3">
+                    <small>Persists for next word you add</small>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Add Word</button>
+                    <button type="button" class="btn btn-secondary" id="cancelEditBtn" style="display: none;" onclick="cancelEditWord()">Cancel</button>
+                </div>
+            </form>
+
+            <div class="data-actions" style="flex-direction: column; align-items: stretch;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                    <span id="fileStatus" style="font-size: 0.85rem;">Not linked to file</span>
+                    <button type="button" class="btn btn-secondary" id="linkFileBtn" style="flex: 0; white-space: nowrap;">Link Storage File</button>
+                    <button type="button" class="btn btn-secondary" id="unlinkFileBtn" style="flex: 0; white-space: nowrap; display: none;">Unlink File</button>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn btn-secondary" id="exportBtn" style="flex: 1;">Export JSON</button>
+                    <button type="button" class="btn btn-secondary" id="importBtn" style="flex: 1;">Import JSON</button>
+                </div>
+                <input type="file" id="importFile" accept=".json">
+            </div>
+        </section>
+
+        <!-- Word List Section -->
+        <section id="list">
+            <div style="margin-bottom: 16px;">
+                <input type="text" id="wordSearch" placeholder="Search by English or pinyin..."
+                       style="width: 100%; padding: 10px 12px; border: 1px solid #ddd;
+                              border-radius: 8px; font-size: 0.9rem;">
+            </div>
+            <div class="word-list" id="wordList">
+                <!-- Words inserted by JS -->
+            </div>
+        </section>
+    </div>
+
+    <script>
+    // ===========================================
+    // DATA LAYER
+    // ===========================================
+
+    const STORAGE_KEYS = {
+        VOCABULARY: 'cv_vocabulary',
+        CARDS: 'cv_cards',
+        STATS: 'cv_stats',
+        LAST_LESSON: 'cv_last_lesson'
+    };
+
+    // ===========================================
+    // FILE SYSTEM STORAGE
+    // ===========================================
+
+    let fileHandle = null;
+    let saveDebounceTimer = null;
+    const INDEXEDDB_NAME = 'cv_filehandle';
+    const INDEXEDDB_STORE = 'handles';
+
+    // IndexedDB for storing file handle across sessions
+    function openHandleDB() {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(INDEXEDDB_NAME, 1);
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => resolve(request.result);
+            request.onupgradeneeded = (e) => {
+                e.target.result.createObjectStore(INDEXEDDB_STORE);
+            };
+        });
+    }
+
+    async function saveFileHandle(handle) {
+        try {
+            const db = await openHandleDB();
+            const tx = db.transaction(INDEXEDDB_STORE, 'readwrite');
+            tx.objectStore(INDEXEDDB_STORE).put(handle, 'mainFile');
+            await new Promise((resolve, reject) => {
+                tx.oncomplete = resolve;
+                tx.onerror = () => reject(tx.error);
+            });
+            db.close();
+        } catch (e) {
+            // IndexedDB not available, handle won't persist
+        }
+    }
+
+    async function loadFileHandle() {
+        try {
+            const db = await openHandleDB();
+            const tx = db.transaction(INDEXEDDB_STORE, 'readonly');
+            const request = tx.objectStore(INDEXEDDB_STORE).get('mainFile');
+            const handle = await new Promise((resolve, reject) => {
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+            db.close();
+            return handle || null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    async function clearFileHandle() {
+        try {
+            const db = await openHandleDB();
+            const tx = db.transaction(INDEXEDDB_STORE, 'readwrite');
+            tx.objectStore(INDEXEDDB_STORE).delete('mainFile');
+            await new Promise((resolve, reject) => {
+                tx.oncomplete = resolve;
+                tx.onerror = () => reject(tx.error);
+            });
+            db.close();
+        } catch (e) {
+            // Ignore
+        }
+    }
+
+    // Check if File System Access API is available
+    function hasFileSystemAccess() {
+        return 'showSaveFilePicker' in window;
+    }
+
+    // Request permission to access file
+    async function verifyPermission(handle) {
+        const options = { mode: 'readwrite' };
+        if (await handle.queryPermission(options) === 'granted') {
+            return true;
+        }
+        if (await handle.requestPermission(options) === 'granted') {
+            return true;
+        }
+        return false;
+    }
+
+    // Link a storage file
+    async function linkStorageFile() {
+        if (!hasFileSystemAccess()) {
+            alert('File System Access not supported. Use Chrome or Edge.');
+            return false;
+        }
+
+        try {
+            const handle = await window.showSaveFilePicker({
+                suggestedName: 'vocabulary.json',
+                types: [{
+                    description: 'JSON Files',
+                    accept: { 'application/json': ['.json'] }
+                }]
+            });
+
+            fileHandle = handle;
+            await saveFileHandle(handle);
+            await saveToFile(); // Save current data immediately
+            updateFileStatus();
+            return true;
+        } catch (e) {
+            if (e.name !== 'AbortError') {
+                alert('Failed to link file: ' + e.message);
+            }
+            return false;
+        }
+    }
+
+    // Unlink storage file
+    async function unlinkStorageFile() {
+        fileHandle = null;
+        await clearFileHandle();
+        updateFileStatus();
+    }
+
+    // Save all data to file
+    async function saveToFile() {
+        if (!fileHandle) return;
+
+        try {
+            if (!await verifyPermission(fileHandle)) {
+                fileHandle = null;
+                updateFileStatus();
+                return;
+            }
+
+            const data = {
+                vocabulary: cache.vocabulary || [],
+                cards: cache.cards || [],
+                stats: cache.stats || {},
+                savedAt: new Date().toISOString()
+            };
+
+            const writable = await fileHandle.createWritable();
+            await writable.write(JSON.stringify(data, null, 2));
+            await writable.close();
+        } catch (e) {
+            // File write failed, continue using localStorage
+        }
+    }
+
+    // Debounced save to file
+    function scheduleSaveToFile() {
+        if (!fileHandle) return;
+        clearTimeout(saveDebounceTimer);
+        saveDebounceTimer = setTimeout(saveToFile, 500);
+    }
+
+    // Load data from file
+    async function loadFromFile() {
+        if (!fileHandle) return null;
+
+        try {
+            if (!await verifyPermission(fileHandle)) {
+                fileHandle = null;
+                updateFileStatus();
+                return null;
+            }
+
+            const file = await fileHandle.getFile();
+            const text = await file.text();
+            if (!text.trim()) return null;
+            return JSON.parse(text);
+        } catch (e) {
+            return null;
+        }
+    }
+
+    // Try to restore file handle on load
+    async function initFileStorage() {
+        if (!hasFileSystemAccess()) return;
+
+        const handle = await loadFileHandle();
+        if (handle) {
+            fileHandle = handle;
+            // Try to load data from file
+            const fileData = await loadFromFile();
+            if (fileData) {
+                // Merge file data into cache and localStorage
+                if (fileData.vocabulary) {
+                    cache.vocabulary = fileData.vocabulary;
+                    localStorage.setItem(STORAGE_KEYS.VOCABULARY, JSON.stringify(fileData.vocabulary));
+                }
+                if (fileData.cards) {
+                    cache.cards = fileData.cards;
+                    localStorage.setItem(STORAGE_KEYS.CARDS, JSON.stringify(fileData.cards));
+                }
+                if (fileData.stats) {
+                    cache.stats = fileData.stats;
+                    localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(fileData.stats));
+                }
+            }
+        }
+        updateFileStatus();
+    }
+
+    // Update UI to show file link status
+    function updateFileStatus() {
+        const statusEl = document.getElementById('fileStatus');
+        const linkBtn = document.getElementById('linkFileBtn');
+        const unlinkBtn = document.getElementById('unlinkFileBtn');
+
+        if (!statusEl) return;
+
+        if (!hasFileSystemAccess()) {
+            statusEl.textContent = 'File sync not available (use Chrome/Edge)';
+            statusEl.style.color = '#888';
+            linkBtn.style.display = 'none';
+            unlinkBtn.style.display = 'none';
+        } else if (fileHandle) {
+            statusEl.textContent = 'Syncing to file';
+            statusEl.style.color = '#27ae60';
+            linkBtn.style.display = 'none';
+            unlinkBtn.style.display = 'inline-block';
+        } else {
+            statusEl.textContent = 'Not linked to file';
+            statusEl.style.color = '#888';
+            linkBtn.style.display = 'inline-block';
+            unlinkBtn.style.display = 'none';
+        }
+    }
+
+    // Generate unique ID
+    function generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).slice(2);
+    }
+
+    // Escape HTML to prevent XSS
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    // Vocabulary model
+    function createVocabulary(pinyin, characters, english, lesson) {
+        return {
+            id: generateId(),
+            pinyin: convertToneNumbersToMarks(pinyin),
+            characters: characters,
+            english: english,
+            lesson: lesson || '',
+            createdAt: new Date().toISOString()
+        };
+    }
+
+    // SM-2 Card model
+    function createCard(wordId, direction) {
+        return {
+            id: generateId(),
+            wordId: wordId,
+            direction: direction, // 'cn-en' or 'en-cn'
+            interval: 0,         // Days until next review
+            easeFactor: 2.5,     // Difficulty multiplier
+            repetitions: 0,      // Successful reviews in a row
+            dueDate: new Date().toISOString(),
+            lastReview: null
+        };
+    }
+
+    // In-memory cache to reduce localStorage reads
+    const cache = {
+        vocabulary: null,
+        cards: null,
+        stats: null
+    };
+
+    // localStorage operations with caching and error handling
+    function loadData(key) {
+        const cacheKey = key === STORAGE_KEYS.VOCABULARY ? 'vocabulary' : 'cards';
+        if (cache[cacheKey] !== null) return cache[cacheKey];
+
+        try {
+            const data = localStorage.getItem(key);
+            cache[cacheKey] = data ? JSON.parse(data) : [];
+            return cache[cacheKey];
+        } catch (e) {
+            cache[cacheKey] = [];
+            return [];
+        }
+    }
+
+    function saveData(key, data) {
+        const cacheKey = key === STORAGE_KEYS.VOCABULARY ? 'vocabulary' : 'cards';
+        cache[cacheKey] = data;
+        try {
+            localStorage.setItem(key, JSON.stringify(data));
+            scheduleSaveToFile(); // Also save to file if linked
+            return true;
+        } catch (e) {
+            if (e.name === 'QuotaExceededError') {
+                alert('Storage full. Export your data and delete old entries.');
+            }
+            return false;
+        }
+    }
+
+    function loadStats() {
+        if (cache.stats !== null) return cache.stats;
+
+        try {
+            const data = localStorage.getItem(STORAGE_KEYS.STATS);
+            cache.stats = data ? JSON.parse(data) : {
+                totalReviewed: 0
+            };
+            return cache.stats;
+        } catch (e) {
+            cache.stats = {
+                totalReviewed: 0
+            };
+            return cache.stats;
+        }
+    }
+
+    function saveStats(stats) {
+        cache.stats = stats;
+        try {
+            localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(stats));
+            scheduleSaveToFile(); // Also save to file if linked
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    // CRUD operations
+    function addVocabulary(pinyin, characters, english, lesson) {
+        const vocab = createVocabulary(pinyin, characters, english, lesson);
+        const vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+        vocabulary.push(vocab);
+        saveData(STORAGE_KEYS.VOCABULARY, vocabulary);
+
+        // Create two cards (both directions)
+        const cards = loadData(STORAGE_KEYS.CARDS);
+        cards.push(createCard(vocab.id, 'cn-en'));
+        cards.push(createCard(vocab.id, 'en-cn'));
+        saveData(STORAGE_KEYS.CARDS, cards);
+
+        return vocab;
+    }
+
+    function deleteVocabulary(id) {
+        let vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+        vocabulary = vocabulary.filter(v => v.id !== id);
+        saveData(STORAGE_KEYS.VOCABULARY, vocabulary);
+
+        // Delete associated cards
+        let cards = loadData(STORAGE_KEYS.CARDS);
+        cards = cards.filter(c => c.wordId !== id);
+        saveData(STORAGE_KEYS.CARDS, cards);
+    }
+
+    function getVocabularyById(id) {
+        const vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+        return vocabulary.find(v => v.id === id);
+    }
+
+    function updateVocabulary(id, pinyin, characters, english, lesson) {
+        let vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+        vocabulary = vocabulary.map(v => {
+            if (v.id === id) {
+                return { ...v, pinyin: convertToneNumbersToMarks(pinyin), characters, english, lesson: lesson || '' };
+            }
+            return v;
+        });
+        saveData(STORAGE_KEYS.VOCABULARY, vocabulary);
+    }
+
+    // Export/Import
+    function exportData() {
+        const data = {
+            vocabulary: loadData(STORAGE_KEYS.VOCABULARY),
+            cards: loadData(STORAGE_KEYS.CARDS),
+            stats: loadStats(),
+            exportedAt: new Date().toISOString()
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `chinese-vocab-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    function importData(jsonString) {
+        try {
+            const data = JSON.parse(jsonString);
+            if (data.vocabulary) saveData(STORAGE_KEYS.VOCABULARY, data.vocabulary);
+            if (data.cards) saveData(STORAGE_KEYS.CARDS, data.cards);
+            if (data.stats) saveStats(data.stats);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    // ===========================================
+    // SM-2 ALGORITHM
+    // ===========================================
+
+    // Grade values: 1=Hard, 2=Good, 3=Easy (Again is handled in gradeCard before calling this)
+    function calculateNextReview(card, grade) {
+        const newCard = { ...card };
+
+        newCard.repetitions += 1;
+
+        // Calculate new ease factor
+        // EF' = EF + (0.1 - (3 - grade) * (0.08 + (3 - grade) * 0.02))
+        const q = grade + 2; // Convert 1-3 to 3-5 for SM-2 formula
+        newCard.easeFactor = Math.max(1.3,
+            newCard.easeFactor + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02))
+        );
+
+        // Calculate interval
+        if (newCard.repetitions === 1) {
+            newCard.interval = 1;
+        } else if (newCard.repetitions === 2) {
+            newCard.interval = 6;
+        } else {
+            newCard.interval = Math.round(newCard.interval * newCard.easeFactor);
+        }
+
+        // Adjust interval based on grade
+        if (grade === 1) { // Hard
+            newCard.interval = Math.max(1, Math.round(newCard.interval * 0.8));
+        } else if (grade === 3) { // Easy
+            newCard.interval = Math.round(newCard.interval * 1.3);
+        }
+
+        // Set due date
+        const dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() + newCard.interval);
+        newCard.dueDate = dueDate.toISOString();
+
+        newCard.lastReview = new Date().toISOString();
+        return newCard;
+    }
+
+    // Get preview of next intervals for UI
+    function getIntervalPreviews(card) {
+        // If card was flagged with Again, show Hard-reset previews
+        const wasAgain = card._wasAgain;
+        const previewCard = wasAgain ? { ...card, repetitions: 0, interval: 0 } : card;
+
+        return {
+            again: 'Retry',
+            hard: wasAgain ? '1 day' : formatInterval(Math.max(1, Math.round((previewCard.interval || 1) * 0.8 * previewCard.easeFactor))),
+            good: wasAgain ? '1 day' : formatInterval(previewCard.repetitions < 2 ? (previewCard.repetitions === 0 ? 1 : 6) :
+                Math.round((previewCard.interval || 1) * previewCard.easeFactor)),
+            easy: wasAgain ? '1 day' : formatInterval(Math.round((previewCard.repetitions < 2 ? (previewCard.repetitions === 0 ? 1 : 6) :
+                Math.round((previewCard.interval || 1) * previewCard.easeFactor)) * 1.3))
+        };
+    }
+
+    function formatInterval(days) {
+        if (days === 0) return '10 min';
+        if (days === 1) return '1 day';
+        if (days < 30) return `${days} days`;
+        if (days < 365) return `${Math.round(days / 30)} mo`;
+        return `${Math.round(days / 365)} yr`;
+    }
+
+    // Get cards due for review, sorted by due date
+    // Get unique lessons from vocabulary
+    function getUniqueLessons() {
+        const vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+        const lessons = new Set();
+        vocabulary.forEach(v => {
+            if (v.lesson) lessons.add(v.lesson);
+        });
+        return Array.from(lessons).sort();
+    }
+
+    // Categorize cards by performance for smart shuffle
+    function categorizeCardsByPerformance(cards) {
+        const hard = [];
+        const good = [];
+        const easy = [];
+
+        cards.forEach(card => {
+            if (card.repetitions === 0 || card.easeFactor < 2.0) {
+                hard.push(card);
+            } else if (card.easeFactor >= 2.8) {
+                easy.push(card);
+            } else {
+                good.push(card);
+            }
+        });
+
+        return { hard, good, easy };
+    }
+
+    // Get smart shuffle cards with weighted selection
+    function getSmartShuffleCards(limit, mode) {
+        const allCards = loadData(STORAGE_KEYS.CARDS);
+
+        // Filter by activity mode
+        let filtered = allCards;
+        if (mode === 'memorise') {
+            filtered.sort((a, b) => a.direction === 'cn-en' ? -1 : 1);
+            const seen = new Set();
+            filtered = filtered.filter(card => {
+                if (seen.has(card.wordId)) return false;
+                seen.add(card.wordId);
+                return true;
+            });
+        } else if (mode === 'zh-en') {
+            filtered = filtered.filter(card => card.direction === 'en-cn');
+        } else if (mode === 'en-zh') {
+            filtered = filtered.filter(card => card.direction === 'cn-en');
+        }
+
+        // If we don't have enough total cards, return all shuffled
+        if (filtered.length <= limit) {
+            return shuffle(filtered);
+        }
+
+        // Categorize by performance
+        const { hard, good, easy } = categorizeCardsByPerformance(filtered);
+
+        // Shuffle each category
+        const shuffledHard = shuffle(hard);
+        const shuffledGood = shuffle(good);
+        const shuffledEasy = shuffle(easy);
+
+        // Calculate target counts (60%, 25%, 15%)
+        const hardTarget = Math.round(limit * 0.6);
+        const goodTarget = Math.round(limit * 0.25);
+        const easyTarget = limit - hardTarget - goodTarget;
+
+        // Select from each category
+        const selectedHard = shuffledHard.slice(0, Math.min(hardTarget, shuffledHard.length));
+        const selectedGood = shuffledGood.slice(0, Math.min(goodTarget, shuffledGood.length));
+        const selectedEasy = shuffledEasy.slice(0, Math.min(easyTarget, shuffledEasy.length));
+
+        let selected = [...selectedHard, ...selectedGood, ...selectedEasy];
+
+        // If we have a shortfall, top up from remaining cards in other categories
+        if (selected.length < limit) {
+            const remainingHard = shuffledHard.slice(selectedHard.length);
+            const remainingGood = shuffledGood.slice(selectedGood.length);
+            const remainingEasy = shuffledEasy.slice(selectedEasy.length);
+
+            const remaining = [...remainingHard, ...remainingGood, ...remainingEasy];
+            const needed = limit - selected.length;
+
+            selected = [...selected, ...remaining.slice(0, needed)];
+        }
+
+        return selected;
+    }
+
+    // Get cards for review, optionally filtered by lesson and activity mode
+    function getDueCards(lessonFilter = null, mode = null) {
+        const cards = loadData(STORAGE_KEYS.CARDS);
+        const vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+
+        let filtered = cards;
+
+        // Filter by lesson if specified
+        if (lessonFilter) {
+            const wordIdsInLesson = new Set(
+                vocabulary.filter(v => v.lesson === lessonFilter).map(v => v.id)
+            );
+            filtered = filtered.filter(card => wordIdsInLesson.has(card.wordId));
+        }
+
+        // Filter by activity mode
+        if (mode === 'memorise') {
+            // Deduplicate: one card per word (always prefer cn-en as primary)
+            filtered.sort((a, b) => a.direction === 'cn-en' ? -1 : 1);
+            const seen = new Set();
+            filtered = filtered.filter(card => {
+                if (seen.has(card.wordId)) return false;
+                seen.add(card.wordId);
+                return true;
+            });
+        } else if (mode === 'zh-en') {
+            // English shown, translate to Chinese: en-cn cards
+            filtered = filtered.filter(card => card.direction === 'en-cn');
+        } else if (mode === 'en-zh') {
+            // Chinese shown, translate to English: cn-en cards
+            filtered = filtered.filter(card => card.direction === 'cn-en');
+        }
+
+        return filtered;
+    }
+
+    // Shuffle array (Fisher-Yates)
+    function shuffle(array) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    // Update card in storage
+    function updateCard(updatedCard) {
+        let cards = loadData(STORAGE_KEYS.CARDS);
+        cards = cards.map(c => c.id === updatedCard.id ? updatedCard : c);
+        saveData(STORAGE_KEYS.CARDS, cards);
+    }
+
+    // ===========================================
+    // TONE PROCESSING
+    // ===========================================
+
+    const TONE_MARKS = {
+        'a': ['ā', 'á', 'ǎ', 'à'],
+        'e': ['ē', 'é', 'ě', 'è'],
+        'i': ['ī', 'í', 'ǐ', 'ì'],
+        'o': ['ō', 'ó', 'ǒ', 'ò'],
+        'u': ['ū', 'ú', 'ǔ', 'ù'],
+        'ü': ['ǖ', 'ǘ', 'ǚ', 'ǜ'],
+        'v': ['ǖ', 'ǘ', 'ǚ', 'ǜ'] // v as alternative for ü
+    };
+
+    const MARK_TO_TONE = {};
+    Object.values(TONE_MARKS).forEach(marks => {
+        marks.forEach((mark, index) => {
+            MARK_TO_TONE[mark] = index + 1;
+        });
+    });
+    // Add base vowels as tone 5 (neutral)
+    ['a', 'e', 'i', 'o', 'u', 'ü'].forEach(v => MARK_TO_TONE[v] = 5);
+
+    // Convert tone numbers to marks: shu1 -> shū
+    function convertToneNumbersToMarks(pinyin) {
+        // Match syllables with tone numbers
+        return pinyin.replace(/([a-züāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]+)([1-5])/gi, (match, syllable, tone) => {
+            const toneNum = parseInt(tone);
+            if (toneNum === 5) return syllable; // Neutral tone, no mark needed
+
+            // Find the vowel to mark (following standard rules)
+            // Priority: a, e, or the vowel after i/u in a combination
+            let marked = false;
+            let result = syllable.toLowerCase();
+
+            // Check for 'a' or 'e' first
+            for (const v of ['a', 'e']) {
+                if (result.includes(v) && TONE_MARKS[v]) {
+                    result = result.replace(v, TONE_MARKS[v][toneNum - 1]);
+                    marked = true;
+                    break;
+                }
+            }
+
+            // If 'ou', mark the 'o'
+            if (!marked && result.includes('ou')) {
+                result = result.replace('o', TONE_MARKS['o'][toneNum - 1]);
+                marked = true;
+            }
+
+            // Otherwise mark the last vowel
+            if (!marked) {
+                const vowels = ['i', 'o', 'u', 'ü', 'v'];
+                for (let i = result.length - 1; i >= 0; i--) {
+                    const char = result[i];
+                    if (vowels.includes(char) && TONE_MARKS[char]) {
+                        result = result.slice(0, i) + TONE_MARKS[char][toneNum - 1] + result.slice(i + 1);
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        });
+    }
+
+    // Detect tone from a character
+    function detectTone(char) {
+        return MARK_TO_TONE[char] || 5;
+    }
+
+    // Render pinyin with tone colours
+    function renderPinyinWithTones(pinyin) {
+        let result = '';
+        let currentTone = 5;
+
+        for (const char of pinyin) {
+            const tone = detectTone(char);
+            if (tone !== 5) currentTone = tone;
+
+            if (/[a-züāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]/i.test(char)) {
+                result += `<span class="tone-${currentTone}">${char}</span>`;
+            } else if (char === ' ') {
+                result += char;
+                currentTone = 5; // Reset for next syllable
+            } else {
+                result += char;
+            }
+        }
+
+        return result;
+    }
+
+    // ===========================================
+    // PINYIN DICTIONARY LOOKUP
+    // ===========================================
+
+    let pinyinDictionary = null;
+    let dropdownSelectedIndex = -1;
+
+    // Load dictionary from global variable (loaded via script tag)
+    function loadDictionary() {
+        if (window.PINYIN_DICTIONARY) {
+            pinyinDictionary = window.PINYIN_DICTIONARY;
+        }
+    }
+
+    // Normalise pinyin for lookup (remove tones and spaces)
+    function normalisePinyinForLookup(pinyin) {
+        return pinyin
+            .toLowerCase()
+            .replace(/[1-5]/g, '')           // Remove tone numbers
+            .replace(/\s+/g, '')              // Remove spaces
+            .replace(/[āáǎà]/g, 'a')          // Normalise tone marks
+            .replace(/[ēéěè]/g, 'e')
+            .replace(/[īíǐì]/g, 'i')
+            .replace(/[ōóǒò]/g, 'o')
+            .replace(/[ūúǔù]/g, 'u')
+            .replace(/[ǖǘǚǜ]/g, 'v');
+    }
+
+    // Search dictionary for matches
+    function searchDictionary(query) {
+        if (!pinyinDictionary || !query) return [];
+
+        const normalised = normalisePinyinForLookup(query);
+        if (normalised.length < 2) return []; // Need at least 2 chars
+
+        const results = [];
+
+        // Find exact match first
+        if (pinyinDictionary[normalised]) {
+            results.push(...pinyinDictionary[normalised]);
+        }
+
+        // Then find prefix matches
+        for (const key of Object.keys(pinyinDictionary)) {
+            if (key !== normalised && key.startsWith(normalised)) {
+                results.push(...pinyinDictionary[key]);
+            }
+            if (results.length >= 8) break;
+        }
+
+        return results.slice(0, 8);
+    }
+
+    // Render dropdown with results
+    function renderDropdown(results) {
+        const dropdown = document.getElementById('pinyinDropdown');
+
+        if (results.length === 0) {
+            dropdown.classList.remove('visible');
+            return;
+        }
+
+        dropdown.innerHTML = results.map((item, i) => `
+            <div class="dropdown-item${i === dropdownSelectedIndex ? ' selected' : ''}" data-index="${i}">
+                <span class="dropdown-item-char">${escapeHtml(item.t)}</span>
+                <div class="dropdown-item-info">
+                    <div class="dropdown-item-pinyin">${escapeHtml(item.p)}</div>
+                    <div class="dropdown-item-english">${escapeHtml(item.e)}</div>
+                </div>
+            </div>
+        `).join('') + '<div class="dropdown-hint">Click to select or keep typing</div>';
+
+        dropdown.classList.add('visible');
+
+        // Add click handlers
+        dropdown.querySelectorAll('.dropdown-item').forEach(el => {
+            el.addEventListener('click', () => {
+                const idx = parseInt(el.dataset.index);
+                selectDropdownItem(results[idx]);
+            });
+        });
+    }
+
+    // Select an item from dropdown
+    function selectDropdownItem(item) {
+        const charactersInput = document.getElementById('characters');
+        const pinyinInput = document.getElementById('pinyin');
+        const englishInput = document.getElementById('english');
+        const dropdown = document.getElementById('pinyinDropdown');
+
+        // Fill characters field
+        charactersInput.value = item.t;
+
+        // Fill pinyin field if empty, converting tone numbers to marks
+        if (!pinyinInput.value.trim()) {
+            pinyinInput.value = convertToneNumbersToMarks(item.p.replace(/\s+/g, ''));
+        }
+
+        // Fill English field if empty
+        if (!englishInput.value.trim()) {
+            englishInput.value = item.e;
+        }
+
+        // Hide dropdown
+        dropdown.classList.remove('visible');
+        dropdownSelectedIndex = -1;
+
+        // Focus English field for review/edit
+        englishInput.focus();
+    }
+
+    // Hide dropdown
+    function hideDropdown() {
+        const dropdown = document.getElementById('pinyinDropdown');
+        dropdown.classList.remove('visible');
+        dropdownSelectedIndex = -1;
+    }
+
+    // Initialise dictionary on load
+    loadDictionary();
+
+    // ===========================================
+    // UI
+    // ===========================================
+
+    let currentCards = [];
+    let currentCardIndex = 0;
+    let isAnswerShown = false;
+    let sessionStartTime = null;
+    let sessionReviewCount = 0;
+    let editingWordId = null; // Track if editing a word
+    let currentActivityMode = 'memorise'; // 'memorise', 'zh-en', 'en-zh', 'complete-learning'
+    let completeLearningPhase = 1; // 1=Memorise, 2=ZH>EN, 3=EN>ZH
+    let completeLearningBaseCards = []; // Stores deduplicated card set for all three phases
+
+    // Navigation
+    document.querySelectorAll('nav button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const section = btn.dataset.section;
+            showSection(section);
+        });
+    });
+
+    // Activity mode selector
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentActivityMode = btn.dataset.mode;
+            updateActivityHint();
+            updateHomeStats();
+        });
+    });
+
+    function showSection(sectionId) {
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        const navBtn = document.querySelector(`nav button[data-section="${sectionId}"]`);
+        if (navBtn) navBtn.classList.add('active');
+
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+
+        if (sectionId === 'home') updateHomeStats();
+        if (sectionId === 'list') renderWordList(document.getElementById('wordSearch')?.value);
+        if (sectionId === 'review') startReviewSession();
+    }
+
+    // Home stats
+    function updateHomeStats() {
+        const vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+        const cards = loadData(STORAGE_KEYS.CARDS);
+
+        // Populate lesson dropdown
+        const lessonFilter = document.getElementById('lessonFilter');
+        const currentLesson = lessonFilter.value;
+        const lessons = getUniqueLessons();
+
+        const smartShuffleOption = '<option value="SMART_SHUFFLE"' + (currentLesson === 'SMART_SHUFFLE' ? ' selected' : '') + '>Smart Shuffle</option>';
+        const allWordsOption = '<option value=""' + (currentLesson === '' ? ' selected' : '') + '>All Words</option>';
+        lessonFilter.innerHTML = smartShuffleOption +
+            allWordsOption +
+            lessons.map(l => `<option value="${escapeHtml(l)}"${l === currentLesson ? ' selected' : ''}>${escapeHtml(l)}</option>`).join('');
+
+        // Set default card limit for Complete Learning mode
+        const cardLimitInput = document.getElementById('cardLimit');
+        if (currentActivityMode === 'complete-learning' && !cardLimitInput.value) {
+            cardLimitInput.value = '10';
+        }
+
+        // For Complete Learning, use 'memorise' mode for card counting
+        const modeForSelection = currentActivityMode === 'complete-learning' ? 'memorise' : currentActivityMode;
+
+        // Get available cards based on filter and activity mode
+        const selectedLesson = lessonFilter.value;
+        const cardLimit = parseInt(cardLimitInput.value) || 0;
+        let availableCards;
+
+        if (selectedLesson === 'SMART_SHUFFLE') {
+            // For Smart Shuffle, require a card limit
+            if (cardLimit === 0) {
+                document.getElementById('totalWords').textContent = vocabulary.length;
+                const startBtn = document.getElementById('startReviewBtn');
+                startBtn.textContent = 'Enter session size for Smart Shuffle';
+                startBtn.disabled = true;
+                updateSelectionHint();
+                return;
+            }
+            availableCards = getSmartShuffleCards(cardLimit, modeForSelection);
+        } else {
+            availableCards = getDueCards(selectedLesson || null, modeForSelection);
+        }
+
+        document.getElementById('totalWords').textContent = vocabulary.length;
+
+        // Update start button
+        const startBtn = document.getElementById('startReviewBtn');
+        const actualCount = cardLimit > 0 ? Math.min(availableCards.length, cardLimit) : availableCards.length;
+
+        if (availableCards.length === 0) {
+            startBtn.textContent = 'No cards available';
+            startBtn.disabled = true;
+        } else {
+            if (currentActivityMode === 'complete-learning') {
+                startBtn.textContent = `Start Complete Learning (${actualCount} words)`;
+            } else {
+                startBtn.textContent = `Start Review (${actualCount} cards)`;
+            }
+            startBtn.disabled = false;
+        }
+
+        // Update selection hint
+        updateSelectionHint();
+    }
+
+    // Update the hint text based on current lesson selection
+    function updateSelectionHint() {
+        const lessonFilter = document.getElementById('lessonFilter');
+        const hint = document.getElementById('selectionHint');
+
+        if (!lessonFilter || !hint) return;
+
+        const selectedValue = lessonFilter.value;
+
+        if (selectedValue === 'SMART_SHUFFLE') {
+            hint.textContent = 'Focuses on difficult words (60% hard, 25% good, 15% easy)';
+        } else if (selectedValue === '') {
+            hint.textContent = 'Review your entire vocabulary without filtering';
+        } else {
+            hint.textContent = `Review cards from ${selectedValue}`;
+        }
+    }
+
+    // Update the hint text based on current activity mode
+    function updateActivityHint() {
+        const hint = document.getElementById('activityHint');
+        if (!hint) return;
+
+        if (currentActivityMode === 'memorise') {
+            hint.textContent = 'Passive learning: see all information at once';
+        } else if (currentActivityMode === 'zh-en') {
+            hint.textContent = 'Test yourself: given English, recall Chinese';
+        } else if (currentActivityMode === 'en-zh') {
+            hint.textContent = 'Test yourself: given Chinese, recall English';
+        } else if (currentActivityMode === 'complete-learning') {
+            hint.textContent = 'Complete learning: 3 phases (memorise + both directions)';
+        }
+    }
+
+    // Update stats when filter changes
+    document.getElementById('lessonFilter').addEventListener('change', updateHomeStats);
+    document.getElementById('cardLimit').addEventListener('input', updateHomeStats);
+
+    document.getElementById('startReviewBtn').addEventListener('click', () => {
+        showSection('review');
+    });
+
+    // Review session
+    function startReviewSession() {
+        // Get filter settings
+        const selectedLesson = document.getElementById('lessonFilter').value;
+        const cardLimit = parseInt(document.getElementById('cardLimit').value) || 0;
+
+        let cards;
+
+        // For Complete Learning, use 'memorise' mode to get deduplicated cards
+        const modeForSelection = currentActivityMode === 'complete-learning' ? 'memorise' : currentActivityMode;
+
+        // Handle Smart Shuffle vs regular selection
+        if (selectedLesson === 'SMART_SHUFFLE') {
+            if (cardLimit === 0) {
+                alert('Please enter a session size for Smart Shuffle');
+                return;
+            }
+            cards = getSmartShuffleCards(cardLimit, modeForSelection);
+        } else {
+            // Get all cards with lesson filter and activity mode
+            cards = getDueCards(selectedLesson || null, modeForSelection);
+
+            // Apply card limit
+            if (cardLimit > 0 && cards.length > cardLimit) {
+                cards = cards.slice(0, cardLimit);
+            }
+
+            // Shuffle non-smart-shuffle cards
+            cards = shuffle(cards);
+        }
+
+        // For Complete Learning, initialize phase tracking
+        if (currentActivityMode === 'complete-learning') {
+            completeLearningBaseCards = cards;
+            completeLearningPhase = 1;
+        }
+
+        currentCards = cards;
+        currentCardIndex = 0;
+        isAnswerShown = false;
+        sessionStartTime = Date.now();
+        sessionReviewCount = 0;
+
+        if (currentCards.length === 0) {
+            showSessionComplete();
+        } else {
+            showCurrentCard();
+        }
+    }
+
+    function showCurrentCard() {
+        if (currentCardIndex >= currentCards.length) {
+            showSessionComplete();
+            return;
+        }
+
+        const card = currentCards[currentCardIndex];
+        const vocab = getVocabularyById(card.wordId);
+
+        if (!vocab) {
+            currentCardIndex++;
+            showCurrentCard();
+            return;
+        }
+
+        isAnswerShown = false;
+        const container = document.getElementById('flashcardContainer');
+        const intervals = getIntervalPreviews(card);
+
+        // Determine effective mode for rendering
+        let effectiveMode = currentActivityMode;
+        let phaseLabel = '';
+
+        if (currentActivityMode === 'complete-learning') {
+            if (completeLearningPhase === 1) {
+                effectiveMode = 'memorise';
+                phaseLabel = 'Phase 1/3: Memorise';
+            } else if (completeLearningPhase === 2) {
+                effectiveMode = 'zh-en';
+                phaseLabel = 'Phase 2/3: English → Chinese';
+            } else if (completeLearningPhase === 3) {
+                effectiveMode = 'en-zh';
+                phaseLabel = 'Phase 3/3: Chinese → English';
+            }
+        }
+
+        const showGradeButtons = effectiveMode === 'memorise';
+        const isCompleteLearningTestPhase = currentActivityMode === 'complete-learning' && completeLearningPhase > 1;
+
+        // Determine hint text based on mode
+        let gradeHintText;
+        if (effectiveMode === 'memorise') {
+            gradeHintText = "Rate how well you know this word. 'Again' will show it again until correct.";
+        } else if (isCompleteLearningTestPhase) {
+            gradeHintText = "Did you recall correctly? Mark 'Incorrect' to retry this word.";
+        } else {
+            gradeHintText = "Did you recall correctly? 'Again' repeats the card until all are correct.";
+        }
+
+        let gradeButtonsHtml;
+        if (isCompleteLearningTestPhase) {
+            // Phases 2 and 3 of Complete Learning: binary choice
+            gradeButtonsHtml = `
+                <div style="display: none;" id="gradeSection">
+                    <div style="text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 12px;" id="gradeHint">${gradeHintText}</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px;" id="gradeButtons">
+                        <button class="grade-btn grade-again" data-grade="0" style="padding: 20px;">
+                            Incorrect
+                            <span class="grade-interval" style="display: block; font-size: 0.75rem; opacity: 0.8; margin-top: 6px;">Try again</span>
+                        </button>
+                        <button class="grade-btn grade-good" data-grade="2" style="padding: 20px;">
+                            Correct
+                            <span class="grade-interval" style="display: block; font-size: 0.75rem; opacity: 0.8; margin-top: 6px;">Next card</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        } else {
+            // Phase 1 or other modes: full grading
+            gradeButtonsHtml = `
+                <div style="display: ${showGradeButtons ? 'block' : 'none'};" id="gradeSection">
+                    <div style="text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 12px;" id="gradeHint">${gradeHintText}</div>
+                    <div class="grade-buttons" style="display: grid;" id="gradeButtons">
+                        <button class="grade-btn grade-again" data-grade="0">
+                            Again
+                            <span class="grade-interval">${intervals.again}</span>
+                        </button>
+                        <button class="grade-btn grade-hard" data-grade="1">
+                            Hard
+                        </button>
+                        <button class="grade-btn grade-good" data-grade="2">
+                            Good
+                        </button>
+                        <button class="grade-btn grade-easy" data-grade="3">
+                            Easy
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        const progressText = phaseLabel
+            ? `<div style="font-size: 0.85rem; color: #888; margin-bottom: 4px;">${phaseLabel}</div><div class="card-progress">Card ${currentCardIndex + 1} of ${currentCards.length}</div>`
+            : `<div class="card-progress">Card ${currentCardIndex + 1} of ${currentCards.length}</div>`;
+
+        if (effectiveMode === 'memorise') {
+            // Memorise: show all fields, grade buttons visible immediately
+            container.innerHTML = `
+                ${progressText}
+                <div class="flashcard memorise-card" id="flashcard">
+                    <div class="card-direction">Memorise</div>
+                    <div class="card-question chinese">${escapeHtml(vocab.characters)}</div>
+                    <div class="card-answer-pinyin" style="font-size: 1.2rem; margin: 8px 0;">${renderPinyinWithTones(escapeHtml(vocab.pinyin))}</div>
+                    <div class="card-answer-english" style="font-size: 1rem; opacity: 0.9;">${escapeHtml(vocab.english)}</div>
+                </div>
+                ${gradeButtonsHtml}
+            `;
+            isAnswerShown = true;
+        } else if (effectiveMode === 'zh-en') {
+            // ZH/EN: show English, translate to Chinese
+            container.innerHTML = `
+                ${progressText}
+                <div class="flashcard" id="flashcard">
+                    <div class="card-direction">English → Chinese</div>
+                    <div class="card-question">${escapeHtml(vocab.english)}</div>
+                    <div class="card-hint">Click to reveal answer</div>
+                    <div class="card-answer" style="display: none;">
+                        <div class="card-answer-chinese">${escapeHtml(vocab.characters)}</div>
+                        <div class="card-answer-pinyin">${renderPinyinWithTones(escapeHtml(vocab.pinyin))}</div>
+                    </div>
+                </div>
+                ${gradeButtonsHtml}
+            `;
+            document.getElementById('flashcard').addEventListener('click', revealAnswer);
+        } else {
+            // EN/ZH: show Chinese + Pinyin, translate to English
+            container.innerHTML = `
+                ${progressText}
+                <div class="flashcard" id="flashcard">
+                    <div class="card-direction">Chinese → English</div>
+                    <div class="card-question chinese">${escapeHtml(vocab.characters)}</div>
+                    <div style="font-size: 1.1rem; opacity: 0.9; margin-top: 4px;">${renderPinyinWithTones(escapeHtml(vocab.pinyin))}</div>
+                    <div class="card-hint">Click to reveal answer</div>
+                    <div class="card-answer" style="display: none;">
+                        <div class="card-answer-english">${escapeHtml(vocab.english)}</div>
+                    </div>
+                </div>
+                ${gradeButtonsHtml}
+            `;
+            document.getElementById('flashcard').addEventListener('click', revealAnswer);
+        }
+
+        document.querySelectorAll('.grade-btn').forEach(btn => {
+            btn.addEventListener('click', () => gradeCard(parseInt(btn.dataset.grade)));
+        });
+    }
+
+    function revealAnswer() {
+        if (isAnswerShown) return;
+        isAnswerShown = true;
+
+        document.querySelector('.card-hint').style.display = 'none';
+        document.querySelector('.card-answer').style.display = 'block';
+
+        // Show grade section for all modes
+        const gradeSection = document.getElementById('gradeSection');
+        if (gradeSection) {
+            gradeSection.style.display = 'block';
+        }
+    }
+
+    function gradeCard(grade) {
+        const card = currentCards[currentCardIndex];
+
+        if (grade === 0) {
+            // Again: do NOT grade via SM-2. Flag and re-queue.
+            card._wasAgain = true;
+            currentCards.push(card);
+            currentCardIndex++;
+            showCurrentCard();
+            return;
+        }
+
+        // If this card was flagged with Again, force Hard and reset repetitions
+        let effectiveGrade = grade;
+        const wasAgain = !!card._wasAgain;
+        if (wasAgain) {
+            effectiveGrade = 1; // Force Hard
+            card.repetitions = 0;
+            card.interval = 0;
+            delete card._wasAgain;
+        }
+
+        const updatedCard = calculateNextReview(card, effectiveGrade);
+        updateCard(updatedCard);
+
+        // In Memorise mode or Complete Learning phase 1, also grade the sibling card (opposite direction)
+        if (currentActivityMode === 'memorise' || (currentActivityMode === 'complete-learning' && completeLearningPhase === 1)) {
+            const allCards = loadData(STORAGE_KEYS.CARDS);
+            const oppositeDir = card.direction === 'cn-en' ? 'en-cn' : 'cn-en';
+            const sibling = allCards.find(c => c.wordId === card.wordId && c.direction === oppositeDir);
+            if (sibling) {
+                const siblingToGrade = { ...sibling };
+                if (wasAgain) {
+                    siblingToGrade.repetitions = 0;
+                    siblingToGrade.interval = 0;
+                }
+                const updatedSibling = calculateNextReview(siblingToGrade, effectiveGrade);
+                updateCard(updatedSibling);
+            }
+        }
+
+        // Update stats
+        const stats = loadStats();
+        stats.totalReviewed = (stats.totalReviewed || 0) + 1;
+        saveStats(stats);
+
+        sessionReviewCount++;
+
+        currentCardIndex++;
+        showCurrentCard();
+    }
+
+    function showSessionComplete() {
+        // Handle phase transitions for Complete Learning mode
+        if (currentActivityMode === 'complete-learning' && completeLearningPhase < 3) {
+            completeLearningPhase++;
+
+            // Get the wordIds from base cards
+            const wordIds = completeLearningBaseCards.map(c => c.wordId);
+            const allCards = loadData(STORAGE_KEYS.CARDS);
+
+            // Load appropriate cards for the next phase
+            if (completeLearningPhase === 2) {
+                // Phase 2: ZH>EN (show English, recall Chinese) - need en-cn cards
+                currentCards = allCards.filter(c =>
+                    wordIds.includes(c.wordId) && c.direction === 'en-cn'
+                );
+            } else if (completeLearningPhase === 3) {
+                // Phase 3: EN>ZH (show Chinese, recall English) - need cn-en cards
+                currentCards = allCards.filter(c =>
+                    wordIds.includes(c.wordId) && c.direction === 'cn-en'
+                );
+            }
+
+            // Shuffle cards to prevent pattern recognition
+            currentCards = shuffle(currentCards);
+
+            // Reset index and show first card of new phase
+            currentCardIndex = 0;
+            showCurrentCard();
+            return;
+        }
+
+        // Final session complete
+        const sessionTime = Math.round((Date.now() - sessionStartTime) / 1000 / 60);
+        const wordsCount = currentActivityMode === 'complete-learning'
+            ? completeLearningBaseCards.length
+            : sessionReviewCount;
+
+        document.getElementById('flashcardContainer').innerHTML = `
+            <div class="session-complete">
+                <h2>Session Complete!</h2>
+                <div class="session-stats">
+                    <p><strong>${wordsCount}</strong> ${currentActivityMode === 'complete-learning' ? 'words reviewed across 3 phases' : 'cards reviewed'}</p>
+                    <p><strong>${sessionTime || '< 1'}</strong> minutes</p>
+                </div>
+                <button class="btn btn-primary" onclick="showSection('home')">Back to Home</button>
+            </div>
+        `;
+    }
+
+    // Add word form
+    document.getElementById('addWordForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const pinyin = document.getElementById('pinyin').value.trim();
+        const characters = document.getElementById('characters').value.trim();
+        const english = document.getElementById('english').value.trim();
+        const lesson = document.getElementById('lesson').value.trim();
+
+        if (pinyin && characters && english) {
+            // Save lesson for next word
+            localStorage.setItem(STORAGE_KEYS.LAST_LESSON, lesson);
+
+            if (editingWordId) {
+                // Update existing word
+                updateVocabulary(editingWordId, pinyin, characters, english, lesson);
+                cancelEdit();
+                alert('Word updated!');
+            } else {
+                // Add new word
+                addVocabulary(pinyin, characters, english, lesson);
+                // Reset form but keep lesson value
+                document.getElementById('pinyin').value = '';
+                document.getElementById('characters').value = '';
+                document.getElementById('english').value = '';
+                // Lesson persists for next word
+                alert('Word added!');
+            }
+            hideDropdown();
+            updateHomeStats();
+        }
+    });
+
+    // Edit word - populate form and switch to edit mode
+    window.editWord = function(id) {
+        const vocab = getVocabularyById(id);
+        if (!vocab) return;
+
+        editingWordId = id;
+        document.getElementById('pinyin').value = vocab.pinyin;
+        document.getElementById('characters').value = vocab.characters;
+        document.getElementById('english').value = vocab.english;
+        document.getElementById('lesson').value = vocab.lesson || '';
+
+        // Update UI to show edit mode
+        document.querySelector('#addWordForm button[type="submit"]').textContent = 'Update Word';
+        document.getElementById('cancelEditBtn').style.display = 'inline-block';
+
+        // Switch to Add Words section
+        showSection('add');
+    };
+
+    // Cancel edit - reset form and switch back to add mode
+    function cancelEdit() {
+        editingWordId = null;
+        document.getElementById('addWordForm').reset();
+        document.querySelector('#addWordForm button[type="submit"]').textContent = 'Add Word';
+        document.getElementById('cancelEditBtn').style.display = 'none';
+    }
+
+    window.cancelEditWord = function() {
+        cancelEdit();
+    };
+
+    // Pinyin lookup on characters input
+    let lookupDebounce = null;
+    const charactersInput = document.getElementById('characters');
+
+    charactersInput.addEventListener('input', (e) => {
+        const value = e.target.value.trim();
+
+        // Only trigger lookup if input looks like pinyin (Latin letters)
+        if (/^[a-zA-Z1-5\s]+$/.test(value) && value.length >= 2) {
+            clearTimeout(lookupDebounce);
+            lookupDebounce = setTimeout(() => {
+                const results = searchDictionary(value);
+                renderDropdown(results);
+            }, 150);
+        } else {
+            hideDropdown();
+        }
+    });
+
+    // Keyboard navigation for dropdown
+    charactersInput.addEventListener('keydown', (e) => {
+        const dropdown = document.getElementById('pinyinDropdown');
+        if (!dropdown.classList.contains('visible')) return;
+
+        const items = dropdown.querySelectorAll('.dropdown-item');
+        const results = searchDictionary(charactersInput.value.trim());
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            dropdownSelectedIndex = Math.min(dropdownSelectedIndex + 1, items.length - 1);
+            renderDropdown(results);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            dropdownSelectedIndex = Math.max(dropdownSelectedIndex - 1, 0);
+            renderDropdown(results);
+        } else if (e.key === 'Enter' && dropdownSelectedIndex >= 0) {
+            e.preventDefault();
+            selectDropdownItem(results[dropdownSelectedIndex]);
+        } else if (e.key === 'Escape') {
+            hideDropdown();
+        }
+    });
+
+    // Hide dropdown on blur (with delay to allow click)
+    charactersInput.addEventListener('blur', () => {
+        setTimeout(hideDropdown, 200);
+    });
+
+    // Word list
+    function renderWordList(searchTerm) {
+        const vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+        const container = document.getElementById('wordList');
+
+        if (vocabulary.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <h3>No words yet</h3>
+                    <p>Add some vocabulary to get started</p>
+                </div>
+            `;
+            return;
+        }
+
+        const term = (searchTerm && typeof searchTerm === 'string') ? searchTerm.trim() : '';
+        let list = vocabulary;
+        if (term) {
+            const termLower = term.toLowerCase();
+            const termPinyin = normalisePinyinForLookup(term);
+            list = vocabulary.filter(word => {
+                const matchEnglish = word.english && word.english.toLowerCase().includes(termLower);
+                const matchPinyin = word.pinyin && normalisePinyinForLookup(word.pinyin).includes(termPinyin);
+                const matchCharacters = word.characters && word.characters.includes(term);
+                return matchEnglish || matchPinyin || matchCharacters;
+            });
+        }
+
+        if (list.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <h3>No words match your search</h3>
+                    <p>Try a different term</p>
+                </div>
+            `;
+            return;
+        }
+
+        const heading = term
+            ? `Your Vocabulary (${list.length} of ${vocabulary.length} words)`
+            : `Your Vocabulary (${vocabulary.length} words)`;
+        container.innerHTML = `<h3>${escapeHtml(heading)}</h3>` +
+            list.map(word => `
+                <div class="word-item">
+                    <div class="word-info">
+                        <div class="word-chinese">${escapeHtml(word.characters)}</div>
+                        <div class="word-pinyin">${renderPinyinWithTones(escapeHtml(word.pinyin))}</div>
+                        <div class="word-english">${escapeHtml(word.english)}</div>
+                        ${word.lesson ? `<div class="word-lesson" style="font-size: 0.75rem; color: #999; margin-top: 2px;">${escapeHtml(word.lesson)}</div>` : ''}
+                    </div>
+                    <div style="display: flex; gap: 6px;">
+                        <button type="button" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="editWord('${escapeHtml(word.id)}')">Edit</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteWord('${escapeHtml(word.id)}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+    }
+
+    window.deleteWord = function(id) {
+        if (confirm('Delete this word?')) {
+            deleteVocabulary(id);
+            renderWordList(document.getElementById('wordSearch')?.value);
+            updateHomeStats();
+        }
+    };
+
+    // Word list search
+    let wordSearchDebounce = null;
+    document.getElementById('wordSearch').addEventListener('input', function() {
+        const value = this.value.trim();
+        clearTimeout(wordSearchDebounce);
+        wordSearchDebounce = setTimeout(() => renderWordList(value), 150);
+    });
+
+    // Export/Import
+    document.getElementById('exportBtn').addEventListener('click', exportData);
+
+    document.getElementById('importBtn').addEventListener('click', () => {
+        document.getElementById('importFile').click();
+    });
+
+    // File storage linking
+    document.getElementById('linkFileBtn').addEventListener('click', linkStorageFile);
+    document.getElementById('unlinkFileBtn').addEventListener('click', unlinkStorageFile);
+
+    document.getElementById('importFile').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                if (importData(event.target.result)) {
+                    alert('Import successful!');
+                    updateHomeStats();
+                } else {
+                    alert('Import failed. Check the file format.');
+                }
+            };
+            reader.readAsText(file);
+        }
+        e.target.value = ''; // Reset for next import
+    });
+
+    // Initialise
+    initFileStorage().then(() => {
+        updateActivityHint();
+        updateHomeStats();
+        updateFileStatus();
+    });
+
+    // Load last lesson value
+    const lastLesson = localStorage.getItem(STORAGE_KEYS.LAST_LESSON);
+    if (lastLesson) {
+        document.getElementById('lesson').value = lastLesson;
+    }
+    </script>
+</body>
+</html>
