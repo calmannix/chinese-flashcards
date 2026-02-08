@@ -4,6 +4,9 @@
 # Except My Apps folder (personal projects)
 !/My Apps/
 
+# Allow README at root
+!README.md
+
 # Keep this gitignore file
 !.gitignore
 
