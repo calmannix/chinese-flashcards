@@ -1,0 +1,42 @@
+#!/bin/bash
+#
+# Chinese Flashcards launcher
+#
+# Starts server.py silently in the background and opens the app in the
+# default browser. No Terminal window is shown to the user.
+#
+# The .app bundle lives inside the chinese-flashcards folder.
+# From Contents/MacOS we go up three levels to reach that folder.
+#
+APP_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
+
+# ── Find python3 across common macOS install locations ────────────────────────
+PYTHON3=""
+for p in /usr/bin/python3 /usr/local/bin/python3 /opt/homebrew/bin/python3; do
+    if [ -x "$p" ]; then
+        PYTHON3="$p"
+        break
+    fi
+done
+
+if [ -z "$PYTHON3" ]; then
+    osascript -e 'display dialog "Python 3 is not installed.\n\nDownload it free from python.org, then try again." buttons {"OK"} default button "OK" with icon stop'
+    exit 1
+fi
+
+# ── Stop any previous server already running on port 8080 ────────────────────
+lsof -ti:8080 | xargs kill -9 2>/dev/null
+sleep 0.3
+
+# ── Start the server in the background ───────────────────────────────────────
+# Resources sits one level up from this script (Contents/MacOS → Contents/Resources).
+# Use the launcher's own path rather than APP_DIR to avoid ambiguity.
+RESOURCES_DIR="$(cd "$(dirname "$0")/../Resources" && pwd)"
+cd "$RESOURCES_DIR"
+"$PYTHON3" server.py &
+
+# Wait briefly for the server to start accepting connections
+sleep 0.8
+
+# ── Open the app in the default browser ──────────────────────────────────────
+open http://localhost:8080

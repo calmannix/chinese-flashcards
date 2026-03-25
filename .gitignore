@@ -1,14 +1,4 @@
-# Work files (keep local only)
-Developer feedback workflow/
-Engineering prompts/
-MoreHarvest test suite/
-Prototypes prompts/
-Prototypes/
-Skills/
-Video Interview/
-shared/
-
-# Ignore common files
 .DS_Store
-.gitattributes
-CLAUDE.md
+__pycache__/
+*.pyc
+.claude/

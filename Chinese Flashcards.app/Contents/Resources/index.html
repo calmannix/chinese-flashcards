@@ -1,0 +1,3971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日日 Rìrì 🌅</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&display=swap');
+
+        :root {
+            --red:         #CE1126;
+            --red-dark:    #A80E1E;
+            --red-subtle:  #FFF0F2;
+            --blue:        #002868;
+            --blue-mid:    #003F9E;
+            --blue-subtle: #EEF2FA;
+            --surface:     #F4F6FB;
+            --border:      #E2E8F0;
+            --text-1:      #1A1A2E;
+            --text-2:      #4A5568;
+            --text-3:      #9AA5B4;
+        }
+
+        /* Base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--surface);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 0;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text-3);
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        nav button:hover {
+            color: var(--text-2);
+        }
+
+        nav button.active {
+            color: var(--blue);
+            border-bottom-color: var(--red);
+            font-weight: 600;
+        }
+
+        /* Sections */
+        section {
+            display: none;
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        section.active {
+            display: block;
+        }
+
+        /* Form styles */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px var(--blue-subtle);
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px var(--blue-subtle);
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 4px;
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background: var(--red);
+            color: #fff;
+            width: 100%;
+            box-shadow: 0 4px 14px rgba(206,17,38,0.25);
+            transition: background 0.15s, box-shadow 0.15s, opacity 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: var(--red-dark);
+            box-shadow: 0 6px 18px rgba(206,17,38,0.35);
+            opacity: 1;
+        }
+
+        .btn-secondary {
+            background: #e8e8e8;
+            color: #333;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: #fff;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+
+        /* Word list */
+        .word-list {
+            margin-top: 24px;
+        }
+
+        .word-list h3 {
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .word-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .word-item:last-child {
+            border-bottom: none;
+        }
+
+        .word-info {
+            flex: 1;
+        }
+
+        .word-chinese {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .word-pinyin {
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .word-english {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        /* Tone colours — muted so they read as semantic labels, not interactive elements.
+           Brand red (#CE1126) is visibly more saturated; context (text vs button) does the rest. */
+        .tone-1 { color: #B33224; } /* Red - flat */
+        .tone-2 { color: #B87030; } /* Orange - rising */
+        .tone-3 { color: #1F7A4A; } /* Green - dip */
+        .tone-4 { color: #2660A0; } /* Blue - falling */
+        .tone-5 { color: #7D8590; } /* Grey - neutral */
+
+        /* Flashcard */
+        .flashcard-container {
+            text-align: center;
+        }
+
+        .card-progress {
+            margin-bottom: 16px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .flashcard {
+            background: linear-gradient(145deg, var(--blue) 0%, var(--blue-mid) 100%);
+            border-radius: 16px;
+            padding: 48px 24px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            color: #fff;
+        }
+
+        .flashcard:hover {
+            transform: scale(1.02);
+        }
+
+        .card-direction {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-bottom: 16px;
+        }
+
+        .card-question {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .card-question.chinese {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-weight: 900;
+            font-size: 4rem;
+        }
+
+        .card-hint {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .card-answer {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            width: 100%;
+        }
+
+        .card-answer-chinese {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .card-answer-pinyin {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .card-answer-english {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .grade-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .grade-btn {
+            padding: 16px 8px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: transform 0.1s;
+        }
+
+        .grade-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .grade-btn:active {
+            transform: scale(0.98);
+        }
+
+        .grade-again { background: var(--red); color: #fff; }
+        .grade-hard { background: #e67e22; color: #fff; }
+        .grade-good { background: #27ae60; color: #fff; }
+        .grade-easy { background: #3498db; color: #fff; }
+
+        .grade-interval {
+            display: block;
+            font-size: 0.7rem;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        /* Radical decomposition panel */
+        .decompose-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            opacity: 0.7;
+            padding: 4px;
+            vertical-align: middle;
+        }
+
+        .decompose-btn:hover { opacity: 1; }
+
+        .decompose-panel {
+            margin-top: 16px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .decompose-panel-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .radical-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .radical-chip {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            min-width: 56px;
+        }
+
+        .radical-chip-char {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .radical-chip-meaning {
+            font-size: 0.65rem;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .decompose-related {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 6px;
+        }
+
+        .decompose-related strong {
+            opacity: 1;
+        }
+
+        /* Keyboard shortcut hint row */
+        .keyboard-hint {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-3);
+            margin-top: 12px;
+            letter-spacing: 0.02em;
+        }
+
+        .keyboard-hint kbd {
+            display: inline-block;
+            padding: 2px 6px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.7rem;
+            margin: 0 1px;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            margin-bottom: 16px;
+        }
+
+        .dashboard-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .streak-card, .target-card {
+            flex: 1;
+            background: #fff;
+            border-radius: 10px;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+        }
+
+        .streak-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .streak-value.active { color: #27ae60; }
+        .streak-value.inactive { color: var(--text-3); }
+
+        .streak-label {
+            font-size: 0.8rem;
+            color: var(--text-2);
+            margin-top: 4px;
+        }
+
+        .target-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .target-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-1);
+        }
+
+        .target-edit-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: var(--text-3);
+            padding: 2px 6px;
+        }
+
+        .target-edit-btn:hover { color: var(--text-2); }
+
+        .target-edit-input {
+            width: 50px;
+            padding: 2px 6px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .target-bar {
+            height: 8px;
+            background: var(--surface);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .target-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: var(--blue);
+            transition: width 0.3s ease;
+        }
+
+        .target-bar-fill.complete { background: #27ae60; }
+
+        /* Dashboard charts */
+        .chart-section {
+            background: #fff;
+            border-radius: 10px;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            margin-bottom: 12px;
+        }
+
+        .chart-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-2);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 10px;
+        }
+
+        /* Heatmap: 90-day grid */
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(13, 1fr);
+            gap: 3px;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 2px;
+            background: var(--surface);
+        }
+
+        .heatmap-cell.level-1 { background: #c6e48b; }
+        .heatmap-cell.level-2 { background: #7bc96f; }
+        .heatmap-cell.level-3 { background: #239a3b; }
+        .heatmap-cell.level-4 { background: #196127; }
+
+        /* Accuracy trend chart */
+        .accuracy-chart {
+            height: 80px;
+            position: relative;
+        }
+
+        .accuracy-chart svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .accuracy-line {
+            fill: none;
+            stroke: var(--blue);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .accuracy-area {
+            fill: var(--blue-subtle);
+        }
+
+        .accuracy-no-data {
+            text-align: center;
+            color: var(--text-3);
+            font-size: 0.8rem;
+            padding: 20px 0;
+        }
+
+        /* Mastery distribution bar */
+        .mastery-bar {
+            display: flex;
+            height: 24px;
+            border-radius: 6px;
+            overflow: hidden;
+            background: var(--surface);
+        }
+
+        .mastery-segment {
+            transition: width 0.3s ease;
+            min-width: 0;
+        }
+
+        .mastery-hard { background: var(--red); }
+        .mastery-good { background: #e67e22; }
+        .mastery-easy { background: #27ae60; }
+
+        .mastery-legend {
+            display: flex;
+            gap: 14px;
+            margin-top: 6px;
+            font-size: 0.7rem;
+            color: var(--text-2);
+        }
+
+        .mastery-legend-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        /* Empty states */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #666;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        /* Session complete */
+        .session-complete {
+            text-align: center;
+            padding: 48px 24px;
+        }
+
+        .session-complete h2 {
+            color: #27ae60;
+            margin-bottom: 16px;
+        }
+
+        .session-stats {
+            margin: 24px 0;
+        }
+
+        .session-stats p {
+            margin-bottom: 8px;
+            color: #666;
+        }
+
+        /* Export/Import */
+        .data-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+        }
+
+        .data-actions button {
+            flex: 1;
+        }
+
+        #importFile {
+            display: none;
+        }
+
+        /* Home stats */
+        .home-stats {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #f8f8f8;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .start-review-btn {
+            margin-top: 16px;
+        }
+
+        /* Pinyin lookup dropdown */
+        .input-with-dropdown {
+            position: relative;
+        }
+
+        .pinyin-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 240px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .pinyin-dropdown.visible {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item.selected {
+            background: #f5f5f5;
+        }
+
+        .dropdown-item-char {
+            font-size: 1.4rem;
+            min-width: 40px;
+        }
+
+        .dropdown-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dropdown-item-pinyin {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .dropdown-item-english {
+            font-size: 0.8rem;
+            color: #888;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dropdown-hint {
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            color: #888;
+            text-align: center;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        /* Activity mode selector */
+        .activity-mode-selector {
+            margin: 16px 0;
+            padding: 16px;
+            background: #f8f8f8;
+            border-radius: 8px;
+        }
+
+        .activity-mode-selector label {
+            display: block;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .mode-buttons {
+            display: flex;
+            gap: 4px;
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 10px 8px;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: #666;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .mode-btn:hover {
+            color: #333;
+        }
+
+        .mode-btn.active {
+            background: var(--blue);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0,40,104,0.28);
+        }
+
+        /* ============================
+           App Header
+           ============================ */
+        .app-header {
+            background: linear-gradient(145deg, var(--blue) 0%, var(--blue-mid) 100%);
+            padding: 24px 24px 20px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .app-header::after {
+            content: '日';
+            font-family: 'Noto Sans SC', sans-serif;
+            font-weight: 900;
+            font-size: 160px;
+            color: rgba(255,255,255,0.05);
+            position: absolute;
+            right: -12px;
+            bottom: -28px;
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .app-title {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-weight: 900;
+            font-size: 2rem;
+            color: #fff;
+            letter-spacing: -0.5px;
+            line-height: 1;
+        }
+
+        .app-subtitle {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 4px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-pill {
+            flex: 1;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            padding: 12px 14px;
+        }
+
+        .stat-pill-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .stat-pill-label {
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        /* ============================
+           Home section override
+           ============================ */
+        #home {
+            background: var(--surface);
+            padding: 16px;
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        /* ============================
+           Control cards
+           ============================ */
+        .control-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .card-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            flex: 1;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-2);
+            margin-bottom: 6px;
+        }
+
+        .select-wrap {
+            position: relative;
+        }
+
+        .select-wrap::after {
+            content: '';
+            position: absolute;
+            right: 11px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 5px solid var(--text-3);
+            pointer-events: none;
+        }
+
+        .select-wrap select {
+            width: 100%;
+            padding: 9px 28px 9px 11px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            color: var(--text-1);
+            background: #fff;
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .select-wrap select:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px var(--blue-subtle);
+        }
+
+        .filter-narrow {
+            width: 120px;
+            flex: none;
+        }
+
+        .size-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .size-input {
+            width: 68px;
+            padding: 9px 11px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            color: var(--text-1);
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .size-input:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px var(--blue-subtle);
+        }
+
+        .size-suffix {
+            font-size: 0.8rem;
+            color: var(--text-3);
+            white-space: nowrap;
+        }
+
+        .selection-hint {
+            display: flex;
+            align-items: flex-start;
+            gap: 7px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .hint-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--blue);
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .hint-text {
+            font-size: 0.75rem;
+            color: var(--text-3);
+            line-height: 1.4;
+        }
+
+        /* ============================
+           Toast notification
+           ============================ */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(0);
+            background: var(--text-1);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 0.3s, transform 0.3s;
+            white-space: nowrap;
+        }
+
+        .toast.toast-fade {
+            opacity: 0;
+            transform: translateX(-50%) translateY(8px);
+        }
+
+        /* Memorise card: no pointer cursor */
+        .flashcard.memorise-card {
+            cursor: default;
+        }
+
+        .flashcard.memorise-card:hover {
+            transform: none;
+        }
+
+        .toggle-btn {
+            background: #e8e8e8;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 5px 14px;
+            transition: background 0.15s, color 0.15s;
+            color: var(--text-2);
+        }
+
+        .toggle-btn.on {
+            background: var(--blue);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-header">
+            <div class="app-title">日日</div>
+            <div class="app-subtitle">Rìrì &nbsp;·&nbsp; Daily Chinese</div>
+            <div class="stats-row">
+                <div class="stat-pill">
+                    <div class="stat-pill-value" id="totalWords">0</div>
+                    <div class="stat-pill-label">Words</div>
+                </div>
+                <div class="stat-pill">
+                    <div class="stat-pill-value" id="totalReviewed">0</div>
+                    <div class="stat-pill-label">Reviewed</div>
+                </div>
+            </div>
+        </div>
+
+        <nav>
+            <button type="button" class="active" data-section="home">Home</button>
+            <button type="button" data-section="add">Add Words</button>
+            <button type="button" data-section="list">Word List</button>
+        </nav>
+
+        <!-- Home Section -->
+        <section id="home" class="active">
+            <!-- Context toggle: Words | Phrases -->
+            <div class="mode-buttons" style="margin-bottom: 12px;" id="homeContextToggle">
+                <button type="button" class="mode-btn active" data-ctx="words">Words</button>
+                <button type="button" class="mode-btn" data-ctx="phrases">Phrases</button>
+            </div>
+
+            <!-- Dashboard: streak + daily target -->
+            <div class="dashboard" id="dashboard">
+                <div class="dashboard-row">
+                    <div class="streak-card">
+                        <div class="streak-value inactive" id="streakValue">0</div>
+                        <div class="streak-label" id="streakLabel">day streak</div>
+                    </div>
+                    <div class="target-card">
+                        <div class="target-header">
+                            <span class="target-text" id="targetText">0 / 20 completed today</span>
+                            <button type="button" class="target-edit-btn" id="targetEditBtn" title="Edit daily target">&#9998;</button>
+                        </div>
+                        <div class="target-bar">
+                            <div class="target-bar-fill" id="targetBarFill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Charts inserted by Step 3b -->
+                <div id="dashboardCharts"></div>
+            </div>
+
+            <div class="control-card">
+                <div class="card-label">Session</div>
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="lessonFilter">Study from</label>
+                        <div class="select-wrap">
+                            <select id="lessonFilter">
+                                <option value="SMART_SHUFFLE" selected>Smart Shuffle</option>
+                                <option value="">All Words</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="filter-group filter-narrow">
+                        <label for="cardLimit">Lesson size</label>
+                        <div class="size-row">
+                            <input type="number" id="cardLimit" min="1" placeholder="All" class="size-input">
+                            <span class="size-suffix">cards</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="selection-hint">
+                    <div class="hint-dot"></div>
+                    <span class="hint-text" id="selectionHint"></span>
+                </div>
+            </div>
+            <div class="control-card">
+                <div class="card-label">Activity</div>
+                <!-- Word activity modes -->
+                <div class="mode-buttons" id="wordModeButtons">
+                    <button type="button" class="mode-btn active" data-mode="memorise">Memorise</button>
+                    <button type="button" class="mode-btn" data-mode="zh-en">ZH / EN</button>
+                    <button type="button" class="mode-btn" data-mode="en-zh">EN / ZH</button>
+                    <button type="button" class="mode-btn" data-mode="complete-learning">Complete</button>
+                </div>
+                <!-- Phrase activity modes (shown when context = phrases) -->
+                <div class="mode-buttons" id="phraseModeButtons" style="display: none;">
+                    <button type="button" class="mode-btn active" data-phrase-mode="memorise">Memorise</button>
+                    <button type="button" class="mode-btn" data-phrase-mode="translate">Translate</button>
+                    <button type="button" class="mode-btn" data-phrase-mode="reading">Reading</button>
+                    <button type="button" class="mode-btn" data-phrase-mode="complete">Complete</button>
+                </div>
+                <span class="hint-text" id="activityHint" style="display: block; margin-top: 10px; text-align: center;"></span>
+            </div>
+            <button type="button" class="btn btn-primary start-review-btn" id="startReviewBtn">Start Review</button>
+        </section>
+
+        <!-- Review Section -->
+        <section id="review">
+            <div class="flashcard-container" id="flashcardContainer">
+                <!-- Flashcard content inserted by JS -->
+            </div>
+        </section>
+
+        <!-- Add Words Section -->
+        <section id="add">
+            <!-- Context toggle: Words | Phrases -->
+            <div class="mode-buttons" style="margin-bottom: 16px;">
+                <button type="button" class="mode-btn active" data-ctx="words">Words</button>
+                <button type="button" class="mode-btn" data-ctx="phrases">Phrases</button>
+            </div>
+
+            <!-- Word form -->
+            <div id="wordFormContainer">
+            <form id="addWordForm">
+                <div class="form-group">
+                    <label for="pinyin">Pinyin</label>
+                    <input type="text" id="pinyin" placeholder="e.g. shu1 or shū" required>
+                    <small>Type tone numbers (shu1) or marks (shū)</small>
+                </div>
+                <div class="form-group">
+                    <label for="characters">Traditional Characters</label>
+                    <div class="input-with-dropdown">
+                        <input type="text" id="characters" placeholder="Type pinyin (e.g. xue) or characters (e.g. 書)" required autocomplete="off">
+                        <div class="pinyin-dropdown" id="pinyinDropdown"></div>
+                    </div>
+                    <small>Type pinyin to search, or enter characters directly</small>
+                </div>
+                <div class="form-group">
+                    <label for="english">English</label>
+                    <input type="text" id="english" placeholder="e.g. book" required>
+                </div>
+                <div class="form-group">
+                    <label for="lesson">Lesson (optional)</label>
+                    <input type="text" id="lesson" placeholder="e.g. Lesson 1, Chapter 3">
+                    <small>Persists for next word you add</small>
+                </div>
+                <div class="form-group">
+                    <label for="example">Example (optional)</label>
+                    <textarea id="example" placeholder="e.g. 我喜歡看書 (I like reading books)" rows="2"></textarea>
+                    <small>Show how this word is used in context</small>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Add Word</button>
+                    <button type="button" class="btn btn-secondary" id="cancelEditBtn" style="display: none;" onclick="cancelEditWord()">Cancel</button>
+                </div>
+            </form>
+            </div><!-- /wordFormContainer -->
+
+            <!-- Phrase form (hidden until context = phrases) -->
+            <div id="phraseFormContainer" style="display: none;">
+            <form id="addPhraseForm">
+                <div class="form-group">
+                    <label for="phrasePinyin">Pinyin</label>
+                    <input type="text" id="phrasePinyin" placeholder="e.g. wǒ hěn gāoxìng rènshi nǐ" required>
+                    <small>Type tone numbers (wo3) or marks (wǒ)</small>
+                </div>
+                <div class="form-group">
+                    <label for="phraseCharacters">Characters</label>
+                    <input type="text" id="phraseCharacters" placeholder="e.g. 我很高兴认识你" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="phraseEnglish">English</label>
+                    <input type="text" id="phraseEnglish" placeholder="e.g. Nice to meet you" required>
+                </div>
+                <div class="form-group">
+                    <label for="phraseSubject">Subject (optional)</label>
+                    <input type="text" id="phraseSubject" placeholder="e.g. Shopping, Meeting someone">
+                    <small>Persists for next phrase you add</small>
+                </div>
+                <div class="form-group">
+                    <label for="phraseExample">Context (optional)</label>
+                    <textarea id="phraseExample" placeholder="e.g. Used when meeting someone for the first time" rows="2"></textarea>
+                    <small>Notes on usage or context</small>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Add Phrase</button>
+                    <button type="button" class="btn btn-secondary" id="cancelEditPhraseBtn" style="display: none;" onclick="cancelEditPhrase()">Cancel</button>
+                </div>
+            </form>
+            </div><!-- /phraseFormContainer -->
+
+            <div class="data-actions" style="flex-direction: column; align-items: stretch;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                    <span id="serverStatus" style="font-size: 0.85rem; color: #e67e22;">Run server.py to save to file</span>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn btn-secondary" id="exportBtn" style="flex: 1;">Export Wordlist</button>
+                    <button type="button" class="btn btn-secondary" id="importBtn" style="flex: 1;">Import Wordlist</button>
+                </div>
+                <p style="font-size: 0.85rem; color: #666; margin-top: 8px; margin-bottom: 0;">Use Import to load a saved wordlist file from your computer (looks like chinese-vocab.2026-02-09.json)</p>
+                <input type="file" id="importFile" accept=".json">
+            </div>
+        </section>
+
+        <!-- Word List Section -->
+        <section id="list">
+            <!-- Context toggle: Words | Phrases -->
+            <div class="mode-buttons" style="margin-bottom: 16px;">
+                <button type="button" class="mode-btn active" data-ctx="words">Words</button>
+                <button type="button" class="mode-btn" data-ctx="phrases">Phrases</button>
+            </div>
+
+            <!-- Word list container -->
+            <div id="wordListContainer">
+                <div style="margin-bottom: 16px;">
+                    <input type="text" id="wordSearch" placeholder="Search by English or pinyin..."
+                           style="width: 100%; padding: 10px 12px; border: 1px solid #ddd;
+                                  border-radius: 8px; font-size: 0.9rem;">
+                </div>
+                <div class="word-list" id="wordList">
+                    <!-- Words inserted by JS -->
+                </div>
+            </div>
+
+            <!-- Phrase list container (hidden until context = phrases) -->
+            <div id="phraseListContainer" style="display: none;">
+                <div style="margin-bottom: 16px;">
+                    <input type="text" id="phraseSearch" placeholder="Search by English, pinyin, or subject..."
+                           style="width: 100%; padding: 10px 12px; border: 1px solid #ddd;
+                                  border-radius: 8px; font-size: 0.9rem;">
+                </div>
+                <div class="word-list" id="phraseList">
+                    <!-- Phrases inserted by JS -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- dictionary.js placed here — after all DOM content, before the inline script,
+         so render is not blocked and window.PINYIN_DICTIONARY is set before
+         loadDictionary() is called inside the inline script below. -->
+    <script src="dictionary.js"></script>
+    <script src="radicals.js"></script>
+    <script>
+    // ===========================================
+    // DATA LAYER
+    // ===========================================
+
+    const STORAGE_KEYS = {
+        VOCABULARY:   'cv_vocabulary',
+        CARDS:        'cv_cards',
+        PHRASES:      'cv_phrases',
+        PHRASE_CARDS: 'cv_phrase_cards',
+        STATS:        'cv_stats',
+        LAST_LESSON:  'cv_last_lesson',
+        LAST_SUBJECT: 'cv_last_subject'
+    };
+
+    // ===========================================
+    // SERVER STORAGE
+    // ===========================================
+
+    // True when the local server (server.py) is reachable.
+    let serverAvailable = false;
+
+    // True when saveData() has been called but saveToServer() hasn't
+    // completed yet. Used by the beforeunload handler.
+    let unsavedChanges = false;
+
+    let saveDebounceTimer = null;
+
+    // Fetch all data from the local server (GET /data) and merge it into
+    // the cache and localStorage so the rest of the app works unchanged.
+    async function loadFromServer() {
+        try {
+            const res = await fetch('/data');
+            if (!res.ok) throw new Error('Non-OK response');
+            const data = await res.json();
+
+            if (data.vocabulary)  {
+                cache.vocabulary = data.vocabulary;
+                localStorage.setItem(STORAGE_KEYS.VOCABULARY, JSON.stringify(data.vocabulary));
+            }
+            if (data.cards) {
+                cache.cards = data.cards;
+                localStorage.setItem(STORAGE_KEYS.CARDS, JSON.stringify(data.cards));
+            }
+            if (data.phrases) {
+                cache.phrases = data.phrases;
+                localStorage.setItem(STORAGE_KEYS.PHRASES, JSON.stringify(data.phrases));
+            }
+            if (data.phraseCards) {
+                cache.phraseCards = data.phraseCards;
+                localStorage.setItem(STORAGE_KEYS.PHRASE_CARDS, JSON.stringify(data.phraseCards));
+            }
+            if (data.stats) {
+                cache.stats = { ...STATS_DEFAULTS, ...data.stats };
+                if (!Array.isArray(cache.stats.dailyLog)) cache.stats.dailyLog = [];
+                localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(cache.stats));
+            }
+
+            serverAvailable = true;
+        } catch (e) {
+            // Server not running — app falls back to localStorage silently.
+            serverAvailable = false;
+        }
+        updateServerStatus();
+    }
+
+    // POST current data to the server, writing it to data.json.
+    // Clears unsavedChanges on success; shows a toast on failure.
+    async function saveToServer() {
+        if (!serverAvailable) return;
+        try {
+            const payload = {
+                vocabulary:  cache.vocabulary  || [],
+                cards:       cache.cards       || [],
+                phrases:     cache.phrases     || [],
+                phraseCards: cache.phraseCards || [],
+                stats:       cache.stats       || {},
+                savedAt:     new Date().toISOString()
+            };
+            const res = await fetch('/data', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify(payload, null, 2)
+            });
+            if (!res.ok) throw new Error('Server returned ' + res.status);
+            unsavedChanges = false;
+            updateServerStatus();
+        } catch (e) {
+            showToast('Auto-save failed — data is in browser storage only.');
+        }
+    }
+
+    // Debounced wrapper: called after every saveData() write.
+    function scheduleSaveToServer() {
+        clearTimeout(saveDebounceTimer);
+        saveDebounceTimer = setTimeout(saveToServer, 500);
+    }
+
+    // Update the server status label in the UI.
+    function updateServerStatus() {
+        const el = document.getElementById('serverStatus');
+        if (!el) return;
+        if (serverAvailable) {
+            el.textContent = 'Saving to file';
+            el.style.color = '#27ae60';
+        } else {
+            el.textContent = 'Run server.py to save to file';
+            el.style.color = '#e67e22';
+        }
+    }
+
+    // Toast notification (replaces alert() for success messages)
+    function showToast(message) {
+        const existing = document.querySelector('.toast');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.classList.add('toast-fade');
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
+
+    // Generate unique ID
+    function generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).slice(2);
+    }
+
+    // Escape HTML to prevent XSS
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    // Vocabulary model
+    function createVocabulary(pinyin, characters, english, lesson, example) {
+        return {
+            id: generateId(),
+            pinyin: convertToneNumbersToMarks(pinyin),
+            characters: characters,
+            english: english,
+            lesson: lesson || '',
+            example: example || '',
+            createdAt: new Date().toISOString()
+        };
+    }
+
+    // SM-2 Card model
+    function createCard(wordId, direction) {
+        return {
+            id: generateId(),
+            wordId: wordId,
+            direction: direction, // 'cn-en' or 'en-cn'
+            interval: 0,         // Days until next review
+            easeFactor: 2.5,     // Difficulty multiplier
+            repetitions: 0,      // Successful reviews in a row
+            dueDate: new Date().toISOString(),
+            lastReview: null
+        };
+    }
+
+    // In-memory cache to reduce localStorage reads
+    const cache = {
+        vocabulary:  null,
+        cards:       null,
+        phrases:     null,
+        phraseCards: null,
+        stats:       null
+    };
+
+    // Map storage keys → cache property names (avoids fragile ternary chains)
+    const CACHE_KEY_MAP = {
+        [STORAGE_KEYS.VOCABULARY]:   'vocabulary',
+        [STORAGE_KEYS.CARDS]:        'cards',
+        [STORAGE_KEYS.PHRASES]:      'phrases',
+        [STORAGE_KEYS.PHRASE_CARDS]: 'phraseCards'
+    };
+
+    // localStorage operations with caching and error handling
+    function loadData(key) {
+        const cacheKey = CACHE_KEY_MAP[key];
+        if (!cacheKey) return [];
+        if (cache[cacheKey] !== null) return cache[cacheKey];
+
+        try {
+            const data = localStorage.getItem(key);
+            cache[cacheKey] = data ? JSON.parse(data) : [];
+            return cache[cacheKey];
+        } catch (e) {
+            cache[cacheKey] = [];
+            return [];
+        }
+    }
+
+    function saveData(key, data) {
+        const cacheKey = CACHE_KEY_MAP[key];
+        if (!cacheKey) return false;
+        cache[cacheKey] = data;
+        try {
+            localStorage.setItem(key, JSON.stringify(data));
+            unsavedChanges = true;       // Mark pending until server write confirms
+            scheduleSaveToServer();      // Debounced POST to data.json
+            return true;
+        } catch (e) {
+            if (e.name === 'QuotaExceededError') {
+                showToast('Storage full. Export your data and delete old entries.');
+            }
+            return false;
+        }
+    }
+
+    /** Default stats shape. New fields added here are auto-migrated on load. */
+    const STATS_DEFAULTS = {
+        dataVersion: 2,
+        totalReviewed: 0,
+        dailyLog: [],         // [{ date: 'YYYY-MM-DD', total, again, hard, good, easy }]
+        currentStreak: 0,
+        lastStreakDate: null,  // 'YYYY-MM-DD' of most recent review day
+        dailyTarget: 20,
+        todayReviewed: 0,
+        todayDate: null        // 'YYYY-MM-DD' for tracking today's count
+    };
+
+    /**
+     * Load stats with automatic migration for older data formats.
+     * Any missing fields are initialised from STATS_DEFAULTS.
+     */
+    function loadStats() {
+        if (cache.stats !== null) return cache.stats;
+
+        try {
+            const data = localStorage.getItem(STORAGE_KEYS.STATS);
+            const parsed = data ? JSON.parse(data) : {};
+
+            // Merge defaults for any missing keys (handles v1 -> v2 migration)
+            cache.stats = { ...STATS_DEFAULTS, ...parsed };
+            if (!Array.isArray(cache.stats.dailyLog)) cache.stats.dailyLog = [];
+
+            // Persist migration if version was missing
+            if (!parsed.dataVersion || parsed.dataVersion < STATS_DEFAULTS.dataVersion) {
+                cache.stats.dataVersion = STATS_DEFAULTS.dataVersion;
+                saveStats(cache.stats);
+            }
+
+            return cache.stats;
+        } catch (e) {
+            cache.stats = { ...STATS_DEFAULTS };
+            return cache.stats;
+        }
+    }
+
+    function saveStats(stats) {
+        cache.stats = stats;
+        try {
+            localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(stats));
+            scheduleSaveToServer(); // Also persist to server data.json
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    // CRUD operations
+    function addVocabulary(pinyin, characters, english, lesson, example) {
+        const vocab = createVocabulary(pinyin, characters, english, lesson, example);
+        const vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+        vocabulary.push(vocab);
+        saveData(STORAGE_KEYS.VOCABULARY, vocabulary);
+
+        // Create two cards (both directions)
+        const cards = loadData(STORAGE_KEYS.CARDS);
+        cards.push(createCard(vocab.id, 'cn-en'));
+        cards.push(createCard(vocab.id, 'en-cn'));
+        saveData(STORAGE_KEYS.CARDS, cards);
+
+        return vocab;
+    }
+
+    function deleteVocabulary(id) {
+        let vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+        vocabulary = vocabulary.filter(v => v.id !== id);
+        saveData(STORAGE_KEYS.VOCABULARY, vocabulary);
+
+        // Delete associated cards
+        let cards = loadData(STORAGE_KEYS.CARDS);
+        cards = cards.filter(c => c.wordId !== id);
+        saveData(STORAGE_KEYS.CARDS, cards);
+    }
+
+    function getVocabularyById(id) {
+        const vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+        return vocabulary.find(v => v.id === id);
+    }
+
+    function updateVocabulary(id, pinyin, characters, english, lesson, example) {
+        let vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+        vocabulary = vocabulary.map(v => {
+            if (v.id === id) {
+                return { ...v, pinyin: convertToneNumbersToMarks(pinyin), characters, english, lesson: lesson || '', example: example || '' };
+            }
+            return v;
+        });
+        saveData(STORAGE_KEYS.VOCABULARY, vocabulary);
+    }
+
+    // ===========================================
+    // PHRASE DATA MODEL
+    // ===========================================
+
+    function createPhrase(pinyin, characters, english, subject, example) {
+        return {
+            id:         generateId(),
+            pinyin:     convertToneNumbersToMarks(pinyin),
+            characters: characters,
+            english:    english,
+            subject:    subject || '',
+            example:    example || '',
+            createdAt:  new Date().toISOString()
+        };
+    }
+
+    // Phrase cards have no direction: Memorise shows everything, Translate/Reading use flip-to-reveal
+    function createPhraseCard(phraseId) {
+        return {
+            id:          generateId(),
+            phraseId:    phraseId,
+            interval:    0,
+            easeFactor:  2.5,
+            repetitions: 0,
+            dueDate:     new Date().toISOString(),
+            lastReview:  null
+        };
+    }
+
+    function addPhrase(pinyin, characters, english, subject, example) {
+        const phrase = createPhrase(pinyin, characters, english, subject, example);
+        const phrases = loadData(STORAGE_KEYS.PHRASES);
+        phrases.push(phrase);
+        saveData(STORAGE_KEYS.PHRASES, phrases);
+
+        const phraseCards = loadData(STORAGE_KEYS.PHRASE_CARDS);
+        phraseCards.push(createPhraseCard(phrase.id));
+        saveData(STORAGE_KEYS.PHRASE_CARDS, phraseCards);
+        return phrase;
+    }
+
+    function deletePhrase(id) {
+        let phrases = loadData(STORAGE_KEYS.PHRASES);
+        phrases = phrases.filter(p => p.id !== id);
+        saveData(STORAGE_KEYS.PHRASES, phrases);
+
+        let phraseCards = loadData(STORAGE_KEYS.PHRASE_CARDS);
+        phraseCards = phraseCards.filter(c => c.phraseId !== id);
+        saveData(STORAGE_KEYS.PHRASE_CARDS, phraseCards);
+    }
+
+    function getPhraseById(id) {
+        return loadData(STORAGE_KEYS.PHRASES).find(p => p.id === id);
+    }
+
+    function updatePhrase(id, pinyin, characters, english, subject, example) {
+        let phrases = loadData(STORAGE_KEYS.PHRASES);
+        phrases = phrases.map(p => {
+            if (p.id === id) {
+                return { ...p, pinyin: convertToneNumbersToMarks(pinyin), characters, english, subject: subject || '', example: example || '' };
+            }
+            return p;
+        });
+        saveData(STORAGE_KEYS.PHRASES, phrases);
+    }
+
+    // Update a single phrase card in storage (mirrors updateCard for word cards)
+    function updatePhraseCard(updatedCard) {
+        let phraseCards = loadData(STORAGE_KEYS.PHRASE_CARDS);
+        phraseCards = phraseCards.map(c => c.id === updatedCard.id ? updatedCard : c);
+        saveData(STORAGE_KEYS.PHRASE_CARDS, phraseCards);
+    }
+
+    function getUniqueSubjects() {
+        const phrases = loadData(STORAGE_KEYS.PHRASES);
+        const subjects = new Set();
+        phrases.forEach(p => { if (p.subject) subjects.add(p.subject); });
+        return Array.from(subjects).sort();
+    }
+
+    // Get phrase cards, optionally filtered by subject or special filter
+    function getDuePhraseCards(subjectFilter = null) {
+        const phraseCards = loadData(STORAGE_KEYS.PHRASE_CARDS);
+        if (!subjectFilter) return phraseCards;
+
+        if (subjectFilter === 'HARD_ONLY') {
+            // Phrase-level: include all cards for phrases where any card is hard or unreviewed
+            const hardPhraseIds = new Set();
+            phraseCards.forEach(card => {
+                if (card.repetitions === 0 || card.easeFactor < 2.0) {
+                    hardPhraseIds.add(card.phraseId);
+                }
+            });
+            return phraseCards.filter(c => hardPhraseIds.has(c.phraseId));
+        }
+
+        if (subjectFilter === 'NEW_ONLY') {
+            // Phrase-level: include cards for phrases that are unreviewed or added in last 30 days
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            const newPhraseIds = new Set();
+            phraseCards.forEach(card => {
+                if (card.repetitions === 0) {
+                    newPhraseIds.add(card.phraseId);
+                }
+            });
+            const phrases = loadData(STORAGE_KEYS.PHRASES);
+            phrases.forEach(p => {
+                if (p.createdAt && new Date(p.createdAt) >= thirtyDaysAgo) {
+                    newPhraseIds.add(p.id);
+                }
+            });
+            return phraseCards.filter(c => newPhraseIds.has(c.phraseId));
+        }
+
+        const phrases = loadData(STORAGE_KEYS.PHRASES);
+        const phraseIdsInSubject = new Set(
+            phrases.filter(p => p.subject === subjectFilter).map(p => p.id)
+        );
+        return phraseCards.filter(c => phraseIdsInSubject.has(c.phraseId));
+    }
+
+    // Smart shuffle for phrase cards — same weighted 60/25/15 logic as words
+    function getSmartShufflePhraseCards(limit) {
+        const allCards = loadData(STORAGE_KEYS.PHRASE_CARDS);
+        if (allCards.length <= limit) return shuffle(allCards);
+
+        const { hard, good, easy } = categorizeCardsByPerformance(allCards);
+        const shuffledHard = shuffle(hard);
+        const shuffledGood = shuffle(good);
+        const shuffledEasy = shuffle(easy);
+
+        const hardTarget = Math.round(limit * 0.6);
+        const goodTarget = Math.round(limit * 0.25);
+        const easyTarget = limit - hardTarget - goodTarget;
+
+        const selectedHard = shuffledHard.slice(0, Math.min(hardTarget, shuffledHard.length));
+        const selectedGood = shuffledGood.slice(0, Math.min(goodTarget, shuffledGood.length));
+        const selectedEasy = shuffledEasy.slice(0, Math.min(easyTarget, shuffledEasy.length));
+
+        let selected = [...selectedHard, ...selectedGood, ...selectedEasy];
+
+        if (selected.length < limit) {
+            const remaining = [
+                ...shuffledHard.slice(selectedHard.length),
+                ...shuffledGood.slice(selectedGood.length),
+                ...shuffledEasy.slice(selectedEasy.length)
+            ];
+            selected = [...selected, ...remaining.slice(0, limit - selected.length)];
+        }
+
+        // Final shuffle so difficulty groups are interleaved, not presented hard-first
+        return shuffle(selected);
+    }
+
+    // Export/Import
+    function exportData() {
+        const data = {
+            vocabulary:  loadData(STORAGE_KEYS.VOCABULARY),
+            cards:       loadData(STORAGE_KEYS.CARDS),
+            phrases:     loadData(STORAGE_KEYS.PHRASES),
+            phraseCards: loadData(STORAGE_KEYS.PHRASE_CARDS),
+            stats:       loadStats(),
+            exportedAt:  new Date().toISOString()
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `chinese-vocab-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    function importData(jsonString) {
+        try {
+            const data = JSON.parse(jsonString);
+            const existing = loadData(STORAGE_KEYS.VOCABULARY);
+            if (existing.length > 0) {
+                const incomingCount = data.vocabulary ? data.vocabulary.length : 0;
+                const confirmed = confirm(
+                    `This will replace your ${existing.length} existing word${existing.length !== 1 ? 's' : ''} with ${incomingCount} from the import file. Continue?`
+                );
+                if (!confirmed) return false;
+            }
+            if (data.vocabulary)  saveData(STORAGE_KEYS.VOCABULARY,   data.vocabulary);
+            if (data.cards)       saveData(STORAGE_KEYS.CARDS,        data.cards);
+            if (data.phrases)     saveData(STORAGE_KEYS.PHRASES,      data.phrases);
+            if (data.phraseCards) saveData(STORAGE_KEYS.PHRASE_CARDS, data.phraseCards);
+            if (data.stats)       saveStats(data.stats);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    // ===========================================
+    // SM-2 ALGORITHM
+    // ===========================================
+
+    // Grade values: 1=Hard, 2=Good, 3=Easy (Again is handled in gradeCard before calling this)
+    function calculateNextReview(card, grade) {
+        const newCard = { ...card };
+
+        if (!isFinite(newCard.easeFactor) || newCard.easeFactor < 1.3) newCard.easeFactor = 2.5;
+        if (!isFinite(newCard.interval) || newCard.interval < 0) newCard.interval = 0;
+        if (!Number.isInteger(newCard.repetitions) || newCard.repetitions < 0) newCard.repetitions = 0;
+
+        newCard.repetitions += 1;
+
+        // Calculate new ease factor
+        // EF' = EF + (0.1 - (3 - grade) * (0.08 + (3 - grade) * 0.02))
+        const q = grade + 2; // Convert 1-3 to 3-5 for SM-2 formula
+        newCard.easeFactor = Math.max(1.3,
+            newCard.easeFactor + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02))
+        );
+
+        // Calculate interval
+        if (newCard.repetitions === 1) {
+            newCard.interval = 1;
+        } else if (newCard.repetitions === 2) {
+            newCard.interval = 6;
+        } else {
+            newCard.interval = Math.round(newCard.interval * newCard.easeFactor);
+        }
+
+        // Adjust interval based on grade
+        if (grade === 1) { // Hard
+            newCard.interval = Math.max(1, Math.round(newCard.interval * 0.8));
+        } else if (grade === 3) { // Easy
+            newCard.interval = Math.round(newCard.interval * 1.3);
+        }
+
+        // Set due date
+        const safeInterval = Number.isFinite(newCard.interval) ? Math.max(0, Math.round(newCard.interval)) : 1;
+        const dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() + safeInterval);
+        newCard.dueDate = dueDate.toISOString();
+
+        newCard.lastReview = new Date().toISOString();
+        return newCard;
+    }
+
+    // Get preview of next intervals for UI
+    function getIntervalPreviews(card) {
+        // If card was flagged with Again, show Hard-reset previews
+        const wasAgain = card._wasAgain;
+        const previewCard = wasAgain ? { ...card, repetitions: 0, interval: 0 } : card;
+
+        return {
+            again: 'Retry',
+            hard: wasAgain ? '1 day' : formatInterval(Math.max(1, Math.round((previewCard.interval || 1) * 0.8 * previewCard.easeFactor))),
+            good: wasAgain ? '1 day' : formatInterval(previewCard.repetitions < 2 ? (previewCard.repetitions === 0 ? 1 : 6) :
+                Math.round((previewCard.interval || 1) * previewCard.easeFactor)),
+            easy: wasAgain ? '1 day' : formatInterval(Math.round((previewCard.repetitions < 2 ? (previewCard.repetitions === 0 ? 1 : 6) :
+                Math.round((previewCard.interval || 1) * previewCard.easeFactor)) * 1.3))
+        };
+    }
+
+    function formatInterval(days) {
+        if (days === 0) return '10 min';
+        if (days === 1) return '1 day';
+        if (days < 30) return `${days} days`;
+        if (days < 365) return `${Math.round(days / 30)} mo`;
+        return `${Math.round(days / 365)} yr`;
+    }
+
+    // Get cards due for review, sorted by due date
+    // Get unique lessons from vocabulary
+    function getUniqueLessons() {
+        const vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+        const lessons = new Set();
+        vocabulary.forEach(v => {
+            if (v.lesson) lessons.add(v.lesson);
+        });
+        return Array.from(lessons).sort();
+    }
+
+    // Categorize cards by performance for smart shuffle
+    function categorizeCardsByPerformance(cards) {
+        const hard = [];
+        const good = [];
+        const easy = [];
+
+        cards.forEach(card => {
+            if (card.repetitions === 0 || card.easeFactor < 2.0) {
+                hard.push(card);
+            } else if (card.easeFactor >= 2.8) {
+                easy.push(card);
+            } else {
+                good.push(card);
+            }
+        });
+
+        return { hard, good, easy };
+    }
+
+    // Get smart shuffle cards with weighted selection
+    function getSmartShuffleCards(limit, mode) {
+        const allCards = loadData(STORAGE_KEYS.CARDS);
+
+        // Filter by activity mode
+        let filtered = allCards;
+        if (mode === 'memorise') {
+            filtered.sort((a, b) => a.direction === 'cn-en' ? -1 : 1);
+            const seen = new Set();
+            filtered = filtered.filter(card => {
+                if (seen.has(card.wordId)) return false;
+                seen.add(card.wordId);
+                return true;
+            });
+        } else if (mode === 'zh-en') {
+            filtered = filtered.filter(card => card.direction === 'en-cn');
+        } else if (mode === 'en-zh') {
+            filtered = filtered.filter(card => card.direction === 'cn-en');
+        }
+
+        // If we don't have enough total cards, return all shuffled
+        if (filtered.length <= limit) {
+            return shuffle(filtered);
+        }
+
+        // Categorize by performance
+        const { hard, good, easy } = categorizeCardsByPerformance(filtered);
+
+        // Shuffle each category
+        const shuffledHard = shuffle(hard);
+        const shuffledGood = shuffle(good);
+        const shuffledEasy = shuffle(easy);
+
+        // Calculate target counts (60%, 25%, 15%)
+        const hardTarget = Math.round(limit * 0.6);
+        const goodTarget = Math.round(limit * 0.25);
+        const easyTarget = limit - hardTarget - goodTarget;
+
+        // Select from each category
+        const selectedHard = shuffledHard.slice(0, Math.min(hardTarget, shuffledHard.length));
+        const selectedGood = shuffledGood.slice(0, Math.min(goodTarget, shuffledGood.length));
+        const selectedEasy = shuffledEasy.slice(0, Math.min(easyTarget, shuffledEasy.length));
+
+        let selected = [...selectedHard, ...selectedGood, ...selectedEasy];
+
+        // If we have a shortfall, top up from remaining cards in other categories
+        if (selected.length < limit) {
+            const remainingHard = shuffledHard.slice(selectedHard.length);
+            const remainingGood = shuffledGood.slice(selectedGood.length);
+            const remainingEasy = shuffledEasy.slice(selectedEasy.length);
+
+            const remaining = [...remainingHard, ...remainingGood, ...remainingEasy];
+            const needed = limit - selected.length;
+
+            selected = [...selected, ...remaining.slice(0, needed)];
+        }
+
+        // Final shuffle so difficulty groups are interleaved, not presented hard-first
+        return shuffle(selected);
+    }
+
+    // Get cards for review, optionally filtered by lesson/special filter and activity mode
+    function getDueCards(lessonFilter = null, mode = null) {
+        const cards = loadData(STORAGE_KEYS.CARDS);
+        const vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+
+        let filtered = cards;
+
+        // Filter by special filter or lesson
+        if (lessonFilter === 'HARD_ONLY') {
+            // Word-level: include all cards for words where any card is hard or unreviewed
+            const hardWordIds = new Set();
+            cards.forEach(card => {
+                if (card.repetitions === 0 || card.easeFactor < 2.0) {
+                    hardWordIds.add(card.wordId);
+                }
+            });
+            filtered = filtered.filter(card => hardWordIds.has(card.wordId));
+        } else if (lessonFilter === 'NEW_ONLY') {
+            // Word-level: include all cards for words that are unreviewed or added in last 30 days
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            const newWordIds = new Set();
+            cards.forEach(card => {
+                if (card.repetitions === 0) {
+                    newWordIds.add(card.wordId);
+                }
+            });
+            vocabulary.forEach(v => {
+                if (v.createdAt && new Date(v.createdAt) >= thirtyDaysAgo) {
+                    newWordIds.add(v.id);
+                }
+            });
+            filtered = filtered.filter(card => newWordIds.has(card.wordId));
+        } else if (lessonFilter) {
+            const wordIdsInLesson = new Set(
+                vocabulary.filter(v => v.lesson === lessonFilter).map(v => v.id)
+            );
+            filtered = filtered.filter(card => wordIdsInLesson.has(card.wordId));
+        }
+
+        // Filter by activity mode
+        if (mode === 'memorise') {
+            // Deduplicate: one card per word (always prefer cn-en as primary)
+            filtered.sort((a, b) => a.direction === 'cn-en' ? -1 : 1);
+            const seen = new Set();
+            filtered = filtered.filter(card => {
+                if (seen.has(card.wordId)) return false;
+                seen.add(card.wordId);
+                return true;
+            });
+        } else if (mode === 'zh-en') {
+            // English shown, translate to Chinese: en-cn cards
+            filtered = filtered.filter(card => card.direction === 'en-cn');
+        } else if (mode === 'en-zh') {
+            // Chinese shown, translate to English: cn-en cards
+            filtered = filtered.filter(card => card.direction === 'cn-en');
+        }
+
+        return filtered;
+    }
+
+    // Shuffle array (Fisher-Yates)
+    function shuffle(array) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    // Update card in storage
+    function updateCard(updatedCard) {
+        let cards = loadData(STORAGE_KEYS.CARDS);
+        cards = cards.map(c => c.id === updatedCard.id ? updatedCard : c);
+        saveData(STORAGE_KEYS.CARDS, cards);
+    }
+
+    // ===========================================
+    // TONE PROCESSING
+    // ===========================================
+
+    const TONE_MARKS = {
+        'a': ['ā', 'á', 'ǎ', 'à'],
+        'e': ['ē', 'é', 'ě', 'è'],
+        'i': ['ī', 'í', 'ǐ', 'ì'],
+        'o': ['ō', 'ó', 'ǒ', 'ò'],
+        'u': ['ū', 'ú', 'ǔ', 'ù'],
+        'ü': ['ǖ', 'ǘ', 'ǚ', 'ǜ'],
+        'v': ['ǖ', 'ǘ', 'ǚ', 'ǜ'] // v as alternative for ü
+    };
+
+    const MARK_TO_TONE = {};
+    Object.values(TONE_MARKS).forEach(marks => {
+        marks.forEach((mark, index) => {
+            MARK_TO_TONE[mark] = index + 1;
+        });
+    });
+    // Add base vowels as tone 5 (neutral)
+    ['a', 'e', 'i', 'o', 'u', 'ü'].forEach(v => MARK_TO_TONE[v] = 5);
+
+    // Convert tone numbers to marks: shu1 -> shū
+    function convertToneNumbersToMarks(pinyin) {
+        // Match syllables with tone numbers
+        return pinyin.replace(/([a-züāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]+)([1-5])/gi, (match, syllable, tone) => {
+            const toneNum = parseInt(tone);
+            if (toneNum === 5) return syllable; // Neutral tone, no mark needed
+
+            // Find the vowel to mark (following standard rules)
+            // Priority: a, e, or the vowel after i/u in a combination
+            let marked = false;
+            let result = syllable.toLowerCase();
+
+            // Check for 'a' or 'e' first
+            for (const v of ['a', 'e']) {
+                if (result.includes(v) && TONE_MARKS[v]) {
+                    result = result.replace(v, TONE_MARKS[v][toneNum - 1]);
+                    marked = true;
+                    break;
+                }
+            }
+
+            // If 'ou', mark the 'o'
+            if (!marked && result.includes('ou')) {
+                result = result.replace('o', TONE_MARKS['o'][toneNum - 1]);
+                marked = true;
+            }
+
+            // Otherwise mark the last vowel
+            if (!marked) {
+                const vowels = ['i', 'o', 'u', 'ü', 'v'];
+                for (let i = result.length - 1; i >= 0; i--) {
+                    const char = result[i];
+                    if (vowels.includes(char) && TONE_MARKS[char]) {
+                        result = result.slice(0, i) + TONE_MARKS[char][toneNum - 1] + result.slice(i + 1);
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        });
+    }
+
+    // Detect tone from a character
+    function detectTone(char) {
+        return MARK_TO_TONE[char] || 5;
+    }
+
+    // Render pinyin with tone colours
+    function renderPinyinWithTones(pinyin) {
+        let result = '';
+        let currentTone = 5;
+
+        for (const char of pinyin) {
+            const tone = detectTone(char);
+            if (tone !== 5) currentTone = tone;
+
+            if (/[a-züāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]/i.test(char)) {
+                result += `<span class="tone-${currentTone}">${char}</span>`;
+            } else if (char === ' ') {
+                result += char;
+                currentTone = 5; // Reset for next syllable
+            } else {
+                result += char;
+            }
+        }
+
+        return result;
+    }
+
+    // ===========================================
+    // PINYIN DICTIONARY LOOKUP
+    // ===========================================
+
+    let pinyinDictionary = null;
+    let dropdownSelectedIndex = -1;
+
+    // Load dictionary from global variable (loaded via script tag)
+    function loadDictionary() {
+        if (window.PINYIN_DICTIONARY) {
+            pinyinDictionary = window.PINYIN_DICTIONARY;
+        }
+    }
+
+    // Normalise pinyin for lookup (remove tones and spaces)
+    // NFC normalisation is applied first because macOS keyboard input can produce
+    // NFD-decomposed tone marks (e.g. i + combining caron) which the regex
+    // character classes below would silently fail to match.
+    function normalisePinyinForLookup(pinyin) {
+        return pinyin
+            .normalize('NFC')
+            .toLowerCase()
+            .replace(/[1-5]/g, '')           // Remove tone numbers
+            .replace(/\s+/g, '')              // Remove spaces
+            .replace(/[āáǎà]/g, 'a')          // Normalise tone marks
+            .replace(/[ēéěè]/g, 'e')
+            .replace(/[īíǐì]/g, 'i')
+            .replace(/[ōóǒò]/g, 'o')
+            .replace(/[ūúǔù]/g, 'u')
+            .replace(/[ǖǘǚǜ]/g, 'v');
+    }
+
+    // Search dictionary for matches
+    function searchDictionary(query) {
+        if (!pinyinDictionary || !query) return [];
+
+        const normalised = normalisePinyinForLookup(query);
+        if (normalised.length < 2) return []; // Need at least 2 chars
+
+        const results = [];
+
+        // Find exact match first
+        if (pinyinDictionary[normalised]) {
+            results.push(...pinyinDictionary[normalised]);
+        }
+
+        // Then find prefix matches
+        for (const key of Object.keys(pinyinDictionary)) {
+            if (key !== normalised && key.startsWith(normalised)) {
+                results.push(...pinyinDictionary[key]);
+            }
+            if (results.length >= 8) break;
+        }
+
+        return results.slice(0, 8);
+    }
+
+    // Render dropdown with results
+    function renderDropdown(results) {
+        const dropdown = document.getElementById('pinyinDropdown');
+
+        if (results.length === 0) {
+            dropdown.classList.remove('visible');
+            return;
+        }
+
+        dropdown.innerHTML = results.map((item, i) => `
+            <div class="dropdown-item${i === dropdownSelectedIndex ? ' selected' : ''}" data-index="${i}">
+                <span class="dropdown-item-char">${escapeHtml(item.t)}</span>
+                <div class="dropdown-item-info">
+                    <div class="dropdown-item-pinyin">${escapeHtml(item.p)}</div>
+                    <div class="dropdown-item-english">${escapeHtml(item.e)}</div>
+                </div>
+            </div>
+        `).join('') + '<div class="dropdown-hint">Click to select or keep typing</div>';
+
+        dropdown.classList.add('visible');
+
+        // Add click handlers
+        dropdown.querySelectorAll('.dropdown-item').forEach(el => {
+            el.addEventListener('click', () => {
+                const idx = parseInt(el.dataset.index);
+                selectDropdownItem(results[idx]);
+            });
+        });
+    }
+
+    // Select an item from dropdown
+    function selectDropdownItem(item) {
+        const charactersInput = document.getElementById('characters');
+        const pinyinInput = document.getElementById('pinyin');
+        const englishInput = document.getElementById('english');
+        const dropdown = document.getElementById('pinyinDropdown');
+
+        // Fill characters field
+        charactersInput.value = item.t;
+
+        // Fill pinyin field if empty, converting tone numbers to marks
+        if (!pinyinInput.value.trim()) {
+            pinyinInput.value = convertToneNumbersToMarks(item.p.replace(/\s+/g, ''));
+        }
+
+        // Fill English field if empty
+        if (!englishInput.value.trim()) {
+            englishInput.value = item.e;
+        }
+
+        // Hide dropdown
+        dropdown.classList.remove('visible');
+        dropdownSelectedIndex = -1;
+
+        // Focus English field for review/edit
+        englishInput.focus();
+    }
+
+    // Hide dropdown
+    function hideDropdown() {
+        const dropdown = document.getElementById('pinyinDropdown');
+        dropdown.classList.remove('visible');
+        dropdownSelectedIndex = -1;
+    }
+
+    // Initialise dictionary on load
+    loadDictionary();
+
+    // ===========================================
+    // UI
+    // ===========================================
+
+    let currentCards = [];
+    let currentCardIndex = 0;
+    let isAnswerShown = false;
+    let isSessionActive = false;
+    let sessionStartTime = null;
+    let sessionReviewCount = 0;
+    let editingWordId = null;   // Track if editing a word
+    let editingPhraseId = null; // Track if editing a phrase
+    let currentContext = 'words'; // 'words' | 'phrases'
+    let currentActivityMode = 'memorise'; // 'memorise', 'zh-en', 'en-zh', 'complete-learning'
+    let currentPhraseMode = 'memorise';   // 'memorise' | 'translate' | 'reading' | 'complete'
+    let completeLearningPhase = 1; // 1=Memorise, 2=ZH>EN, 3=EN>ZH
+    let completeLearningBaseCards = []; // Stores deduplicated card set for all three phases
+    let completePhraseLearningPhase = 1; // 1=Memorise, 2=Translate, 3=Reading
+    let completePhraseLearningBaseCards = []; // Stores phrase cards for all three phases
+
+    // ===========================================
+    // Navigation
+    document.querySelectorAll('nav button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const section = btn.dataset.section;
+            showSection(section);
+        });
+    });
+
+    // Context toggle: switches all [data-ctx] buttons across all three tabs simultaneously
+    function switchContext(ctx) {
+        currentContext = ctx;
+
+        // Sync all context toggle buttons (Home, Add, List each have a pair)
+        document.querySelectorAll('[data-ctx]').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.ctx === ctx);
+        });
+
+        const isWords = ctx === 'words';
+
+        // Nav tab labels
+        document.querySelector('nav button[data-section="add"]').textContent  = isWords ? 'Add Words'  : 'Add Phrase';
+        document.querySelector('nav button[data-section="list"]').textContent = isWords ? 'Word List'  : 'Phrase List';
+
+        // Home: swap word/phrase mode button groups
+        document.getElementById('wordModeButtons').style.display  = isWords ? '' : 'none';
+        document.getElementById('phraseModeButtons').style.display = isWords ? 'none' : '';
+
+        // Add: swap word/phrase form
+        document.getElementById('wordFormContainer').style.display  = isWords ? '' : 'none';
+        document.getElementById('phraseFormContainer').style.display = isWords ? 'none' : '';
+
+        // List: swap word/phrase list
+        document.getElementById('wordListContainer').style.display  = isWords ? '' : 'none';
+        document.getElementById('phraseListContainer').style.display = isWords ? 'none' : '';
+
+        updateActivityHint();
+        updateHomeStats();
+
+        // Re-render the list if already on the list section, so switching context
+        // shows content immediately rather than an empty container
+        if (document.getElementById('list').classList.contains('active')) {
+            if (ctx === 'phrases') {
+                renderPhraseList(document.getElementById('phraseSearch')?.value);
+            } else {
+                renderWordList(document.getElementById('wordSearch')?.value);
+            }
+        }
+    }
+
+    document.querySelectorAll('[data-ctx]').forEach(btn => {
+        btn.addEventListener('click', () => switchContext(btn.dataset.ctx));
+    });
+
+    // Activity mode selector (words only)
+    document.querySelectorAll('[data-mode]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('[data-mode]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentActivityMode = btn.dataset.mode;
+            updateActivityHint();
+            updateHomeStats();
+        });
+    });
+
+    // Phrase mode selector
+    document.querySelectorAll('[data-phrase-mode]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('[data-phrase-mode]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentPhraseMode = btn.dataset.phraseMode;
+            updateActivityHint();
+            updateHomeStats();
+        });
+    });
+
+    function showSection(sectionId) {
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        const navBtn = document.querySelector(`nav button[data-section="${sectionId}"]`);
+        if (navBtn) navBtn.classList.add('active');
+
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+
+        if (sectionId === 'home') updateHomeStats();
+        if (sectionId === 'list') {
+            if (currentContext === 'phrases') {
+                renderPhraseList(document.getElementById('phraseSearch')?.value);
+            } else {
+                renderWordList(document.getElementById('wordSearch')?.value);
+            }
+        }
+        if (sectionId === 'review' && !isSessionActive) startReviewSession();
+    }
+
+    // Home stats — context-aware
+    // ===========================================
+    // DASHBOARD
+    // ===========================================
+
+    /**
+     * Update the dashboard: streak counter, daily target progress, and charts.
+     * Called from updateHomeStats() on every home screen render.
+     */
+    function updateDashboard() {
+        const stats = loadStats();
+        const today = new Date().toISOString().slice(0, 10);
+
+        // --- Streak counter ---
+        const streakEl = document.getElementById('streakValue');
+        const streakLabelEl = document.getElementById('streakLabel');
+        if (streakEl) {
+            const reviewedToday = stats.todayDate === today;
+            streakEl.textContent = stats.currentStreak || 0;
+            streakEl.className = 'streak-value ' + (reviewedToday ? 'active' : 'inactive');
+            streakLabelEl.textContent = (stats.currentStreak === 1) ? 'day streak' : 'day streak';
+        }
+
+        // --- Daily target progress ---
+        const targetTextEl = document.getElementById('targetText');
+        const targetFillEl = document.getElementById('targetBarFill');
+        if (targetTextEl) {
+            const reviewed = (stats.todayDate === today) ? (stats.todayReviewed || 0) : 0;
+            const target = stats.dailyTarget || 20;
+            const pct = Math.min(100, Math.round((reviewed / target) * 100));
+            targetTextEl.textContent = `${reviewed} / ${target} completed today`;
+            targetFillEl.style.width = pct + '%';
+            targetFillEl.className = 'target-bar-fill' + (pct >= 100 ? ' complete' : '');
+        }
+
+        updateDashboardCharts();
+    }
+
+    /**
+     * Render the dashboard charts: heatmap, accuracy trend, and mastery bar.
+     * Reads from dailyLog (aggregated) and current card easeFactor values.
+     */
+    function updateDashboardCharts() {
+        const container = document.getElementById('dashboardCharts');
+        if (!container) return;
+
+        const stats = loadStats();
+        const dailyLog = stats.dailyLog || [];
+
+        // Build a date-keyed map from dailyLog for fast lookups
+        const logMap = {};
+        dailyLog.forEach(d => { logMap[d.date] = d; });
+
+        // --- Heatmap: last 91 days (13 weeks x 7 days) ---
+        const cells = [];
+        const now = new Date();
+        // Start from 90 days ago
+        for (let i = 90; i >= 0; i--) {
+            const d = new Date(now);
+            d.setDate(d.getDate() - i);
+            const key = d.toISOString().slice(0, 10);
+            const entry = logMap[key];
+            const count = entry ? entry.total : 0;
+            let level = '';
+            if (count >= 21) level = 'level-4';
+            else if (count >= 11) level = 'level-3';
+            else if (count >= 6) level = 'level-2';
+            else if (count >= 1) level = 'level-1';
+            cells.push(`<div class="heatmap-cell ${level}" title="${key}: ${count} reviews"></div>`);
+        }
+
+        // --- Accuracy trend: last 8 weeks ---
+        let accuracySvg = '';
+        const weekData = [];
+        for (let w = 7; w >= 0; w--) {
+            const weekStart = new Date(now);
+            weekStart.setDate(weekStart.getDate() - (w * 7 + 6));
+            let goodEasy = 0, total = 0;
+            for (let d = 0; d < 7; d++) {
+                const day = new Date(weekStart);
+                day.setDate(day.getDate() + d);
+                const key = day.toISOString().slice(0, 10);
+                const entry = logMap[key];
+                if (entry) {
+                    goodEasy += (entry.good || 0) + (entry.easy || 0);
+                    total += entry.total || 0;
+                }
+            }
+            weekData.push(total > 0 ? Math.round((goodEasy / total) * 100) : null);
+        }
+
+        const validWeeks = weekData.filter(v => v !== null);
+        if (validWeeks.length >= 2) {
+            // Build SVG polyline in a 200x80 viewBox
+            const width = 200, height = 70, padY = 5;
+            const points = [];
+            const areaPoints = [];
+            let idx = 0;
+            weekData.forEach((pct, i) => {
+                if (pct === null) return;
+                const x = (i / (weekData.length - 1)) * width;
+                const y = padY + ((100 - pct) / 100) * (height - padY * 2);
+                points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+                areaPoints.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+                idx++;
+            });
+            // Close area path along bottom
+            const areaPath = areaPoints.length > 0
+                ? `<polygon class="accuracy-area" points="${areaPoints.join(' ')} ${width},${height} 0,${height}" />`
+                : '';
+            accuracySvg = `
+                <div class="accuracy-chart">
+                    <svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">
+                        ${areaPath}
+                        <polyline class="accuracy-line" points="${points.join(' ')}" />
+                    </svg>
+                </div>`;
+        } else {
+            accuracySvg = '<div class="accuracy-no-data">Review for a few days to see accuracy trends</div>';
+        }
+
+        // --- Mastery distribution bar ---
+        const allCards = loadData(STORAGE_KEYS.CARDS);
+        let hard = 0, good = 0, easy = 0;
+        allCards.forEach(c => {
+            if (c.repetitions === 0 || c.easeFactor < 2.0) hard++;
+            else if (c.easeFactor < 2.6) good++;
+            else easy++;
+        });
+        const cardTotal = hard + good + easy;
+        const hardPct = cardTotal > 0 ? ((hard / cardTotal) * 100).toFixed(1) : 0;
+        const goodPct = cardTotal > 0 ? ((good / cardTotal) * 100).toFixed(1) : 0;
+        const easyPct = cardTotal > 0 ? ((easy / cardTotal) * 100).toFixed(1) : 0;
+
+        container.innerHTML = `
+            <div class="chart-section">
+                <div class="chart-label">Activity (last 90 days)</div>
+                <div class="heatmap-grid">${cells.join('')}</div>
+            </div>
+            <div class="chart-section">
+                <div class="chart-label">Weekly accuracy (% Good + Easy)</div>
+                ${accuracySvg}
+            </div>
+            <div class="chart-section">
+                <div class="chart-label">How well you know your words</div>
+                <div class="mastery-bar">
+                    <div class="mastery-segment mastery-hard" style="width:${hardPct}%" title="Hard: ${hard}"></div>
+                    <div class="mastery-segment mastery-good" style="width:${goodPct}%" title="Good: ${good}"></div>
+                    <div class="mastery-segment mastery-easy" style="width:${easyPct}%" title="Easy: ${easy}"></div>
+                </div>
+                <div class="mastery-legend">
+                    <span><span class="mastery-legend-dot" style="background:var(--red)"></span>Hard ${hard}</span>
+                    <span><span class="mastery-legend-dot" style="background:#e67e22"></span>Good ${good}</span>
+                    <span><span class="mastery-legend-dot" style="background:#27ae60"></span>Easy ${easy}</span>
+                </div>
+            </div>
+        `;
+    }
+
+    /**
+     * Inline edit handler for the daily target value.
+     */
+    (function initTargetEdit() {
+        const btn = document.getElementById('targetEditBtn');
+        if (!btn) return;
+
+        btn.addEventListener('click', () => {
+            const stats = loadStats();
+            const current = stats.dailyTarget || 20;
+            const textEl = document.getElementById('targetText');
+            const parent = textEl.parentNode;
+
+            // Replace text with input
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.min = '1';
+            input.value = current;
+            input.className = 'target-edit-input';
+            textEl.style.display = 'none';
+            btn.style.display = 'none';
+            parent.insertBefore(input, textEl);
+            input.focus();
+            input.select();
+
+            const commit = () => {
+                const newTarget = Math.max(1, parseInt(input.value) || 20);
+                stats.dailyTarget = newTarget;
+                saveStats(stats);
+                input.remove();
+                textEl.style.display = '';
+                btn.style.display = '';
+                updateDashboard();
+            };
+
+            input.addEventListener('blur', commit);
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') { e.preventDefault(); commit(); }
+                if (e.key === 'Escape') { input.remove(); textEl.style.display = ''; btn.style.display = ''; }
+            });
+        });
+    })();
+
+    function updateHomeStats() {
+        // Header stat pills always reflect word counts (context-independent)
+        const vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+        document.getElementById('totalWords').textContent = vocabulary.length;
+        const reviewedEl = document.getElementById('totalReviewed');
+        if (reviewedEl) reviewedEl.textContent = loadStats().totalReviewed || 0;
+
+        // Update dashboard (streak, target, charts)
+        updateDashboard();
+
+        if (currentContext === 'phrases') {
+            updatePhraseHomeStats();
+            return;
+        }
+
+        const cards = loadData(STORAGE_KEYS.CARDS);
+
+        // Populate lesson dropdown
+        const lessonFilter = document.getElementById('lessonFilter');
+        const currentLesson = lessonFilter.value;
+        const lessons = getUniqueLessons();
+
+        const smartShuffleOption = '<option value="SMART_SHUFFLE"' + (currentLesson === 'SMART_SHUFFLE' ? ' selected' : '') + '>Smart Shuffle</option>';
+        const allWordsOption = '<option value=""' + (currentLesson === '' ? ' selected' : '') + '>All Words</option>';
+        const hardOnlyOption = '<option value="HARD_ONLY"' + (currentLesson === 'HARD_ONLY' ? ' selected' : '') + '>Hard Only</option>';
+        const newOnlyOption = '<option value="NEW_ONLY"' + (currentLesson === 'NEW_ONLY' ? ' selected' : '') + '>New Only</option>';
+        lessonFilter.innerHTML = smartShuffleOption +
+            allWordsOption +
+            hardOnlyOption +
+            newOnlyOption +
+            lessons.map(l => `<option value="${escapeHtml(l)}"${l === currentLesson ? ' selected' : ''}>${escapeHtml(l)}</option>`).join('');
+
+        // Set default card limit for Complete Learning mode
+        const cardLimitInput = document.getElementById('cardLimit');
+        if (currentActivityMode === 'complete-learning' && !cardLimitInput.value) {
+            cardLimitInput.value = '10';
+        }
+
+        // For Complete Learning, use 'memorise' mode for card counting
+        const modeForSelection = currentActivityMode === 'complete-learning' ? 'memorise' : currentActivityMode;
+
+        // Get available cards based on filter and activity mode
+        const selectedLesson = lessonFilter.value;
+        const cardLimit = parseInt(cardLimitInput.value) || 0;
+        let availableCards;
+
+        if (selectedLesson === 'SMART_SHUFFLE') {
+            // For Smart Shuffle, use all cards if no limit specified
+            const allCards = loadData(STORAGE_KEYS.CARDS);
+            let filtered = allCards;
+            if (modeForSelection === 'memorise') {
+                filtered.sort((a, b) => a.direction === 'cn-en' ? -1 : 1);
+                const seen = new Set();
+                filtered = filtered.filter(card => {
+                    if (seen.has(card.wordId)) return false;
+                    seen.add(card.wordId);
+                    return true;
+                });
+            } else if (modeForSelection === 'zh-en') {
+                filtered = filtered.filter(card => card.direction === 'en-cn');
+            } else if (modeForSelection === 'en-zh') {
+                filtered = filtered.filter(card => card.direction === 'cn-en');
+            }
+            const effectiveLimit = cardLimit > 0 ? cardLimit : filtered.length;
+            availableCards = getSmartShuffleCards(effectiveLimit, modeForSelection);
+        } else {
+            availableCards = getDueCards(selectedLesson || null, modeForSelection);
+        }
+
+        // Update start button
+        const startBtn = document.getElementById('startReviewBtn');
+        const actualCount = cardLimit > 0 ? Math.min(availableCards.length, cardLimit) : availableCards.length;
+
+        if (availableCards.length === 0) {
+            // Context-specific empty state messages
+            if (selectedLesson === 'HARD_ONLY') {
+                startBtn.textContent = 'No hard words found';
+            } else if (selectedLesson === 'NEW_ONLY') {
+                startBtn.textContent = 'No new words found';
+            } else {
+                startBtn.textContent = 'No cards available';
+            }
+            startBtn.disabled = true;
+        } else {
+            if (currentActivityMode === 'complete-learning') {
+                if (cardLimit === 0) {
+                    startBtn.textContent = `Start Complete Learning (All ${actualCount} words)`;
+                } else {
+                    startBtn.textContent = `Start Complete Learning (${actualCount} words)`;
+                }
+            } else {
+                // Special text for Smart Shuffle with all cards
+                if (selectedLesson === 'SMART_SHUFFLE' && cardLimit === 0) {
+                    startBtn.textContent = `Smart Shuffle (All Cards)`;
+                } else if (cardLimit === 0) {
+                    startBtn.textContent = `Start Review (All ${actualCount} cards)`;
+                } else {
+                    startBtn.textContent = `Start Review (${actualCount} cards)`;
+                }
+            }
+            startBtn.disabled = false;
+        }
+
+        // Update selection hint
+        updateSelectionHint();
+    }
+
+    // Phrase-context equivalent of updateHomeStats
+    function updatePhraseHomeStats() {
+        const lessonFilter = document.getElementById('lessonFilter');
+        const currentSubject = lessonFilter.value;
+        const subjects = getUniqueSubjects();
+
+        const smartOpt = '<option value="SMART_SHUFFLE"' + (currentSubject === 'SMART_SHUFFLE' ? ' selected' : '') + '>Smart Shuffle</option>';
+        const allOpt   = '<option value=""' + (currentSubject === '' ? ' selected' : '') + '>All Phrases</option>';
+        const hardOpt  = '<option value="HARD_ONLY"' + (currentSubject === 'HARD_ONLY' ? ' selected' : '') + '>Hard Only</option>';
+        const newOpt   = '<option value="NEW_ONLY"' + (currentSubject === 'NEW_ONLY' ? ' selected' : '') + '>New Only</option>';
+        lessonFilter.innerHTML = smartOpt + allOpt + hardOpt + newOpt +
+            subjects.map(s => `<option value="${escapeHtml(s)}"${s === currentSubject ? ' selected' : ''}>${escapeHtml(s)}</option>`).join('');
+
+        const cardLimitInput = document.getElementById('cardLimit');
+        const cardLimit = parseInt(cardLimitInput.value) || 0;
+        const selectedSubject = lessonFilter.value;
+
+        let availableCards;
+        if (selectedSubject === 'SMART_SHUFFLE') {
+            const all = loadData(STORAGE_KEYS.PHRASE_CARDS);
+            const effectiveLimit = cardLimit > 0 ? cardLimit : all.length;
+            availableCards = getSmartShufflePhraseCards(effectiveLimit);
+        } else {
+            availableCards = getDuePhraseCards(selectedSubject || null);
+        }
+
+        const startBtn = document.getElementById('startReviewBtn');
+        const actualCount = cardLimit > 0 ? Math.min(availableCards.length, cardLimit) : availableCards.length;
+
+        if (availableCards.length === 0) {
+            // Context-specific empty state messages
+            if (selectedSubject === 'HARD_ONLY') {
+                startBtn.textContent = 'No hard phrases found';
+            } else if (selectedSubject === 'NEW_ONLY') {
+                startBtn.textContent = 'No new phrases found';
+            } else {
+                startBtn.textContent = 'No phrases available';
+            }
+            startBtn.disabled = true;
+        } else if (selectedSubject === 'SMART_SHUFFLE' && cardLimit === 0) {
+            startBtn.textContent = 'Smart Shuffle Phrases (All)';
+            startBtn.disabled = false;
+        } else if (cardLimit === 0) {
+            startBtn.textContent = `Start Phrases (All ${actualCount})`;
+            startBtn.disabled = false;
+        } else {
+            startBtn.textContent = `Start Phrases (${actualCount})`;
+            startBtn.disabled = false;
+        }
+
+        updateSelectionHint();
+    }
+
+    // Update the hint text based on current lesson/subject selection
+    function updateSelectionHint() {
+        const lessonFilter = document.getElementById('lessonFilter');
+        const hint = document.getElementById('selectionHint');
+        if (!lessonFilter || !hint) return;
+
+        const selectedValue = lessonFilter.value;
+        const item = currentContext === 'phrases' ? 'phrase' : 'word';
+
+        if (selectedValue === 'SMART_SHUFFLE') {
+            hint.textContent = `Focuses on difficult ${item}s (60% hard, 25% good, 15% easy)`;
+        } else if (selectedValue === 'HARD_ONLY') {
+            hint.textContent = `Unreviewed ${item}s and those you've struggled with`;
+        } else if (selectedValue === 'NEW_ONLY') {
+            hint.textContent = `Unreviewed ${item}s or added in the last 30 days`;
+        } else if (selectedValue === '') {
+            hint.textContent = `Review your entire ${item} list without filtering`;
+        } else {
+            hint.textContent = currentContext === 'phrases'
+                ? `Review phrases from subject: ${selectedValue}`
+                : `Review cards from ${selectedValue}`;
+        }
+    }
+
+    // Update the hint text based on current activity / phrase mode
+    function updateActivityHint() {
+        const hint = document.getElementById('activityHint');
+        if (!hint) return;
+
+        if (currentContext === 'phrases') {
+            if (currentPhraseMode === 'memorise') {
+                hint.textContent = 'Passive learning: see the full phrase at once';
+            } else if (currentPhraseMode === 'translate') {
+                hint.textContent = 'Test yourself: given English, recall the Chinese phrase';
+            } else if (currentPhraseMode === 'reading') {
+                hint.textContent = 'Test yourself: read the characters, recall the meaning';
+            } else if (currentPhraseMode === 'complete') {
+                hint.textContent = 'Complete learning: 3 phases (memorise → translate → reading)';
+            }
+            return;
+        }
+
+        if (currentActivityMode === 'memorise') {
+            hint.textContent = 'Passive learning: see all information at once';
+        } else if (currentActivityMode === 'zh-en') {
+            hint.textContent = 'Test yourself: given English, recall Chinese';
+        } else if (currentActivityMode === 'en-zh') {
+            hint.textContent = 'Test yourself: given Chinese, recall English';
+        } else if (currentActivityMode === 'complete-learning') {
+            hint.textContent = 'Complete learning: 3 phases (memorise + both directions)';
+        }
+    }
+
+    // Update stats when filter changes
+    document.getElementById('lessonFilter').addEventListener('change', updateHomeStats);
+    document.getElementById('cardLimit').addEventListener('input', updateHomeStats);
+
+    document.getElementById('startReviewBtn').addEventListener('click', () => {
+        showSection('review');
+    });
+
+    // ===========================================
+    // KEYBOARD SHORTCUTS (review session only)
+    // ===========================================
+
+    /**
+     * Returns the keyboard hint HTML for the current review mode.
+     * Adapts to binary (Complete Learning test / phrase translate/reading) vs full grading.
+     */
+    function getKeyboardHintHtml() {
+        const isCompleteLearningTest = currentActivityMode === 'complete-learning' && completeLearningPhase > 1;
+        const isPhraseBinary = currentContext === 'phrases' && (
+            currentPhraseMode === 'translate' || currentPhraseMode === 'reading' ||
+            (currentPhraseMode === 'complete' && completePhraseLearningPhase > 1)
+        );
+
+        let gradeHint;
+        if (isCompleteLearningTest) {
+            gradeHint = '<kbd>1</kbd> Incorrect &nbsp; <kbd>2</kbd> Correct';
+        } else if (isPhraseBinary) {
+            gradeHint = '<kbd>1</kbd> Again &nbsp; <kbd>2</kbd> Got it';
+        } else {
+            gradeHint = '<kbd>1</kbd> Again &nbsp; <kbd>2</kbd> Hard &nbsp; <kbd>3</kbd> Good &nbsp; <kbd>4</kbd> Easy';
+        }
+
+        return '<div class="keyboard-hint keyboard-hint-flip"><kbd>Space</kbd> Flip</div>'
+             + '<div class="keyboard-hint keyboard-hint-grade" style="display:none;"><kbd>Space</kbd> Flip &nbsp; ' + gradeHint + '</div>';
+    }
+
+    /**
+     * Global keyboard handler for review sessions.
+     * Scoped to active sessions only; ignores input when focused on form fields.
+     */
+    document.addEventListener('keydown', function(e) {
+        if (!isSessionActive) return;
+
+        // Don't intercept typing in form fields
+        const tag = document.activeElement?.tagName;
+        if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+
+        const key = e.key;
+
+        // Space: flip card (reveal answer)
+        if (key === ' ') {
+            e.preventDefault();
+            if (!isAnswerShown) revealAnswer();
+            return;
+        }
+
+        // Grade keys: only when answer is shown
+        if (!isAnswerShown) return;
+
+        const isCompleteLearningTest = currentActivityMode === 'complete-learning' && completeLearningPhase > 1;
+        const isPhraseBinary = currentContext === 'phrases' && (
+            currentPhraseMode === 'translate' || currentPhraseMode === 'reading' ||
+            (currentPhraseMode === 'complete' && completePhraseLearningPhase > 1)
+        );
+        const isBinaryMode = isCompleteLearningTest || isPhraseBinary;
+
+        // Binary modes: 1 = Again (grade 0), 2 = Correct/Got it (grade 2)
+        if (isBinaryMode) {
+            if (key === '1') { e.preventDefault(); gradeCard(0); return; }
+            if (key === '2') { e.preventDefault(); gradeCard(2); return; }
+            return;
+        }
+
+        // Full grading: 1=Again, 2=Hard, 3=Good, 4=Easy
+        if (key === '1') { e.preventDefault(); gradeCard(0); return; }
+        if (key === '2') { e.preventDefault(); gradeCard(1); return; }
+        if (key === '3') { e.preventDefault(); gradeCard(2); return; }
+        if (key === '4') { e.preventDefault(); gradeCard(3); return; }
+    });
+
+    // ===========================================
+    // RADICAL DECOMPOSITION
+    // ===========================================
+
+    /**
+     * Get the radical decomposition HTML for a Chinese character.
+     * Returns empty string if no data available.
+     * @param {string} character - Single Chinese character
+     * @param {string} context - 'words' or 'phrases' for vocab lookup
+     */
+    function getDecomposeHtml(character, context) {
+        if (typeof RADICAL_DATA === 'undefined') return '';
+
+        // For multi-character words/phrases, decompose each character
+        const chars = [...character];
+        const hasData = chars.some(ch => RADICAL_DATA[ch]);
+        if (!hasData) return '';
+
+        // Build decompose button
+        const btnId = 'decomposeBtn_' + Date.now();
+        const panelId = 'decomposePanel_' + Date.now();
+
+        let chipsHtml = '';
+        const allComponents = new Set();
+
+        chars.forEach(ch => {
+            const data = RADICAL_DATA[ch];
+            if (!data) return;
+
+            data.c.forEach(comp => {
+                allComponents.add(comp);
+                const meaning = (typeof KANGXI_RADICALS !== 'undefined' && KANGXI_RADICALS[comp])
+                    ? KANGXI_RADICALS[comp].split(',')[0].split(';')[0].trim()
+                    : '';
+                chipsHtml += `<div class="radical-chip">
+                    <span class="radical-chip-char">${escapeHtml(comp)}</span>
+                    ${meaning ? `<span class="radical-chip-meaning">${escapeHtml(meaning)}</span>` : ''}
+                </div>`;
+            });
+        });
+
+        // Find other vocab words sharing any of these components
+        let relatedHtml = '';
+        if (context === 'words') {
+            const vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+            const related = vocabulary.filter(v => {
+                if (v.characters === character) return false;
+                return [...v.characters].some(ch => {
+                    const d = RADICAL_DATA[ch];
+                    return d && d.c.some(comp => allComponents.has(comp));
+                });
+            }).slice(0, 8);
+            if (related.length > 0) {
+                const relatedChars = related.map(v => escapeHtml(v.characters)).join('  ');
+                relatedHtml = `<div class="decompose-related"><strong>Also in your vocab:</strong> ${relatedChars}</div>`;
+            }
+        } else {
+            const phrases = loadData(STORAGE_KEYS.PHRASES);
+            const related = phrases.filter(p => {
+                if (p.characters === character) return false;
+                return [...p.characters].some(ch => {
+                    const d = RADICAL_DATA[ch];
+                    return d && d.c.some(comp => allComponents.has(comp));
+                });
+            }).slice(0, 8);
+            if (related.length > 0) {
+                const relatedChars = related.map(p => escapeHtml(p.characters)).join('  ');
+                relatedHtml = `<div class="decompose-related"><strong>Also in your vocab:</strong> ${relatedChars}</div>`;
+            }
+        }
+
+        return `
+            <button class="decompose-btn" title="Show radical breakdown" id="${btnId}"
+                onclick="event.stopPropagation(); var p=document.getElementById('${panelId}'); p.style.display = p.style.display==='none' ? 'block' : 'none';">&#x1F50D;</button>
+            <div class="decompose-panel" id="${panelId}" style="display:none;">
+                <div class="decompose-panel-label">Radical breakdown</div>
+                <div class="radical-chips">${chipsHtml}</div>
+                ${relatedHtml}
+            </div>
+        `;
+    }
+
+    // Review session — branches on currentContext
+    function startReviewSession() {
+        if (currentContext === 'phrases') {
+            startPhraseReviewSession();
+            return;
+        }
+
+        // Get filter settings
+        const selectedLesson = document.getElementById('lessonFilter').value;
+        const cardLimit = parseInt(document.getElementById('cardLimit').value) || 0;
+
+        let cards;
+
+        // For Complete Learning, use 'memorise' mode to get deduplicated cards
+        const modeForSelection = currentActivityMode === 'complete-learning' ? 'memorise' : currentActivityMode;
+
+        // Handle Smart Shuffle vs regular selection
+        if (selectedLesson === 'SMART_SHUFFLE') {
+            // Use all cards if no limit specified
+            const allCards = loadData(STORAGE_KEYS.CARDS);
+            let filtered = allCards;
+            if (modeForSelection === 'memorise') {
+                filtered.sort((a, b) => a.direction === 'cn-en' ? -1 : 1);
+                const seen = new Set();
+                filtered = filtered.filter(card => {
+                    if (seen.has(card.wordId)) return false;
+                    seen.add(card.wordId);
+                    return true;
+                });
+            } else if (modeForSelection === 'zh-en') {
+                filtered = filtered.filter(card => card.direction === 'en-cn');
+            } else if (modeForSelection === 'en-zh') {
+                filtered = filtered.filter(card => card.direction === 'cn-en');
+            }
+            const effectiveLimit = cardLimit > 0 ? cardLimit : filtered.length;
+            cards = getSmartShuffleCards(effectiveLimit, modeForSelection);
+        } else {
+            // Get all cards with lesson filter and activity mode
+            cards = getDueCards(selectedLesson || null, modeForSelection);
+
+            // Shuffle first so the limit picks a random subset, not always the oldest-added cards
+            cards = shuffle(cards);
+
+            // Apply card limit after shuffle
+            if (cardLimit > 0 && cards.length > cardLimit) {
+                cards = cards.slice(0, cardLimit);
+            }
+        }
+
+        // For Complete Learning, initialize phase tracking
+        if (currentActivityMode === 'complete-learning') {
+            completeLearningBaseCards = cards;
+            completeLearningPhase = 1;
+        }
+
+        currentCards = cards;
+        currentCardIndex = 0;
+        isAnswerShown = false;
+        isSessionActive = true;
+        sessionStartTime = Date.now();
+        sessionReviewCount = 0;
+
+        if (currentCards.length === 0) {
+            showSessionComplete();
+        } else {
+            showCurrentCard();
+        }
+    }
+
+    // Phrase review session (separate from word review)
+    function startPhraseReviewSession() {
+        const selectedSubject = document.getElementById('lessonFilter').value;
+        const cardLimit = parseInt(document.getElementById('cardLimit').value) || 0;
+
+        let cards;
+        if (selectedSubject === 'SMART_SHUFFLE') {
+            const all = loadData(STORAGE_KEYS.PHRASE_CARDS);
+            const effectiveLimit = cardLimit > 0 ? cardLimit : all.length;
+            cards = getSmartShufflePhraseCards(effectiveLimit);
+        } else {
+            cards = getDuePhraseCards(selectedSubject || null);
+            // Shuffle first so the limit picks a random subset, not always the oldest-added phrases
+            cards = shuffle(cards);
+            if (cardLimit > 0 && cards.length > cardLimit) cards = cards.slice(0, cardLimit);
+        }
+
+        // For Complete mode, store base cards and initialise phase
+        if (currentPhraseMode === 'complete') {
+            completePhraseLearningBaseCards = cards;
+            completePhraseLearningPhase = 1;
+        }
+
+        currentCards = cards;
+        currentCardIndex = 0;
+        isAnswerShown = false;
+        isSessionActive = true;
+        sessionStartTime = Date.now();
+        sessionReviewCount = 0;
+
+        if (currentCards.length === 0) {
+            showSessionComplete();
+        } else {
+            showCurrentCard();
+        }
+    }
+
+    function showCurrentCard() {
+        if (currentCardIndex >= currentCards.length) {
+            showSessionComplete();
+            return;
+        }
+
+        // Delegate to phrase renderer when in phrases context
+        if (currentContext === 'phrases') {
+            showCurrentPhraseCard();
+            return;
+        }
+
+        const card = currentCards[currentCardIndex];
+        const vocab = getVocabularyById(card.wordId);
+
+        if (!vocab) {
+            currentCardIndex++;
+            showCurrentCard();
+            return;
+        }
+
+        isAnswerShown = false;
+        const container = document.getElementById('flashcardContainer');
+        const intervals = getIntervalPreviews(card);
+
+        // Determine effective mode for rendering
+        let effectiveMode = currentActivityMode;
+        let phaseLabel = '';
+
+        if (currentActivityMode === 'complete-learning') {
+            if (completeLearningPhase === 1) {
+                effectiveMode = 'memorise';
+                phaseLabel = 'Phase 1/3: Memorise';
+            } else if (completeLearningPhase === 2) {
+                effectiveMode = 'zh-en';
+                phaseLabel = 'Phase 2/3: English → Chinese';
+            } else if (completeLearningPhase === 3) {
+                effectiveMode = 'en-zh';
+                phaseLabel = 'Phase 3/3: Chinese → English';
+            }
+        }
+
+        const showGradeButtons = effectiveMode === 'memorise';
+        const isCompleteLearningTestPhase = currentActivityMode === 'complete-learning' && completeLearningPhase > 1;
+
+        // Determine hint text based on mode
+        let gradeHintText;
+        if (effectiveMode === 'memorise') {
+            gradeHintText = "Rate how well you know this word. 'Again' will show it again until correct.";
+        } else if (isCompleteLearningTestPhase) {
+            gradeHintText = "Did you recall correctly? Mark 'Incorrect' to retry this word.";
+        } else {
+            gradeHintText = "Did you recall correctly? 'Again' repeats the card until all are correct.";
+        }
+
+        let gradeButtonsHtml;
+        if (isCompleteLearningTestPhase) {
+            // Phases 2 and 3 of Complete Learning: binary choice
+            gradeButtonsHtml = `
+                <div style="display: none;" id="gradeSection">
+                    <div style="text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 12px;" id="gradeHint">${gradeHintText}</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px;" id="gradeButtons">
+                        <button class="grade-btn grade-again" data-grade="0" style="padding: 20px;">
+                            Incorrect
+                            <span class="grade-interval" style="display: block; font-size: 0.75rem; opacity: 0.8; margin-top: 6px;">Try again</span>
+                        </button>
+                        <button class="grade-btn grade-good" data-grade="2" style="padding: 20px;">
+                            Correct
+                            <span class="grade-interval" style="display: block; font-size: 0.75rem; opacity: 0.8; margin-top: 6px;">Next card</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        } else {
+            // Phase 1 or other modes: full grading
+            gradeButtonsHtml = `
+                <div style="display: ${showGradeButtons ? 'block' : 'none'};" id="gradeSection">
+                    <div style="text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 12px;" id="gradeHint">${gradeHintText}</div>
+                    <div class="grade-buttons" style="display: grid;" id="gradeButtons">
+                        <button class="grade-btn grade-again" data-grade="0">
+                            Again
+                            <span class="grade-interval">${intervals.again}</span>
+                        </button>
+                        <button class="grade-btn grade-hard" data-grade="1">
+                            Hard
+                        </button>
+                        <button class="grade-btn grade-good" data-grade="2">
+                            Good
+                        </button>
+                        <button class="grade-btn grade-easy" data-grade="3">
+                            Easy
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        const progressText = phaseLabel
+            ? `<div style="font-size: 0.85rem; color: #888; margin-bottom: 4px;">${phaseLabel}</div><div class="card-progress">Card ${currentCardIndex + 1} of ${currentCards.length}</div>`
+            : `<div class="card-progress">Card ${currentCardIndex + 1} of ${currentCards.length}</div>`;
+
+        // Encode characters/english for safe use in onclick data attributes
+        const charsEncoded = encodeURIComponent(vocab.characters);
+        const engEncoded  = encodeURIComponent(vocab.english);
+
+        if (effectiveMode === 'memorise') {
+            // Memorise: show all fields, grade buttons visible immediately
+            container.innerHTML = `
+                ${progressText}
+                <div class="flashcard memorise-card" id="flashcard">
+                    <div class="card-direction">Memorise</div>
+                    <div class="card-question chinese">${escapeHtml(vocab.characters)}
+                        ${getDecomposeHtml(vocab.characters, 'words')}
+                    </div>
+                    <div class="card-answer-pinyin" style="font-size: 1.2rem; margin: 8px 0;">${renderPinyinWithTones(escapeHtml(vocab.pinyin))}</div>
+                    <div class="card-answer-english" style="font-size: 1rem; opacity: 0.9;">${escapeHtml(vocab.english)}</div>
+                    ${vocab.example ? `<div style="font-size: 0.85rem; opacity: 0.8; margin-top: 12px; font-style: italic; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 12px;">${escapeHtml(vocab.example)}</div>` : ''}
+                </div>
+                ${gradeButtonsHtml}
+                ${getKeyboardHintHtml()}
+            `;
+            isAnswerShown = true;
+            showGradeHints();
+        } else if (effectiveMode === 'zh-en') {
+            // ZH/EN: show English prompt, reveal Chinese answer
+            container.innerHTML = `
+                ${progressText}
+                <div class="flashcard" id="flashcard">
+                    <div class="card-direction">English → Chinese</div>
+                    <div class="card-question">${escapeHtml(vocab.english)}</div>
+                    <div class="card-hint">Click to reveal answer</div>
+                    <div class="card-answer" style="display: none;">
+                        <div class="card-answer-chinese">${escapeHtml(vocab.characters)}
+                            ${getDecomposeHtml(vocab.characters, 'words')}
+                        </div>
+                        <div class="card-answer-pinyin">${renderPinyinWithTones(escapeHtml(vocab.pinyin))}</div>
+                        ${vocab.example ? `<div style="font-size: 0.85rem; opacity: 0.8; margin-top: 12px; font-style: italic;">${escapeHtml(vocab.example)}</div>` : ''}
+                    </div>
+                </div>
+                ${gradeButtonsHtml}
+                ${getKeyboardHintHtml()}
+            `;
+            document.getElementById('flashcard').addEventListener('click', revealAnswer);
+        } else {
+            // EN/ZH: show Chinese prompt, reveal English answer
+            container.innerHTML = `
+                ${progressText}
+                <div class="flashcard" id="flashcard">
+                    <div class="card-direction">Chinese → English</div>
+                    <div class="card-question chinese">${escapeHtml(vocab.characters)}
+                        ${getDecomposeHtml(vocab.characters, 'words')}
+                    </div>
+                    <div class="card-hint">Click to reveal answer</div>
+                    <div class="card-answer" style="display: none;">
+                        <div class="card-answer-pinyin">${renderPinyinWithTones(escapeHtml(vocab.pinyin))}</div>
+                        <div class="card-answer-english">${escapeHtml(vocab.english)}</div>
+                        ${vocab.example ? `<div style="font-size: 0.85rem; opacity: 0.8; margin-top: 12px; font-style: italic;">${escapeHtml(vocab.example)}</div>` : ''}
+                    </div>
+                </div>
+                ${gradeButtonsHtml}
+                ${getKeyboardHintHtml()}
+            `;
+            document.getElementById('flashcard').addEventListener('click', revealAnswer);
+        }
+
+        document.querySelectorAll('.grade-btn').forEach(btn => {
+            btn.addEventListener('click', () => gradeCard(parseInt(btn.dataset.grade)));
+        });
+
+    }
+
+    // Render a phrase card (Memorise, Translate, or Reading mode)
+    function showCurrentPhraseCard() {
+        const card = currentCards[currentCardIndex];
+        const phrase = getPhraseById(card.phraseId);
+
+        if (!phrase) {
+            currentCardIndex++;
+            showCurrentCard();
+            return;
+        }
+
+        isAnswerShown = false;
+        const container = document.getElementById('flashcardContainer');
+        const intervals = getIntervalPreviews(card);
+
+        // Flatten Complete mode phases into effective mode
+        let effectiveMode = currentPhraseMode;
+        let phaseLabel = '';
+        if (currentPhraseMode === 'complete') {
+            if (completePhraseLearningPhase === 1) {
+                effectiveMode = 'memorise';
+                phaseLabel = 'Phase 1/3: Memorise';
+            } else if (completePhraseLearningPhase === 2) {
+                effectiveMode = 'translate';
+                phaseLabel = 'Phase 2/3: Translate';
+            } else if (completePhraseLearningPhase === 3) {
+                effectiveMode = 'reading';
+                phaseLabel = 'Phase 3/3: Reading';
+            }
+        }
+
+        const progressText = phaseLabel
+            ? `<div style="font-size:0.85rem;color:#888;margin-bottom:4px;">${phaseLabel}</div><div class="card-progress">Phrase ${currentCardIndex + 1} of ${currentCards.length}</div>`
+            : `<div class="card-progress">Phrase ${currentCardIndex + 1} of ${currentCards.length}</div>`;
+
+        // Binary grading buttons (used by Translate and Reading)
+        const binaryGradeHtml = `
+            <div id="gradeSection" style="display:none;">
+                <div style="text-align:center;font-size:0.8rem;color:#666;margin-bottom:12px;">Did you recall correctly?</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;">
+                    <button class="grade-btn grade-again" data-grade="0" style="padding:20px;">
+                        Again<span class="grade-interval" style="display:block;font-size:0.75rem;opacity:0.8;margin-top:6px;">Try again</span>
+                    </button>
+                    <button class="grade-btn grade-good" data-grade="2" style="padding:20px;">
+                        Got it<span class="grade-interval" style="display:block;font-size:0.75rem;opacity:0.8;margin-top:6px;">Next</span>
+                    </button>
+                </div>
+            </div>`;
+
+        if (effectiveMode === 'memorise') {
+            // Memorise: show everything at once with SM-2 grade buttons
+            container.innerHTML = `
+                ${progressText}
+                <div class="flashcard memorise-card" id="flashcard">
+                    <div class="card-direction">Memorise</div>
+                    <div class="card-question" style="font-family:'Noto Sans SC',sans-serif;font-weight:700;font-size:1.6rem;line-height:1.4;">${escapeHtml(phrase.characters)}
+                        ${getDecomposeHtml(phrase.characters, 'phrases')}
+                    </div>
+                    <div class="card-answer-pinyin" style="font-size:1rem;margin:8px 0;">${renderPinyinWithTones(escapeHtml(phrase.pinyin))}</div>
+                    <div class="card-answer-english" style="font-size:0.95rem;opacity:0.9;">${escapeHtml(phrase.english)}</div>
+                    ${phrase.example ? `<div style="font-size:0.8rem;opacity:0.7;margin-top:12px;font-style:italic;border-top:1px solid rgba(255,255,255,0.2);padding-top:12px;">${escapeHtml(phrase.example)}</div>` : ''}
+                </div>
+                <div id="gradeSection">
+                    <div style="text-align:center;font-size:0.8rem;color:#666;margin-bottom:12px;">Rate how well you know this phrase.</div>
+                    <div class="grade-buttons" id="gradeButtons">
+                        <button class="grade-btn grade-again" data-grade="0">Again<span class="grade-interval">${intervals.again}</span></button>
+                        <button class="grade-btn grade-hard"  data-grade="1">Hard<span class="grade-interval">${intervals.hard}</span></button>
+                        <button class="grade-btn grade-good"  data-grade="2">Good<span class="grade-interval">${intervals.good}</span></button>
+                        <button class="grade-btn grade-easy"  data-grade="3">Easy<span class="grade-interval">${intervals.easy}</span></button>
+                    </div>
+                </div>
+                ${getKeyboardHintHtml()}
+            `;
+            isAnswerShown = true;
+            showGradeHints();
+        } else if (effectiveMode === 'translate') {
+            // Translate: show English, reveal characters + pinyin
+            container.innerHTML = `
+                ${progressText}
+                <div class="flashcard" id="flashcard">
+                    <div class="card-direction">Translate</div>
+                    <div class="card-question">${escapeHtml(phrase.english)}</div>
+                    <div class="card-hint">Click to reveal phrase</div>
+                    <div class="card-answer" style="display:none;">
+                        <div class="card-answer-chinese" style="font-size:1.6rem;">${escapeHtml(phrase.characters)}
+                            ${getDecomposeHtml(phrase.characters, 'phrases')}
+                        </div>
+                        <div class="card-answer-pinyin">${renderPinyinWithTones(escapeHtml(phrase.pinyin))}</div>
+                        ${phrase.example ? `<div style="font-size:0.8rem;opacity:0.8;margin-top:12px;font-style:italic;">${escapeHtml(phrase.example)}</div>` : ''}
+                    </div>
+                </div>
+                ${binaryGradeHtml}
+                ${getKeyboardHintHtml()}
+            `;
+            document.getElementById('flashcard').addEventListener('click', revealAnswer);
+        } else if (effectiveMode === 'reading') {
+            // Reading: show characters only, reveal english + pinyin
+            container.innerHTML = `
+                ${progressText}
+                <div class="flashcard" id="flashcard">
+                    <div class="card-direction">Reading</div>
+                    <div class="card-question" style="font-family:'Noto Sans SC',sans-serif;font-weight:700;font-size:1.6rem;line-height:1.4;">${escapeHtml(phrase.characters)}</div>
+                    <div class="card-hint">Click to reveal meaning</div>
+                    <div class="card-answer" style="display:none;">
+                        <div class="card-answer-pinyin" style="font-size:1rem;margin:8px 0;">${renderPinyinWithTones(escapeHtml(phrase.pinyin))}</div>
+                        <div class="card-answer-english" style="font-size:0.95rem;opacity:0.9;">${escapeHtml(phrase.english)}</div>
+                        ${getDecomposeHtml(phrase.characters, 'phrases')}
+                        ${phrase.example ? `<div style="font-size:0.8rem;opacity:0.8;margin-top:12px;font-style:italic;">${escapeHtml(phrase.example)}</div>` : ''}
+                    </div>
+                </div>
+                ${binaryGradeHtml}
+                ${getKeyboardHintHtml()}
+            `;
+            document.getElementById('flashcard').addEventListener('click', revealAnswer);
+        }
+
+        document.querySelectorAll('.grade-btn').forEach(btn => {
+            btn.addEventListener('click', () => gradeCard(parseInt(btn.dataset.grade)));
+        });
+    }
+
+    function showGradeHints() {
+        const flip = document.querySelector('.keyboard-hint-flip');
+        const grade = document.querySelector('.keyboard-hint-grade');
+        if (flip) flip.style.display = 'none';
+        if (grade) grade.style.display = '';
+    }
+
+    function revealAnswer() {
+        if (isAnswerShown) return;
+        isAnswerShown = true;
+
+        document.querySelector('.card-hint').style.display = 'none';
+        document.querySelector('.card-answer').style.display = 'block';
+
+        // Show grade section for all modes
+        const gradeSection = document.getElementById('gradeSection');
+        if (gradeSection) {
+            gradeSection.style.display = 'block';
+        }
+
+        showGradeHints();
+
+        // Auto-open radical breakdown in CN→EN mode for character recognition
+        const card = currentCards[currentCardIndex];
+        if (card && card.direction === 'cn-en') {
+            document.querySelectorAll('.decompose-panel').forEach(p => p.style.display = 'block');
+        }
+    }
+
+    function gradeCard(grade) {
+        const card = currentCards[currentCardIndex];
+
+        if (grade === 0) {
+            // Again: do NOT grade via SM-2. Flag and re-queue.
+            card._wasAgain = true;
+            currentCards.push(card);
+            currentCardIndex++;
+            showCurrentCard();
+            return;
+        }
+
+        // If this card was flagged with Again, force Hard and reset repetitions
+        let effectiveGrade = grade;
+        const wasAgain = !!card._wasAgain;
+        if (wasAgain) {
+            effectiveGrade = 1; // Force Hard
+            card.repetitions = 0;
+            card.interval = 0;
+            delete card._wasAgain;
+        }
+
+        const updatedCard = calculateNextReview(card, effectiveGrade);
+
+        if (currentContext === 'phrases') {
+            // Phrase cards have no sibling — just update directly
+            updatePhraseCard(updatedCard);
+        } else {
+            updateCard(updatedCard);
+        }
+
+        // For word Memorise / Complete Learning phase 1, also grade the sibling card (opposite direction)
+        if (currentContext === 'words' && (currentActivityMode === 'memorise' || (currentActivityMode === 'complete-learning' && completeLearningPhase === 1))) {
+            const allCards = loadData(STORAGE_KEYS.CARDS);
+            const oppositeDir = card.direction === 'cn-en' ? 'en-cn' : 'cn-en';
+            const sibling = allCards.find(c => c.wordId === card.wordId && c.direction === oppositeDir);
+            if (sibling) {
+                const siblingToGrade = { ...sibling };
+                if (wasAgain) {
+                    siblingToGrade.repetitions = 0;
+                    siblingToGrade.interval = 0;
+                }
+                const updatedSibling = calculateNextReview(siblingToGrade, effectiveGrade);
+                updateCard(updatedSibling);
+            }
+        }
+
+        // Update stats: daily aggregate, streak, and legacy counter
+        const stats = loadStats();
+        stats.totalReviewed = (stats.totalReviewed || 0) + 1;
+
+        const today = new Date().toISOString().slice(0, 10); // 'YYYY-MM-DD'
+
+        // Update daily aggregate log
+        let todayEntry = stats.dailyLog.find(d => d.date === today);
+        if (!todayEntry) {
+            todayEntry = { date: today, total: 0, again: 0, hard: 0, good: 0, easy: 0 };
+            stats.dailyLog.push(todayEntry);
+        }
+        todayEntry.total++;
+        const gradeNames = ['again', 'hard', 'good', 'easy'];
+        const gradeKey = gradeNames[effectiveGrade] || 'good';
+        todayEntry[gradeKey]++;
+
+        // Update streak
+        if (stats.todayDate !== today) {
+            // First review of a new day
+            const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+            if (stats.lastStreakDate === yesterday) {
+                stats.currentStreak = (stats.currentStreak || 0) + 1;
+            } else if (stats.lastStreakDate !== today) {
+                stats.currentStreak = 1;
+            }
+            stats.todayDate = today;
+            stats.lastStreakDate = today;
+            stats.todayReviewed = 1;
+        } else {
+            stats.todayReviewed = (stats.todayReviewed || 0) + 1;
+        }
+
+        // Show toast when daily target is reached
+        if (stats.todayReviewed === stats.dailyTarget) {
+            showToast('Target reached — well done!');
+        }
+
+        saveStats(stats);
+
+        sessionReviewCount++;
+
+        currentCardIndex++;
+        showCurrentCard();
+    }
+
+    function showSessionComplete() {
+        // Handle phase transitions for phrase Complete mode
+        if (currentContext === 'phrases' && currentPhraseMode === 'complete' && completePhraseLearningPhase < 3) {
+            completePhraseLearningPhase++;
+            currentCards = shuffle([...completePhraseLearningBaseCards]);
+            currentCardIndex = 0;
+            showCurrentCard();
+            return;
+        }
+
+        // Handle phase transitions for Complete Learning mode (words only)
+        if (currentContext === 'words' && currentActivityMode === 'complete-learning' && completeLearningPhase < 3) {
+            completeLearningPhase++;
+
+            // Get the wordIds from base cards
+            const wordIds = completeLearningBaseCards.map(c => c.wordId);
+            const allCards = loadData(STORAGE_KEYS.CARDS);
+
+            // Load appropriate cards for the next phase
+            if (completeLearningPhase === 2) {
+                // Phase 2: ZH>EN (show English, recall Chinese) - need en-cn cards
+                currentCards = allCards.filter(c =>
+                    wordIds.includes(c.wordId) && c.direction === 'en-cn'
+                );
+            } else if (completeLearningPhase === 3) {
+                // Phase 3: EN>ZH (show Chinese, recall English) - need cn-en cards
+                currentCards = allCards.filter(c =>
+                    wordIds.includes(c.wordId) && c.direction === 'cn-en'
+                );
+            }
+
+            // Shuffle cards to prevent pattern recognition
+            currentCards = shuffle(currentCards);
+
+            // Reset index and show first card of new phase
+            currentCardIndex = 0;
+            showCurrentCard();
+            return;
+        }
+
+        // Final session complete
+        const sessionTime = Math.round((Date.now() - sessionStartTime) / 1000 / 60);
+        const isWordComplete = currentContext === 'words' && currentActivityMode === 'complete-learning';
+        const isPhraseComplete = currentContext === 'phrases' && currentPhraseMode === 'complete';
+        const reviewedCount = isWordComplete
+            ? completeLearningBaseCards.length
+            : isPhraseComplete
+                ? completePhraseLearningBaseCards.length
+                : sessionReviewCount;
+        const reviewedLabel = isPhraseComplete
+            ? 'phrases reviewed across 3 phases'
+            : currentContext === 'phrases'
+                ? 'phrases reviewed'
+                : isWordComplete ? 'words reviewed across 3 phases' : 'cards reviewed';
+
+        document.getElementById('flashcardContainer').innerHTML = `
+            <div class="session-complete">
+                <h2>Session Complete!</h2>
+                <div class="session-stats">
+                    <p><strong>${reviewedCount}</strong> ${reviewedLabel}</p>
+                    <p><strong>${sessionTime || '< 1'}</strong> minutes</p>
+                </div>
+                <button class="btn btn-primary" onclick="isSessionActive = false; showSection('home')">Back to Home</button>
+            </div>
+        `;
+    }
+
+    // Add word form
+    document.getElementById('addWordForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const pinyin = document.getElementById('pinyin').value.trim();
+        const characters = document.getElementById('characters').value.trim();
+        const english = document.getElementById('english').value.trim();
+        const lesson = document.getElementById('lesson').value.trim();
+        const example = document.getElementById('example').value.trim();
+
+        if (pinyin && characters && english) {
+            // Duplicate check: exact pinyin match (with tones) or exact character match
+            // Skip the match against the word currently being edited
+            const allVocab = loadData(STORAGE_KEYS.VOCABULARY);
+            const pinyinWithMarks = convertToneNumbersToMarks(pinyin).toLowerCase().trim();
+            const duplicate = allVocab.find(v =>
+                v.id !== (editingWordId || '') &&
+                (v.pinyin.toLowerCase().trim() === pinyinWithMarks || v.characters === characters)
+            );
+            if (duplicate) {
+                const proceed = confirm(
+                    `A word with this pinyin already exists:\n\n${duplicate.characters}  ${duplicate.pinyin}  —  ${duplicate.english}\n\nAdd anyway?`
+                );
+                if (!proceed) {
+                    // Clear form fields so the user starts fresh
+                    document.getElementById('pinyin').value = '';
+                    document.getElementById('characters').value = '';
+                    document.getElementById('english').value = '';
+                    document.getElementById('example').value = '';
+                    return;
+                }
+            }
+
+            // Save lesson for next word
+            localStorage.setItem(STORAGE_KEYS.LAST_LESSON, lesson);
+
+            if (editingWordId) {
+                // Update existing word
+                updateVocabulary(editingWordId, pinyin, characters, english, lesson, example);
+                cancelEdit();
+                showToast('Word updated');
+            } else {
+                // Add new word
+                addVocabulary(pinyin, characters, english, lesson, example);
+                // Reset form but keep lesson value
+                document.getElementById('pinyin').value = '';
+                document.getElementById('characters').value = '';
+                document.getElementById('english').value = '';
+                document.getElementById('example').value = '';
+                // Lesson persists for next word
+                showToast('Word added');
+            }
+            hideDropdown();
+            updateHomeStats();
+        }
+    });
+
+    // Edit word - populate form and switch to edit mode
+    window.editWord = function(id) {
+        const vocab = getVocabularyById(id);
+        if (!vocab) return;
+
+        editingWordId = id;
+        document.getElementById('pinyin').value = vocab.pinyin;
+        document.getElementById('characters').value = vocab.characters;
+        document.getElementById('english').value = vocab.english;
+        document.getElementById('lesson').value = vocab.lesson || '';
+        document.getElementById('example').value = vocab.example || '';
+
+        // Update UI to show edit mode
+        document.querySelector('#addWordForm button[type="submit"]').textContent = 'Update Word';
+        document.getElementById('cancelEditBtn').style.display = 'inline-block';
+
+        // Switch to Add Words section
+        showSection('add');
+    };
+
+    // Cancel edit - reset form and switch back to add mode
+    function cancelEdit() {
+        editingWordId = null;
+        document.getElementById('addWordForm').reset();
+        document.querySelector('#addWordForm button[type="submit"]').textContent = 'Add Word';
+        document.getElementById('cancelEditBtn').style.display = 'none';
+    }
+
+    window.cancelEditWord = function() {
+        cancelEdit();
+    };
+
+    // Phrase form submit
+    document.getElementById('addPhraseForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const pinyin     = document.getElementById('phrasePinyin').value.trim();
+        const characters = document.getElementById('phraseCharacters').value.trim();
+        const english    = document.getElementById('phraseEnglish').value.trim();
+        const subject    = document.getElementById('phraseSubject').value.trim();
+        const example    = document.getElementById('phraseExample').value.trim();
+
+        if (pinyin && characters && english) {
+            localStorage.setItem(STORAGE_KEYS.LAST_SUBJECT, subject);
+
+            if (editingPhraseId) {
+                updatePhrase(editingPhraseId, pinyin, characters, english, subject, example);
+                cancelEditPhrase();
+                showToast('Phrase updated');
+            } else {
+                addPhrase(pinyin, characters, english, subject, example);
+                document.getElementById('phrasePinyin').value     = '';
+                document.getElementById('phraseCharacters').value = '';
+                document.getElementById('phraseEnglish').value    = '';
+                document.getElementById('phraseExample').value    = '';
+                // Subject persists for next phrase
+                showToast('Phrase added');
+            }
+            updateHomeStats();
+        }
+    });
+
+    // Edit phrase — populate phrase form and switch to Add / Phrases context
+    window.editPhrase = function(id) {
+        const phrase = getPhraseById(id);
+        if (!phrase) return;
+
+        editingPhraseId = id;
+        document.getElementById('phrasePinyin').value     = phrase.pinyin;
+        document.getElementById('phraseCharacters').value = phrase.characters;
+        document.getElementById('phraseEnglish').value    = phrase.english;
+        document.getElementById('phraseSubject').value    = phrase.subject || '';
+        document.getElementById('phraseExample').value    = phrase.example || '';
+
+        document.querySelector('#addPhraseForm button[type="submit"]').textContent = 'Update Phrase';
+        document.getElementById('cancelEditPhraseBtn').style.display = 'inline-block';
+
+        switchContext('phrases');
+        showSection('add');
+    };
+
+    function cancelEditPhrase() {
+        editingPhraseId = null;
+        document.getElementById('addPhraseForm').reset();
+        document.querySelector('#addPhraseForm button[type="submit"]').textContent = 'Add Phrase';
+        document.getElementById('cancelEditPhraseBtn').style.display = 'none';
+    }
+    window.cancelEditPhrase = cancelEditPhrase;
+
+    // Pinyin lookup on characters input
+    let lookupDebounce = null;
+    const charactersInput = document.getElementById('characters');
+
+    charactersInput.addEventListener('input', (e) => {
+        const value = e.target.value.trim();
+
+        // When characters field is fully cleared, also clear pinyin and english
+        if (value === '') {
+            document.getElementById('pinyin').value = '';
+            document.getElementById('english').value = '';
+            hideDropdown();
+            return;
+        }
+
+        // Only trigger lookup if input looks like pinyin (Latin letters)
+        if (/^[a-zA-Z1-5\s]+$/.test(value) && value.length >= 2) {
+            clearTimeout(lookupDebounce);
+            lookupDebounce = setTimeout(() => {
+                const results = searchDictionary(value);
+                renderDropdown(results);
+            }, 150);
+        } else {
+            hideDropdown();
+        }
+    });
+
+    // Keyboard navigation for dropdown
+    charactersInput.addEventListener('keydown', (e) => {
+        const dropdown = document.getElementById('pinyinDropdown');
+        if (!dropdown.classList.contains('visible')) return;
+
+        const items = dropdown.querySelectorAll('.dropdown-item');
+        const results = searchDictionary(charactersInput.value.trim());
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            dropdownSelectedIndex = Math.min(dropdownSelectedIndex + 1, items.length - 1);
+            renderDropdown(results);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            dropdownSelectedIndex = Math.max(dropdownSelectedIndex - 1, 0);
+            renderDropdown(results);
+        } else if (e.key === 'Enter' && dropdownSelectedIndex >= 0) {
+            e.preventDefault();
+            selectDropdownItem(results[dropdownSelectedIndex]);
+        } else if (e.key === 'Escape') {
+            hideDropdown();
+        }
+    });
+
+    // Hide dropdown on blur (with delay to allow click)
+    charactersInput.addEventListener('blur', () => {
+        setTimeout(hideDropdown, 200);
+    });
+
+    // Word list
+    function renderWordList(searchTerm) {
+        const vocabulary = loadData(STORAGE_KEYS.VOCABULARY);
+        const container = document.getElementById('wordList');
+
+        if (vocabulary.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <h3>No words yet</h3>
+                    <p>Add some vocabulary to get started</p>
+                </div>
+            `;
+            return;
+        }
+
+        const term = (searchTerm && typeof searchTerm === 'string') ? searchTerm.trim() : '';
+        let list = vocabulary;
+        if (term) {
+            const termLower = term.toLowerCase();
+            const termPinyin = normalisePinyinForLookup(term);
+            list = vocabulary.filter(word => {
+                const matchEnglish = word.english && word.english.toLowerCase().includes(termLower);
+                const matchPinyin = word.pinyin && normalisePinyinForLookup(word.pinyin).includes(termPinyin);
+                const matchCharacters = word.characters && word.characters.includes(term);
+                return matchEnglish || matchPinyin || matchCharacters;
+            });
+        }
+
+        if (list.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <h3>No words match your search</h3>
+                    <p>Try a different term</p>
+                </div>
+            `;
+            return;
+        }
+
+        const heading = term
+            ? `Your Vocabulary (${list.length} of ${vocabulary.length} words)`
+            : `Your Vocabulary (${vocabulary.length} words)`;
+        container.innerHTML = `<h3>${escapeHtml(heading)}</h3>` +
+            list.map(word => `
+                <div class="word-item">
+                    <div class="word-info">
+                        <div class="word-chinese">${escapeHtml(word.characters)}</div>
+                        <div class="word-pinyin">${renderPinyinWithTones(escapeHtml(word.pinyin))}</div>
+                        <div class="word-english">${escapeHtml(word.english)}</div>
+                        ${word.lesson ? `<div class="word-lesson" style="font-size: 0.75rem; color: #999; margin-top: 2px;">${escapeHtml(word.lesson)}</div>` : ''}
+                        ${word.example ? `<div class="word-example" style="font-size: 0.8rem; color: #666; margin-top: 4px; font-style: italic;">${escapeHtml(word.example)}</div>` : ''}
+                    </div>
+                    <div style="display: flex; gap: 6px; align-items: center;">
+                        <button type="button" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="editWord('${escapeHtml(word.id)}')">Edit</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteWord('${escapeHtml(word.id)}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+    }
+
+    window.deleteWord = function(id) {
+        if (confirm('Delete this word?')) {
+            deleteVocabulary(id);
+            renderWordList(document.getElementById('wordSearch')?.value);
+            updateHomeStats();
+        }
+    };
+
+    // Render phrase list with optional search term
+    function renderPhraseList(searchTerm) {
+        const phrases = loadData(STORAGE_KEYS.PHRASES);
+        const container = document.getElementById('phraseList');
+
+        if (phrases.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <h3>No phrases yet</h3>
+                    <p>Add some phrases to get started</p>
+                </div>
+            `;
+            return;
+        }
+
+        const term = (searchTerm && typeof searchTerm === 'string') ? searchTerm.trim() : '';
+        let list = phrases;
+        if (term) {
+            const termLower  = term.toLowerCase();
+            const termPinyin = normalisePinyinForLookup(term);
+            list = phrases.filter(p => {
+                const matchEnglish    = p.english    && p.english.toLowerCase().includes(termLower);
+                const matchPinyin     = p.pinyin     && normalisePinyinForLookup(p.pinyin).includes(termPinyin);
+                const matchCharacters = p.characters && p.characters.includes(term);
+                const matchSubject    = p.subject    && p.subject.toLowerCase().includes(termLower);
+                return matchEnglish || matchPinyin || matchCharacters || matchSubject;
+            });
+        }
+
+        if (list.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <h3>No phrases match your search</h3>
+                    <p>Try a different term</p>
+                </div>
+            `;
+            return;
+        }
+
+        const heading = term
+            ? `Your Phrases (${list.length} of ${phrases.length} phrases)`
+            : `Your Phrases (${phrases.length} phrases)`;
+
+        container.innerHTML = `<h3>${escapeHtml(heading)}</h3>` +
+            list.map(p => `
+                <div class="word-item">
+                    <div class="word-info">
+                        <div class="word-chinese" style="font-size:1rem;">${escapeHtml(p.characters)}</div>
+                        <div class="word-pinyin">${renderPinyinWithTones(escapeHtml(p.pinyin))}</div>
+                        <div class="word-english">${escapeHtml(p.english)}</div>
+                        ${p.subject ? `<div class="word-lesson" style="font-size:0.75rem;color:#999;margin-top:2px;">${escapeHtml(p.subject)}</div>` : ''}
+                        ${p.example ? `<div class="word-example" style="font-size:0.8rem;color:#666;margin-top:4px;font-style:italic;">${escapeHtml(p.example)}</div>` : ''}
+                    </div>
+                    <div style="display:flex;gap:6px;align-items:center;">
+                        <button type="button" class="btn btn-secondary" style="padding:6px 12px;font-size:0.8rem;" onclick="editPhrase('${escapeHtml(p.id)}')">Edit</button>
+                        <button type="button" class="btn btn-danger" onclick="deletePhraseWord('${escapeHtml(p.id)}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+    }
+
+    window.deletePhraseWord = function(id) {
+        if (confirm('Delete this phrase?')) {
+            deletePhrase(id);
+            renderPhraseList(document.getElementById('phraseSearch')?.value);
+            updateHomeStats();
+        }
+    };
+
+    // Word list search
+    let wordSearchDebounce = null;
+    document.getElementById('wordSearch').addEventListener('input', function() {
+        const value = this.value.trim();
+        clearTimeout(wordSearchDebounce);
+        wordSearchDebounce = setTimeout(() => renderWordList(value), 150);
+    });
+
+    // Phrase list search
+    let phraseSearchDebounce = null;
+    document.getElementById('phraseSearch').addEventListener('input', function() {
+        const value = this.value.trim();
+        clearTimeout(phraseSearchDebounce);
+        phraseSearchDebounce = setTimeout(() => renderPhraseList(value), 150);
+    });
+
+    // Export/Import
+    document.getElementById('exportBtn').addEventListener('click', exportData);
+
+    document.getElementById('importBtn').addEventListener('click', () => {
+        document.getElementById('importFile').click();
+    });
+
+    document.getElementById('importFile').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                if (importData(event.target.result)) {
+                    showToast('Import successful');
+                    updateHomeStats();
+                } else {
+                    showToast('Import failed — check the file format.');
+                }
+            };
+            reader.readAsText(file);
+        }
+        e.target.value = ''; // Reset for next import
+    });
+
+    // Initialise — load from server (falls back to localStorage if server not running)
+    loadFromServer().then(() => {
+        updateActivityHint();
+        updateHomeStats();
+    });
+
+    // Warn if the user tries to close the tab with a pending save.
+    // Note: modern browsers control the dialog text — setting e.returnValue
+    // is enough to trigger the native "Leave site?" prompt.
+    window.addEventListener('beforeunload', (e) => {
+        if (unsavedChanges) {
+            e.preventDefault();
+            e.returnValue = '';
+        }
+    });
+
+    // Restore last lesson and subject values across sessions
+    const lastLesson = localStorage.getItem(STORAGE_KEYS.LAST_LESSON);
+    if (lastLesson) document.getElementById('lesson').value = lastLesson;
+
+    const lastSubject = localStorage.getItem(STORAGE_KEYS.LAST_SUBJECT);
+    if (lastSubject) document.getElementById('phraseSubject').value = lastSubject;
+    </script>
+</body>
+</html>

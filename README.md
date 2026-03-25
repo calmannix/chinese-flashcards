@@ -1,56 +1,54 @@
-# 🀄 chinese-flashcards
+# Riri (日日)
 
-Browser-based spaced repetition for Traditional Chinese vocabulary. No app, no account, no server — open `index.html` and study.
+Spaced repetition flashcard app for learning Traditional Chinese. Runs offline on macOS.
 
-Built to learn Mandarin while living in Taipei. I wanted something as solid as Anki but with zero setup friction.
+![Python](https://img.shields.io/badge/Python_3-3776AB?logo=python&logoColor=white)
+![JavaScript](https://img.shields.io/badge/Vanilla_JS-F7DF1E?logo=javascript&logoColor=black)
+![macOS](https://img.shields.io/badge/macOS-000000?logo=apple&logoColor=white)
 
----
+## What it does
 
-## Quick start
+- SM-2 spaced repetition: difficult words appear more often, easy words fade back
+- Radical decomposition: breaks characters into components with English meanings
+- Progress dashboard: streak counter, 90-day heatmap, accuracy trends, mastery distribution
+- Keyboard-first review: Space to flip, 1-4 to grade
+- Built-in dictionary with pinyin suggestions when adding words
+- Multiple study modes for words (Memorise, ZH/EN, EN/ZH, Complete) and phrases (Memorise, Translate, Reading, Complete)
 
-```bash
-open index.html
-```
+## Getting started
 
-Or drag `index.html` into Chrome.
+1. Download or clone this repo
+2. Double-click **Chinese Flashcards.app**
+3. The app starts a local server and opens in your browser
 
----
+Requires Python 3 on your Mac. No internet needed after first launch.
 
-## Features
+## How it works
 
-- **Four study modes**: Memorise, ZH→EN, EN→ZH, Complete Learning
-- **SM-2 algorithm**: Same spaced repetition as Anki — cards you struggle with come back sooner
-- **Smart Shuffle**: Prioritises hard cards (60% hard, 25% good, 15% easy)
-- **Tone colours**: Pinyin coloured by tone (red/orange/green/blue)
-- **11,000-word dictionary**: Type pinyin, pick from a dropdown, characters fill automatically
-- **Lesson filtering**: Organise vocab by lesson or topic
-- **Streak tracking**: Daily study streak and session stats
-- **File sync**: Optional persistent backup via Chrome/Edge file API
+The .app bundle wraps a Python HTTP server (localhost:8080) serving a single-page vanilla JS frontend. Your vocabulary and progress save to ~/Library/Application Support/Chinese Flashcards/data.json. Nothing leaves your machine.
 
----
+## Keyboard shortcuts
 
-## Adding words
+| Key | Action |
+|-----|--------|
+| Space | Flip the card |
+| 1 | Again |
+| 2 | Hard |
+| 3 | Good |
+| 4 | Easy |
 
-1. Click **Add Words**
-2. Type pinyin in the Traditional Characters field (e.g. `xuesheng`)
-3. Pick a match from the dropdown — characters, pinyin, and English fill in
-4. Assign a lesson if you want (it carries over to the next word)
-5. Click **Add Word**
+## Pinyin tone colours
 
-Each word creates two cards: Chinese→English and English→Chinese.
+- Red = 1st tone (flat)
+- Orange = 2nd tone (rising)
+- Green = 3rd tone (dip)
+- Blue = 4th tone (falling)
+- Grey = neutral tone
 
----
+## Built with
 
-## Data
-
-Everything lives in `localStorage`. No internet required once loaded.
-
-Export regularly: **Add Words → Export JSON**. To restore: **Import JSON**.
-
-**File sync (Chrome/Edge):** Link a `.json` file under Add Words and the app syncs automatically on every change.
-
----
-
-## Stack
-
-Vanilla JavaScript · Single HTML file · CC-CEDICT dictionary (CC BY-SA 4.0)
+- Vanilla JavaScript, HTML, CSS (no frameworks)
+- Python 3 HTTP server
+- SM-2 spaced repetition algorithm
+- Radical data from [Make Me a Hanzi](https://github.com/skishore/makemeahanzi) (9,490 characters)
+- Built with [Claude Code](https://claude.ai/claude-code)
