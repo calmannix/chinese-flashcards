@@ -747,6 +747,49 @@
             margin-top: 16px;
         }
 
+        /* WOD button */
+        .wod-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 20px;
+            margin-bottom: 16px;
+            font-size: 1.4rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: var(--blue);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0,40,104,0.25);
+            transition: background 0.15s, box-shadow 0.15s;
+        }
+
+        .wod-btn:hover {
+            background: var(--blue-mid);
+            box-shadow: 0 6px 18px rgba(0,40,104,0.35);
+        }
+
+        .wod-subtitle {
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0;
+            text-transform: none;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        .wod-badge {
+            font-size: 0.8rem;
+            color: var(--text-3);
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
         /* Pinyin lookup dropdown */
         .input-with-dropdown {
             position: relative;
@@ -1227,6 +1270,12 @@
                 <!-- Charts inserted by Step 3b -->
                 <div id="dashboardCharts"></div>
             </div>
+
+            <!-- WOD: Workout of the Day -->
+            <button type="button" class="wod-btn" id="wodBtn">
+                WOD
+                <span class="wod-subtitle">20 cards &middot; mixed modes</span>
+            </button>
 
             <div class="control-card">
                 <div class="card-label">Session</div>
@@ -2429,6 +2478,10 @@
     let completePhraseLearningPhase = 1; // 1=Memorise, 2=Translate, 3=Reading
     let completePhraseLearningBaseCards = []; // Stores phrase cards for all three phases
 
+    // WOD (Workout of the Day)
+    let isWodSession = false;
+    let wodCards = []; // Array of { card, type: 'word'|'phrase', mode: string }
+
     // ===========================================
     // Navigation
     document.querySelectorAll('nav button').forEach(btn => {
@@ -2950,6 +3003,10 @@
         showSection('review');
     });
 
+    document.getElementById('wodBtn').addEventListener('click', () => {
+        startWodSession();
+    });
+
     // ===========================================
     // KEYBOARD SHORTCUTS (review session only)
     // ===========================================
@@ -2959,14 +3016,17 @@
      * Adapts to binary (Complete Learning test / phrase translate/reading) vs full grading.
      */
     function getKeyboardHintHtml() {
-        const isCompleteLearningTest = currentActivityMode === 'complete-learning' && completeLearningPhase > 1;
-        const isPhraseBinary = currentContext === 'phrases' && (
+        const isWodBinary = isWodSession && wodCards[currentCardIndex] && wodCards[currentCardIndex].mode !== 'memorise';
+        const isCompleteLearningTest = !isWodSession && currentActivityMode === 'complete-learning' && completeLearningPhase > 1;
+        const isPhraseBinary = !isWodSession && currentContext === 'phrases' && (
             currentPhraseMode === 'translate' || currentPhraseMode === 'reading' ||
             (currentPhraseMode === 'complete' && completePhraseLearningPhase > 1)
         );
 
         let gradeHint;
-        if (isCompleteLearningTest) {
+        if (isWodBinary) {
+            gradeHint = '<kbd>1</kbd> Again &nbsp; <kbd>2</kbd> Correct';
+        } else if (isCompleteLearningTest) {
             gradeHint = '<kbd>1</kbd> Incorrect &nbsp; <kbd>2</kbd> Correct';
         } else if (isPhraseBinary) {
             gradeHint = '<kbd>1</kbd> Again &nbsp; <kbd>2</kbd> Got it';
@@ -3001,12 +3061,13 @@
         // Grade keys: only when answer is shown
         if (!isAnswerShown) return;
 
-        const isCompleteLearningTest = currentActivityMode === 'complete-learning' && completeLearningPhase > 1;
-        const isPhraseBinary = currentContext === 'phrases' && (
+        const isWodBinary = isWodSession && wodCards[currentCardIndex] && wodCards[currentCardIndex].mode !== 'memorise';
+        const isCompleteLearningTest = !isWodSession && currentActivityMode === 'complete-learning' && completeLearningPhase > 1;
+        const isPhraseBinary = !isWodSession && currentContext === 'phrases' && (
             currentPhraseMode === 'translate' || currentPhraseMode === 'reading' ||
             (currentPhraseMode === 'complete' && completePhraseLearningPhase > 1)
         );
-        const isBinaryMode = isCompleteLearningTest || isPhraseBinary;
+        const isBinaryMode = isWodBinary || isCompleteLearningTest || isPhraseBinary;
 
         // Binary modes: 1 = Again (grade 0), 2 = Correct/Got it (grade 2)
         if (isBinaryMode) {
@@ -3102,6 +3163,112 @@
                 ${relatedHtml}
             </div>
         `;
+    }
+
+    // ===========================================
+    // WOD SESSION
+    // ===========================================
+
+    function startWodSession() {
+        const WOD_SIZE = 20;
+        const WORD_MODES = ['memorise', 'zh-en', 'en-zh'];
+        const PHRASE_MODES = ['memorise', 'translate', 'reading'];
+
+        const allWordCards = loadData(STORAGE_KEYS.CARDS);
+        const allPhraseCards = loadData(STORAGE_KEYS.PHRASE_CARDS);
+
+        // Split budget: ~60% words, ~40% phrases, flexing if one pool is small
+        let wordBudget = Math.round(WOD_SIZE * 0.6);
+        let phraseBudget = WOD_SIZE - wordBudget;
+
+        if (allPhraseCards.length < phraseBudget) {
+            phraseBudget = allPhraseCards.length;
+            wordBudget = Math.min(WOD_SIZE - phraseBudget, allWordCards.length);
+        } else if (allWordCards.length < wordBudget * 2) {
+            // Not enough word cards for direction pairing — reduce word budget
+            wordBudget = Math.min(wordBudget, Math.floor(allWordCards.length / 2) || allWordCards.length);
+            phraseBudget = Math.min(WOD_SIZE - wordBudget, allPhraseCards.length);
+        }
+
+        // Select word cards: deduplicate by wordId first, then Smart Shuffle
+        const deduped = [];
+        const seenWords = new Set();
+        [...allWordCards].sort((a, b) => a.direction === 'cn-en' ? -1 : 1).forEach(c => {
+            if (!seenWords.has(c.wordId)) { seenWords.add(c.wordId); deduped.push(c); }
+        });
+        const wordPool = deduped.length <= wordBudget
+            ? shuffle(deduped)
+            : weightedSelect(deduped, wordBudget);
+
+        // For each selected word, assign a random mode and find the correct direction card
+        const wodWordCards = wordPool.map(card => {
+            const mode = WORD_MODES[Math.floor(Math.random() * WORD_MODES.length)];
+            let actualCard = card;
+            if (mode === 'zh-en') {
+                // Need en-cn direction card
+                const pair = allWordCards.find(c => c.wordId === card.wordId && c.direction === 'en-cn');
+                actualCard = pair || card;
+            } else if (mode === 'en-zh') {
+                // Need cn-en direction card
+                const pair = allWordCards.find(c => c.wordId === card.wordId && c.direction === 'cn-en');
+                actualCard = pair || card;
+            }
+            // For memorise, the deduped card (cn-en) is fine
+            const effectiveMode = (mode !== 'memorise' && actualCard === card && card.direction !== (mode === 'zh-en' ? 'en-cn' : 'cn-en'))
+                ? 'memorise' : mode;
+            return { card: actualCard, type: 'word', mode: effectiveMode };
+        });
+
+        // Select phrase cards with Smart Shuffle weighting
+        const phrasePool = allPhraseCards.length <= phraseBudget
+            ? shuffle([...allPhraseCards])
+            : weightedSelect(allPhraseCards, phraseBudget);
+
+        const wodPhraseCards = phrasePool.map(card => {
+            const mode = PHRASE_MODES[Math.floor(Math.random() * PHRASE_MODES.length)];
+            return { card, type: 'phrase', mode };
+        });
+
+        // Combine and shuffle
+        wodCards = shuffle([...wodWordCards, ...wodPhraseCards]);
+        currentCards = wodCards.map(w => w.card);
+        currentCardIndex = 0;
+        isAnswerShown = false;
+        isSessionActive = true;
+        isWodSession = true;
+        sessionStartTime = Date.now();
+        sessionReviewCount = 0;
+
+        if (currentCards.length === 0) {
+            showToast('Add some words first!');
+            return;
+        }
+
+        showSection('review');
+        showCurrentCard();
+    }
+
+    // Weighted selection helper: 60% hard, 25% good, 15% easy
+    function weightedSelect(cards, limit) {
+        const { hard, good, easy } = categorizeCardsByPerformance(cards);
+        const hardTarget = Math.round(limit * 0.6);
+        const goodTarget = Math.round(limit * 0.25);
+        const easyTarget = limit - hardTarget - goodTarget;
+
+        const selected = [
+            ...shuffle(hard).slice(0, Math.min(hardTarget, hard.length)),
+            ...shuffle(good).slice(0, Math.min(goodTarget, good.length)),
+            ...shuffle(easy).slice(0, Math.min(easyTarget, easy.length))
+        ];
+
+        // Top up shortfalls
+        if (selected.length < limit) {
+            const selectedIds = new Set(selected.map(c => c.id));
+            const remaining = shuffle(cards.filter(c => !selectedIds.has(c.id)));
+            selected.push(...remaining.slice(0, limit - selected.length));
+        }
+
+        return shuffle(selected);
     }
 
     // Review session — branches on currentContext
@@ -3216,8 +3383,8 @@
             return;
         }
 
-        // Delegate to phrase renderer when in phrases context
-        if (currentContext === 'phrases') {
+        // Delegate to phrase renderer when in phrases context or WOD phrase card
+        if (isWodSession ? wodCards[currentCardIndex].type === 'phrase' : currentContext === 'phrases') {
             showCurrentPhraseCard();
             return;
         }
@@ -3236,10 +3403,12 @@
         const intervals = getIntervalPreviews(card);
 
         // Determine effective mode for rendering
-        let effectiveMode = currentActivityMode;
+        let effectiveMode = isWodSession ? wodCards[currentCardIndex].mode : currentActivityMode;
         let phaseLabel = '';
 
-        if (currentActivityMode === 'complete-learning') {
+        if (isWodSession) {
+            // WOD: per-card mode, no phase labels
+        } else if (currentActivityMode === 'complete-learning') {
             if (completeLearningPhase === 1) {
                 effectiveMode = 'memorise';
                 phaseLabel = 'Phase 1/3: Memorise';
@@ -3253,7 +3422,10 @@
         }
 
         const showGradeButtons = effectiveMode === 'memorise';
-        const isCompleteLearningTestPhase = currentActivityMode === 'complete-learning' && completeLearningPhase > 1;
+        const isBinaryMode = isWodSession
+            ? effectiveMode !== 'memorise'
+            : (currentActivityMode === 'complete-learning' && completeLearningPhase > 1);
+        const isCompleteLearningTestPhase = isBinaryMode;
 
         // Determine hint text based on mode
         let gradeHintText;
@@ -3307,9 +3479,16 @@
             `;
         }
 
-        const progressText = phaseLabel
-            ? `<div style="font-size: 0.85rem; color: #888; margin-bottom: 4px;">${phaseLabel}</div><div class="card-progress">Card ${currentCardIndex + 1} of ${currentCards.length}</div>`
-            : `<div class="card-progress">Card ${currentCardIndex + 1} of ${currentCards.length}</div>`;
+        let progressText;
+        if (isWodSession) {
+            const modeLabels = { memorise: 'Memorise', 'zh-en': 'EN → ZH', 'en-zh': 'ZH → EN' };
+            const modeLabel = modeLabels[effectiveMode] || effectiveMode;
+            progressText = `<div class="wod-badge">WOD &middot; ${modeLabel}</div><div class="card-progress">Card ${currentCardIndex + 1} of ${currentCards.length}</div>`;
+        } else if (phaseLabel) {
+            progressText = `<div style="font-size: 0.85rem; color: #888; margin-bottom: 4px;">${phaseLabel}</div><div class="card-progress">Card ${currentCardIndex + 1} of ${currentCards.length}</div>`;
+        } else {
+            progressText = `<div class="card-progress">Card ${currentCardIndex + 1} of ${currentCards.length}</div>`;
+        }
 
         // Encode characters/english for safe use in onclick data attributes
         const charsEncoded = encodeURIComponent(vocab.characters);
@@ -3397,9 +3576,9 @@
         const intervals = getIntervalPreviews(card);
 
         // Flatten Complete mode phases into effective mode
-        let effectiveMode = currentPhraseMode;
+        let effectiveMode = isWodSession ? wodCards[currentCardIndex].mode : currentPhraseMode;
         let phaseLabel = '';
-        if (currentPhraseMode === 'complete') {
+        if (!isWodSession && currentPhraseMode === 'complete') {
             if (completePhraseLearningPhase === 1) {
                 effectiveMode = 'memorise';
                 phaseLabel = 'Phase 1/3: Memorise';
@@ -3412,9 +3591,16 @@
             }
         }
 
-        const progressText = phaseLabel
-            ? `<div style="font-size:0.85rem;color:#888;margin-bottom:4px;">${phaseLabel}</div><div class="card-progress">Phrase ${currentCardIndex + 1} of ${currentCards.length}</div>`
-            : `<div class="card-progress">Phrase ${currentCardIndex + 1} of ${currentCards.length}</div>`;
+        let progressText;
+        if (isWodSession) {
+            const modeLabels = { memorise: 'Memorise', translate: 'Translate', reading: 'Reading' };
+            const modeLabel = modeLabels[effectiveMode] || effectiveMode;
+            progressText = `<div class="wod-badge">WOD &middot; ${modeLabel}</div><div class="card-progress">Card ${currentCardIndex + 1} of ${currentCards.length}</div>`;
+        } else if (phaseLabel) {
+            progressText = `<div style="font-size:0.85rem;color:#888;margin-bottom:4px;">${phaseLabel}</div><div class="card-progress">Phrase ${currentCardIndex + 1} of ${currentCards.length}</div>`;
+        } else {
+            progressText = `<div class="card-progress">Phrase ${currentCardIndex + 1} of ${currentCards.length}</div>`;
+        }
 
         // Binary grading buttons (used by Translate and Reading)
         const binaryGradeHtml = `
@@ -3538,6 +3724,7 @@
             // Again: do NOT grade via SM-2. Flag and re-queue.
             card._wasAgain = true;
             currentCards.push(card);
+            if (isWodSession) wodCards.push(wodCards[currentCardIndex]);
             currentCardIndex++;
             showCurrentCard();
             return;
@@ -3555,7 +3742,11 @@
 
         const updatedCard = calculateNextReview(card, effectiveGrade);
 
-        if (currentContext === 'phrases') {
+        const isPhrase = isWodSession
+            ? wodCards[currentCardIndex].type === 'phrase'
+            : currentContext === 'phrases';
+
+        if (isPhrase) {
             // Phrase cards have no sibling — just update directly
             updatePhraseCard(updatedCard);
         } else {
@@ -3563,7 +3754,12 @@
         }
 
         // For word Memorise / Complete Learning phase 1, also grade the sibling card (opposite direction)
-        if (currentContext === 'words' && (currentActivityMode === 'memorise' || (currentActivityMode === 'complete-learning' && completeLearningPhase === 1))) {
+        const shouldGradeSibling = !isPhrase && (
+            isWodSession
+                ? wodCards[currentCardIndex].mode === 'memorise'
+                : (currentActivityMode === 'memorise' || (currentActivityMode === 'complete-learning' && completeLearningPhase === 1))
+        );
+        if (shouldGradeSibling) {
             const allCards = loadData(STORAGE_KEYS.CARDS);
             const oppositeDir = card.direction === 'cn-en' ? 'en-cn' : 'cn-en';
             const sibling = allCards.find(c => c.wordId === card.wordId && c.direction === oppositeDir);
@@ -3625,6 +3821,22 @@
     }
 
     function showSessionComplete() {
+        // WOD: no phase transitions, go straight to completion
+        if (isWodSession) {
+            const sessionTime = Math.round((Date.now() - sessionStartTime) / 1000 / 60);
+            document.getElementById('flashcardContainer').innerHTML = `
+                <div class="session-complete">
+                    <h2>WOD Complete!</h2>
+                    <div class="session-stats">
+                        <p><strong>${sessionReviewCount}</strong> cards reviewed</p>
+                        <p><strong>${sessionTime || '< 1'}</strong> minutes</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="isSessionActive = false; isWodSession = false; wodCards = []; showSection('home');">Back to Home</button>
+                </div>
+            `;
+            return;
+        }
+
         // Handle phase transitions for phrase Complete mode
         if (currentContext === 'phrases' && currentPhraseMode === 'complete' && completePhraseLearningPhase < 3) {
             completePhraseLearningPhase++;

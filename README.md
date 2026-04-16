@@ -14,6 +14,8 @@ Spaced repetition flashcard app for learning Traditional Chinese. Runs offline o
 - Keyboard-first review: Space to flip, 1-4 to grade
 - Built-in dictionary with pinyin suggestions when adding words
 - Multiple study modes for words (Memorise, ZH/EN, EN/ZH, Complete) and phrases (Memorise, Translate, Reading, Complete)
+- Dark mode toggle for evening study sessions
+- WOD (Workout of the Day): one-tap mixed session of 20 cards across random modes
 
 ## Getting started
 
