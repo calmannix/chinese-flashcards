@@ -19,6 +19,44 @@
             --text-1:      #1A1A2E;
             --text-2:      #4A5568;
             --text-3:      #9AA5B4;
+            --card-bg:     #ffffff;
+            --input-bg:    #ffffff;
+            --input-border:#dddddd;
+            --hover-bg:    #f5f5f5;
+            --secondary-bg:#e8e8e8;
+            --divider:     #eeeeee;
+            --muted-bg:    #f8f8f8;
+            --shadow:      rgba(0,0,0,0.08);
+            --shadow-heavy:rgba(0,0,0,0.15);
+            --dropdown-border: #f0f0f0;
+            --success:     #27ae60;
+            --warning:     #e67e22;
+            --danger:      #e74c3c;
+            --info:        #3498db;
+        }
+
+        [data-theme="dark"] {
+            --red-subtle:  #2a1015;
+            --blue-subtle: #0f1a2e;
+            --surface:     #0f0f1a;
+            --border:      #2a2a3e;
+            --text-1:      #e8e8f0;
+            --text-2:      #a0a8b8;
+            --text-3:      #6a7080;
+            --card-bg:     #1a1a2e;
+            --input-bg:    #1a1a2e;
+            --input-border:#2a2a3e;
+            --hover-bg:    #252540;
+            --secondary-bg:#252540;
+            --divider:     #2a2a3e;
+            --muted-bg:    #1a1a2e;
+            --shadow:      rgba(0,0,0,0.3);
+            --shadow-heavy:rgba(0,0,0,0.4);
+            --dropdown-border: #2a2a3e;
+            --success:     #2ecc71;
+            --warning:     #f39c12;
+            --danger:      #e74c3c;
+            --info:        #5dade2;
         }
 
         /* Base styles */
@@ -48,7 +86,7 @@
 
         header h1 {
             font-size: 1.5rem;
-            color: #333;
+            color: var(--text-1);
             margin-bottom: 10px;
         }
 
@@ -57,7 +95,7 @@
             justify-content: center;
             gap: 20px;
             font-size: 0.9rem;
-            color: #666;
+            color: var(--text-2);
         }
 
         /* Navigation */
@@ -94,10 +132,10 @@
         /* Sections */
         section {
             display: none;
-            background: #fff;
+            background: var(--card-bg);
             border-radius: 12px;
             padding: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px var(--shadow);
         }
 
         section.active {
@@ -113,15 +151,17 @@
             display: block;
             margin-bottom: 6px;
             font-weight: 500;
-            color: #333;
+            color: var(--text-1);
         }
 
         .form-group input {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--input-border);
             border-radius: 8px;
             font-size: 1rem;
+            background: var(--input-bg);
+            color: var(--text-1);
         }
 
         .form-group input:focus {
@@ -133,11 +173,13 @@
         .form-group textarea {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--input-border);
             border-radius: 8px;
             font-size: 1rem;
             resize: vertical;
             font-family: inherit;
+            background: var(--input-bg);
+            color: var(--text-1);
         }
 
         .form-group textarea:focus {
@@ -149,7 +191,7 @@
         .form-group small {
             display: block;
             margin-top: 4px;
-            color: #888;
+            color: var(--text-3);
             font-size: 0.8rem;
         }
 
@@ -181,12 +223,12 @@
         }
 
         .btn-secondary {
-            background: #e8e8e8;
-            color: #333;
+            background: var(--secondary-bg);
+            color: var(--text-1);
         }
 
         .btn-danger {
-            background: #e74c3c;
+            background: var(--danger);
             color: #fff;
             padding: 6px 12px;
             font-size: 0.8rem;
@@ -199,7 +241,7 @@
 
         .word-list h3 {
             margin-bottom: 12px;
-            color: #333;
+            color: var(--text-1);
         }
 
         .word-item {
@@ -207,7 +249,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--divider);
         }
 
         .word-item:last-child {
@@ -230,7 +272,7 @@
 
         .word-english {
             font-size: 0.85rem;
-            color: #666;
+            color: var(--text-2);
         }
 
         /* Tone colours — muted so they read as semantic labels, not interactive elements.
@@ -248,7 +290,7 @@
 
         .card-progress {
             margin-bottom: 16px;
-            color: #666;
+            color: var(--text-2);
             font-size: 0.9rem;
         }
 
@@ -341,9 +383,9 @@
         }
 
         .grade-again { background: var(--red); color: #fff; }
-        .grade-hard { background: #e67e22; color: #fff; }
-        .grade-good { background: #27ae60; color: #fff; }
-        .grade-easy { background: #3498db; color: #fff; }
+        .grade-hard { background: var(--warning); color: #fff; }
+        .grade-good { background: var(--success); color: #fff; }
+        .grade-easy { background: var(--info); color: #fff; }
 
         .grade-interval {
             display: block;
@@ -454,7 +496,7 @@
 
         .streak-card, .target-card {
             flex: 1;
-            background: #fff;
+            background: var(--card-bg);
             border-radius: 10px;
             padding: 14px 16px;
             border: 1px solid var(--border);
@@ -466,7 +508,7 @@
             line-height: 1;
         }
 
-        .streak-value.active { color: #27ae60; }
+        .streak-value.active { color: var(--success); }
         .streak-value.inactive { color: var(--text-3); }
 
         .streak-label {
@@ -522,11 +564,11 @@
             transition: width 0.3s ease;
         }
 
-        .target-bar-fill.complete { background: #27ae60; }
+        .target-bar-fill.complete { background: var(--success); }
 
         /* Dashboard charts */
         .chart-section {
-            background: #fff;
+            background: var(--card-bg);
             border-radius: 10px;
             padding: 14px 16px;
             border: 1px solid var(--border);
@@ -605,8 +647,8 @@
         }
 
         .mastery-hard { background: var(--red); }
-        .mastery-good { background: #e67e22; }
-        .mastery-easy { background: #27ae60; }
+        .mastery-good { background: var(--warning); }
+        .mastery-easy { background: var(--success); }
 
         .mastery-legend {
             display: flex;
@@ -629,12 +671,12 @@
         .empty-state {
             text-align: center;
             padding: 48px 24px;
-            color: #666;
+            color: var(--text-2);
         }
 
         .empty-state h3 {
             margin-bottom: 8px;
-            color: #333;
+            color: var(--text-1);
         }
 
         /* Session complete */
@@ -644,7 +686,7 @@
         }
 
         .session-complete h2 {
-            color: #27ae60;
+            color: var(--success);
             margin-bottom: 16px;
         }
 
@@ -654,7 +696,7 @@
 
         .session-stats p {
             margin-bottom: 8px;
-            color: #666;
+            color: var(--text-2);
         }
 
         /* Export/Import */
@@ -663,7 +705,7 @@
             gap: 10px;
             margin-top: 24px;
             padding-top: 24px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--divider);
         }
 
         .data-actions button {
@@ -683,7 +725,7 @@
         }
 
         .stat-card {
-            background: #f8f8f8;
+            background: var(--muted-bg);
             border-radius: 8px;
             padding: 16px;
             text-align: center;
@@ -692,12 +734,12 @@
         .stat-value {
             font-size: 1.5rem;
             font-weight: 600;
-            color: #333;
+            color: var(--text-1);
         }
 
         .stat-label {
             font-size: 0.8rem;
-            color: #666;
+            color: var(--text-2);
             margin-top: 4px;
         }
 
@@ -715,15 +757,15 @@
             top: 100%;
             left: 0;
             right: 0;
-            background: #fff;
-            border: 1px solid #ddd;
+            background: var(--card-bg);
+            border: 1px solid var(--input-border);
             border-top: none;
             border-radius: 0 0 8px 8px;
             max-height: 240px;
             overflow-y: auto;
             z-index: 100;
             display: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px var(--shadow-heavy);
         }
 
         .pinyin-dropdown.visible {
@@ -736,7 +778,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid var(--dropdown-border);
         }
 
         .dropdown-item:last-child {
@@ -745,7 +787,7 @@
 
         .dropdown-item:hover,
         .dropdown-item.selected {
-            background: #f5f5f5;
+            background: var(--hover-bg);
         }
 
         .dropdown-item-char {
@@ -760,12 +802,12 @@
 
         .dropdown-item-pinyin {
             font-size: 0.85rem;
-            color: #666;
+            color: var(--text-2);
         }
 
         .dropdown-item-english {
             font-size: 0.8rem;
-            color: #888;
+            color: var(--text-3);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -774,23 +816,23 @@
         .dropdown-hint {
             padding: 8px 12px;
             font-size: 0.8rem;
-            color: #888;
+            color: var(--text-3);
             text-align: center;
-            border-top: 1px solid #f0f0f0;
+            border-top: 1px solid var(--dropdown-border);
         }
 
         /* Activity mode selector */
         .activity-mode-selector {
             margin: 16px 0;
             padding: 16px;
-            background: #f8f8f8;
+            background: var(--muted-bg);
             border-radius: 8px;
         }
 
         .activity-mode-selector label {
             display: block;
             font-size: 0.85rem;
-            color: #666;
+            color: var(--text-2);
             margin-bottom: 8px;
         }
 
@@ -810,13 +852,13 @@
             background: transparent;
             cursor: pointer;
             font-size: 0.85rem;
-            color: #666;
+            color: var(--text-2);
             transition: all 0.2s;
             text-align: center;
         }
 
         .mode-btn:hover {
-            color: #333;
+            color: var(--text-1);
         }
 
         .mode-btn.active {
@@ -912,7 +954,7 @@
            Control cards
            ============================ */
         .control-card {
-            background: #fff;
+            background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 16px;
@@ -969,7 +1011,7 @@
             border-radius: 8px;
             font-size: 0.875rem;
             color: var(--text-1);
-            background: #fff;
+            background: var(--input-bg);
             appearance: none;
             -webkit-appearance: none;
             outline: none;
@@ -1074,7 +1116,7 @@
         }
 
         .toggle-btn {
-            background: #e8e8e8;
+            background: var(--secondary-bg);
             border: none;
             border-radius: 20px;
             cursor: pointer;
@@ -1088,11 +1130,55 @@
             background: var(--blue);
             color: #fff;
         }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 2;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 6px 8px;
+            font-size: 1.1rem;
+            line-height: 1;
+            transition: background 0.15s;
+            color: #fff;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.22);
+        }
+
+        /* Dark-mode tone colour adjustments for contrast on dark backgrounds */
+        [data-theme="dark"] .tone-1 { color: #e05545; }
+        [data-theme="dark"] .tone-2 { color: #d4943a; }
+        [data-theme="dark"] .tone-3 { color: #3ab06a; }
+        [data-theme="dark"] .tone-4 { color: #4a90d9; }
+        [data-theme="dark"] .tone-5 { color: #8a9099; }
+
+        /* Dark-mode heatmap adjustments */
+        [data-theme="dark"] .heatmap-cell.level-1 { background: #2d5a1e; }
+        [data-theme="dark"] .heatmap-cell.level-2 { background: #3d7a2e; }
+        [data-theme="dark"] .heatmap-cell.level-3 { background: #4d9a3e; }
+        [data-theme="dark"] .heatmap-cell.level-4 { background: #2ecc71; }
+
+        /* Search input in word list */
+        [data-theme="dark"] input[type="search"],
+        [data-theme="dark"] input[type="text"],
+        [data-theme="dark"] input[type="number"],
+        [data-theme="dark"] select,
+        [data-theme="dark"] textarea {
+            color-scheme: dark;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="app-header">
+            <button type="button" class="theme-toggle" id="themeToggle" title="Toggle dark mode">🌙</button>
             <div class="app-title">日日</div>
             <div class="app-subtitle">Rìrì &nbsp;·&nbsp; Daily Chinese</div>
             <div class="stats-row">
@@ -1337,8 +1423,39 @@
         PHRASE_CARDS: 'cv_phrase_cards',
         STATS:        'cv_stats',
         LAST_LESSON:  'cv_last_lesson',
-        LAST_SUBJECT: 'cv_last_subject'
+        LAST_SUBJECT: 'cv_last_subject',
+        THEME:        'cv_theme'
     };
+
+    // ===========================================
+    // THEME
+    // ===========================================
+
+    function initTheme() {
+        const saved = localStorage.getItem(STORAGE_KEYS.THEME);
+        const theme = saved || 'light';
+        applyTheme(theme);
+    }
+
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        const btn = document.getElementById('themeToggle');
+        if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+
+    function toggleTheme() {
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        localStorage.setItem(STORAGE_KEYS.THEME, next);
+        // Persist to server if available
+        if (typeof saveData === 'function') {
+            try { saveData(); } catch(e) {}
+        }
+    }
+
+    // Apply theme immediately to avoid flash
+    initTheme();
 
     // ===========================================
     // SERVER STORAGE
@@ -1382,6 +1499,10 @@
                 if (!Array.isArray(cache.stats.dailyLog)) cache.stats.dailyLog = [];
                 localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(cache.stats));
             }
+            if (data.theme) {
+                localStorage.setItem(STORAGE_KEYS.THEME, data.theme);
+                applyTheme(data.theme);
+            }
 
             serverAvailable = true;
         } catch (e) {
@@ -1402,6 +1523,7 @@
                 phrases:     cache.phrases     || [],
                 phraseCards: cache.phraseCards || [],
                 stats:       cache.stats       || {},
+                theme:       localStorage.getItem(STORAGE_KEYS.THEME) || 'light',
                 savedAt:     new Date().toISOString()
             };
             const res = await fetch('/data', {
@@ -2315,6 +2437,9 @@
             showSection(section);
         });
     });
+
+    // Theme toggle
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 
     // Context toggle: switches all [data-ctx] buttons across all three tabs simultaneously
     function switchContext(ctx) {
